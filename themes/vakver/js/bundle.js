@@ -1,5 +1,5 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-var __vueify_style__ = require("vueify-insert-css").insert("\n.highlight {\n\tcolor: #74AF2A;\n\tfont-weight: bold;\n}\n")
+var __vueify_style__ = require("vueify-insert-css").insert("\n.highlight {\n\tcolor: #74AF2A;\n\tfont-weight: bold;\n}\n[v-cloak] {\n  display: none;\n}\n")
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -33,6 +33,8 @@ exports.default = {
 				this.client.search({
 					index: 'node',
 					type: 'vakantie',
+					from: 0,
+					size: 12,
 					body: {
 						query: {
 							match_phrase_prefix: {
@@ -53,15 +55,23 @@ exports.default = {
 					}
 				}).then(function (resp) {
 					this.travels = resp.hits.hits;
+
+					// dispatch this data to the entry.js file
+					this.$dispatch('travel-hits', this.travels.length);
 				}.bind(this), function (err) {
 					console.trace(err.message);
 				});
 			} else {
 				this.client.search({
 					index: 'node',
-					type: 'vakantie'
+					type: 'vakantie',
+					from: 0,
+					size: 12
 				}).then(function (resp) {
 					this.travels = resp.hits.hits;
+
+					// dispatch this data to the entry.js file
+					this.$dispatch('travel-hits', this.travels.length);
 				}.bind(this), function (err) {
 					console.trace(err.message);
 				});
@@ -70,14 +80,14 @@ exports.default = {
 	}
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n\t<div class=\"row main-search-wrapper\">\n        <div class=\"col-md-6 col-md-offset-3\">\n            <i class=\"fa fa-search fa-2x\" aria-hidden=\"true\"></i>\n            <input type=\"text\" placeholder=\"Zoek op naam, land, stad of regio\" v-on:keyup=\"search\" v-model=\"query\">\n        </div><!-- /.col-md-6 -->\n\n        <div class=\"col-md-3 view-options\">\n            <i class=\"fa fa-bars fa-2x\" aria-hidden=\"true\" v-bind:class=\"{ 'active': !toggleView}\" v-on:click=\"toggleView = false\"></i>\n            <i class=\"fa fa-th-large fa-2x\" aria-hidden=\"true\" v-bind:class=\"{ 'active': toggleView}\" v-on:click=\"toggleView = true\"></i>\n        </div><!-- /.col-md-3 -->\n    </div><!-- /.row -->\n\n\t<div v-if=\"toggleView\" class=\"row\" v-for=\"row in travels | chunk 4\">\n\t\t<div class=\"col-md-3\" v-for=\"travel in row\">\n\t\t\t<div class=\"vacation-item\">\n\t\t\t\t<div class=\"placeholder-img\"></div><!-- /.placeholder-img -->\n\t\t\t\t<div class=\"content\">\n\t\t\t\t\t<h2 v-if=\"travel.highlight\">{{{ travel.highlight.title }}}</h2>\n\t\t\t\t\t<h2 v-else=\"\">{{{ travel._source.title }}}</h2>\n\t\t\t\t\t<p>{{ travel._source.body[0].value }}</p>\n\t\t\t\t</div><!-- /.content -->\n\t\t\t</div><!-- /.vacation-item -->\n\t\t</div><!-- /.col-md-3 -->\n\t</div><!-- /.row -->\n\n\t<div v-if=\"!toggleView\" class=\"row list-view\" v-for=\"travel in travels\">\n\t\t<div class=\"col-md-10 col-md-offset-1\">\n\t\t\t<div class=\"vacation-item\">\n\t\t\t\t<div class=\"col-md-3\">\n\t\t\t\t\t<div class=\"placeholder-img\"></div><!-- /.placeholder-img -->\n\t\t\t\t</div><!-- /.col-md-3 -->\n\t\t\t\t<div class=\"col-md-9\">\n\t\t\t\t\t<div class=\"content\">\n\t\t\t\t\t\t<h2 v-if=\"travel.highlight\">{{{ travel.highlight.title }}}</h2>\n\t\t\t\t\t\t<h2 v-else=\"\">{{{ travel._source.title }}}</h2>\n\t\t\t\t\t\t<p>{{ travel._source.body[0].value }}</p>\n\t\t\t\t\t</div><!-- /.content -->\n\t\t\t\t</div><!-- /.col-md-9 -->\n\t\t\t</div><!-- /.vacation-item -->\n\t\t</div><!-- /.col-md-3 -->\n\t</div><!-- /.row -->\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n\t<div class=\"row main-search-wrapper\">\n        <div class=\"col-md-6 col-md-offset-3\">\n            <i class=\"fa fa-search fa-2x\" aria-hidden=\"true\"></i>\n            <input type=\"text\" placeholder=\"Zoek op naam, land, stad of regio\" v-on:keyup=\"search\" v-model=\"query\">\n        </div><!-- /.col-md-6 -->\n\n        <div class=\"col-md-3 view-options\">\n            <i class=\"fa fa-bars fa-2x\" aria-hidden=\"true\" v-bind:class=\"{ 'active': !toggleView}\" v-on:click=\"toggleView = false\"></i>\n            <i class=\"fa fa-th-large fa-2x\" aria-hidden=\"true\" v-bind:class=\"{ 'active': toggleView}\" v-on:click=\"toggleView = true\"></i>\n        </div><!-- /.col-md-3 -->\n    </div><!-- /.row -->\n\n\t<div v-if=\"toggleView\" class=\"row\" v-for=\"row in travels | chunk 4\">\n\t\t<div class=\"col-md-3\" v-for=\"travel in row\">\n\t\t\t<div class=\"vacation-item\">\n\t\t\t\t<a href=\"/node/{{ travel._source.nid }}\">\n\t\t\t\t\t<div class=\"placeholder-img\" style=\"background-image: url({{ travel._source.field_image[0].url }})\">\n\t\t\t\t\t\t<div class=\"star-rating\">\n\t\t\t\t\t\t\t<i class=\"fa fa-star fa-lg\" aria-hidden=\"true\" v-for=\"star in parseInt(travel._source.stars[0].value)\"></i>\n\t\t\t\t\t\t</div><!-- /.star-rating -->\n\t\t\t\t\t</div><!-- /.placeholder-img -->\n\n\t\t\t\t\t<div class=\"content\">\n\t\t\t\t\t\t<h2 v-if=\"travel.highlight\">{{{ travel.highlight.title }}}</h2>\n\t\t\t\t\t\t<h2 v-else=\"\">{{{ travel._source.title }}}</h2>\n\t\t\t\t\t\t<p>{{ travel._source.body[0].value }}</p>\n\t\t\t\t\t</div><!-- /.content -->\n\t\t\t\t</a>\n\t\t\t</div><!-- /.vacation-item -->\n\t\t</div><!-- /.col-md-3 -->\n\t</div><!-- /.row -->\n\n\t<div v-if=\"!toggleView\" class=\"row list-view\" v-for=\"travel in travels\">\n\t\t<div class=\"col-md-10 col-md-offset-1\">\n\t\t\t<div class=\"vacation-item\">\n\t\t\t\t<a href=\"/node/{{ travel._source.nid }}\">\n\t\t\t\t\t<div class=\"col-md-3\">\n\t\t\t\t\t\t<div class=\"placeholder-img\" style=\"background-image: url({{ travel._source.field_image[0].url }})\">\n\n\t\t\t\t\t\t</div><!-- /.placeholder-img -->\n\t\t\t\t\t</div><!-- /.col-md-3 -->\n\n\t\t\t\t\t<div class=\"col-md-9\">\n\t\t\t\t\t\t<div class=\"content\">\n\t\t\t\t\t\t\t<h2 v-if=\"travel.highlight\">{{{ travel.highlight.title }}}</h2>\n\t\t\t\t\t\t\t<h2 v-else=\"\">{{{ travel._source.title }}}</h2>\n\t\t\t\t\t\t\t<p>{{ travel._source.body[0].value }}</p>\n\t\t\t\t\t\t</div><!-- /.content -->\n\t\t\t\t\t</div><!-- /.col-md-9 -->\n\t\t\t\t</a></div><!-- /.vacation-item --><a href=\"/node/{{ travel._source.nid }}\">\n\t\t\t</a>\n\t\t</div><!-- /.col-md-3 -->\n\t</div><!-- /.row -->\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
   var id = "/Users/stephan/Code/wemachine/sites/vakver.local/themes/vakver/js/components/elasticsearch.vue"
   module.hot.dispose(function () {
-    require("vueify-insert-css").cache["\n.highlight {\n\tcolor: #74AF2A;\n\tfont-weight: bold;\n}\n"] = false
+    require("vueify-insert-css").cache["\n.highlight {\n\tcolor: #74AF2A;\n\tfont-weight: bold;\n}\n[v-cloak] {\n  display: none;\n}\n"] = false
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {
@@ -99,7 +109,16 @@ Vue.component('elasticsearch', Elasticsearch)
 window.onload = function () {
 	// create a root instance
 	new Vue({
-	  el: 'body'
+	  el: 'body',
+	  data: {
+	  	hits: ''
+	  },
+	  events: {
+	  	'travel-hits': function(hits) {
+	  		this.hits = hits;
+	  		console.log('triggered');
+	  	}
+	  }
 	})
 }
 },{"./components/elasticsearch.vue":1,"vue":84,"vue-chunk":58,"vue-resource":73}],3:[function(require,module,exports){

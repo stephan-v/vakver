@@ -27,3 +27,4 @@ stylesheets[all][] = 'css/font-awesome.min.css'
 ; ;;;;;;;;;;;;;;;;;;;;;
 scripts[] = 'js/scripts.js'
 scripts[] = 'js/bundle.js'
+scripts[] = 'node_modules/readmore-js/readmore.min.js'

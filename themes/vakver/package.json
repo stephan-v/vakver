@@ -5,6 +5,7 @@
   "main": "index.js",
   "dependencies": {
     "gulp-less": "^3.0.5",
+    "readmore-js": "^2.1.0",
     "vue-chunk": "^1.0.0"
   },
   "devDependencies": {

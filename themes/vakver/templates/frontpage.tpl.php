@@ -10,7 +10,8 @@
             </ul>
 
             <ul class="list-inline pull-right">
-                <li>89380 vakanties gevonden</li>
+                <li v-if="hits > 1 || hits == 0">{{ hits }} vakanties gevonden</li>
+                <li v-else="">{{ hits }} vakantie gevonden</li>
             </ul>
         </div><!-- /.container -->
     </div>
@@ -23,7 +24,81 @@
 
     <div class="main-content">
         <aside>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Labore aut alias, iure delectus voluptate cum unde, odio animi eveniet quas quos provident nemo, architecto qui illum iste ea perspiciatis rerum.</p>
+            <div class="btn">Filter reizen</div>
+
+            <div class="filter">
+                <div class="filter-header">
+                    <h3>Landen</h3>
+                    <div class="filter-count">20</div>
+                    <div class="clearfix"></div>
+                </div><!-- /.filter-header -->
+
+                <div class="readmore">
+                    <ul>
+                        <li>Verenigde arabische emiraten</li>
+                        <li>Verenigde arabische emiraten</li>
+                        <li>Verenigde arabische emiraten</li>
+                        <li>Verenigde arabische emiraten</li>
+                        <li>Verenigde arabische emiraten</li>
+                        <li>Verenigde arabische emiraten</li>
+                        <li>Verenigde arabische emiraten</li>
+                        <li>Verenigde arabische emiraten</li>
+                        <li>Verenigde arabische emiraten</li>
+                        <li>Verenigde arabische emiraten</li>
+                        <li>Verenigde arabische emiraten</li>
+                        <li>Verenigde arabische emiraten</li>
+                        <li>Verenigde arabische emiraten</li>
+                        <li>Verenigde arabische emiraten</li>
+                        <li>Verenigde arabische emiraten</li>
+                        <li>Verenigde arabische emiraten</li>
+                        <li>Verenigde arabische emiraten</li>
+                        <li>Verenigde arabische emiraten</li>
+                        <li>Verenigde arabische emiraten</li>
+                        <li>Verenigde arabische emiraten</li>
+                        <li>Verenigde arabische emiraten</li>
+                        <li>Verenigde arabische emiraten</li>
+                        <li>Verenigde arabische emiraten</li>
+                        <li>Verenigde arabische emiraten</li>
+                    </ul>
+                </div><!-- /.readmore -->
+            </div><!-- /.filer -->
+
+            <div class="filter">
+                <div class="filter-header">
+                    <h3>Landen</h3>
+                    <div class="filter-count">20</div>
+                    <div class="clearfix"></div>
+                </div><!-- /.filter-header -->
+                
+                <div class="readmore">
+                    <ul>
+                        <li>Verenigde arabische emiraten</li>
+                        <li>Verenigde arabische emiraten</li>
+                        <li>Verenigde arabische emiraten</li>
+                        <li>Verenigde arabische emiraten</li>
+                        <li>Verenigde arabische emiraten</li>
+                        <li>Verenigde arabische emiraten</li>
+                        <li>Verenigde arabische emiraten</li>
+                        <li>Verenigde arabische emiraten</li>
+                        <li>Verenigde arabische emiraten</li>
+                        <li>Verenigde arabische emiraten</li>
+                        <li>Verenigde arabische emiraten</li>
+                        <li>Verenigde arabische emiraten</li>
+                        <li>Verenigde arabische emiraten</li>
+                        <li>Verenigde arabische emiraten</li>
+                        <li>Verenigde arabische emiraten</li>
+                        <li>Verenigde arabische emiraten</li>
+                        <li>Verenigde arabische emiraten</li>
+                        <li>Verenigde arabische emiraten</li>
+                        <li>Verenigde arabische emiraten</li>
+                        <li>Verenigde arabische emiraten</li>
+                        <li>Verenigde arabische emiraten</li>
+                        <li>Verenigde arabische emiraten</li>
+                        <li>Verenigde arabische emiraten</li>
+                        <li>Verenigde arabische emiraten</li>
+                    </ul>
+                    </div><!-- /.readmore -->
+            </div><!-- /.filer -->
         </aside>
 
         <div class="container">

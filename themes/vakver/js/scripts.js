@@ -25,5 +25,16 @@
 		$(".search").click(function() {
 			$(".navbar-form input").addClass('expand').focus();
 		});
+
+		/* ==========================================================================
+		Sidebar more/less functionality
+		========================================================================== */
+
+		$('.readmore').readmore({
+			moreLink: '<a href="#" class="show-more">Toon alles</a>',
+			lessLink: '<a href="#" class="show-more">Toon minder</a>',
+			collapsedHeight: 75,
+			speed: 1000
+		});
 	});
 }(jQuery));

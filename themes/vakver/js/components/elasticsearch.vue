@@ -4,6 +4,9 @@
 		color: #74AF2A;
 		font-weight: bold;
 	}
+	[v-cloak] {
+	  display: none;
+	}
 </style>
 
 <template>
@@ -22,12 +25,19 @@
 	<div v-if="toggleView" class="row" v-for="row in travels | chunk 4">
 		<div class="col-md-3" v-for="travel in row">
 			<div class="vacation-item">
-				<div class="placeholder-img"></div><!-- /.placeholder-img -->
-				<div class="content">
-					<h2 v-if="travel.highlight">{{{ travel.highlight.title }}}</h2>
-					<h2 v-else>{{{ travel._source.title }}}</h2>
-					<p>{{ travel._source.body[0].value }}</p>
-				</div><!-- /.content -->
+				<a href="/node/{{ travel._source.nid }}">
+					<div class="placeholder-img" style="background-image: url({{ travel._source.field_image[0].url }})">
+						<div class="star-rating">
+							<i class="fa fa-star fa-lg" aria-hidden="true" v-for="star in parseInt(travel._source.stars[0].value)"></i>
+						</div><!-- /.star-rating -->
+					</div><!-- /.placeholder-img -->
+
+					<div class="content">
+						<h2 v-if="travel.highlight">{{{ travel.highlight.title }}}</h2>
+						<h2 v-else>{{{ travel._source.title }}}</h2>
+						<p>{{ travel._source.body[0].value }}</p>
+					</div><!-- /.content -->
+				</a>
 			</div><!-- /.vacation-item -->
 		</div><!-- /.col-md-3 -->
 	</div><!-- /.row -->
@@ -35,17 +45,22 @@
 	<div v-if="!toggleView" class="row list-view" v-for="travel in travels">
 		<div class="col-md-10 col-md-offset-1">
 			<div class="vacation-item">
-				<div class="col-md-3">
-					<div class="placeholder-img"></div><!-- /.placeholder-img -->
-				</div><!-- /.col-md-3 -->
-				<div class="col-md-9">
-					<div class="content">
-						<h2 v-if="travel.highlight">{{{ travel.highlight.title }}}</h2>
-						<h2 v-else>{{{ travel._source.title }}}</h2>
-						<p>{{ travel._source.body[0].value }}</p>
-					</div><!-- /.content -->
-				</div><!-- /.col-md-9 -->
-			</div><!-- /.vacation-item -->
+				<a href="/node/{{ travel._source.nid }}">
+					<div class="col-md-3">
+						<div class="placeholder-img" style="background-image: url({{ travel._source.field_image[0].url }})">
+
+						</div><!-- /.placeholder-img -->
+					</div><!-- /.col-md-3 -->
+
+					<div class="col-md-9">
+						<div class="content">
+							<h2 v-if="travel.highlight">{{{ travel.highlight.title }}}</h2>
+							<h2 v-else>{{{ travel._source.title }}}</h2>
+							<p>{{ travel._source.body[0].value }}</p>
+						</div><!-- /.content -->
+					</div><!-- /.col-md-9 -->
+				</div><!-- /.vacation-item -->
+			</a>
 		</div><!-- /.col-md-3 -->
 	</div><!-- /.row -->
 </template>
@@ -78,7 +93,9 @@ export default {
 				this.client.search({
 					index: 'node',
 					type: 'vakantie',
-					body: {
+					from: 0,
+  					size: 12,
+					body: {					
 						query: {
 							match_phrase_prefix: {
 								title: {
@@ -98,15 +115,23 @@ export default {
 					}
 				}).then(function (resp) {
 					this.travels = resp.hits.hits;
+
+					// dispatch this data to the entry.js file
+					this.$dispatch('travel-hits', this.travels.length)
 				}.bind(this), function (err) {
 					console.trace(err.message);
 				});
 			} else {
 				this.client.search({
 						index: 'node',
-						type: 'vakantie'
+						type: 'vakantie',
+						from: 0,
+  						size: 12,
 				}).then(function (resp) {
 					this.travels = resp.hits.hits;
+
+					// dispatch this data to the entry.js file
+					this.$dispatch('travel-hits', this.travels.length)
 				}.bind(this), function (err) {
 					console.trace(err.message);
 				});

@@ -10,6 +10,15 @@ Vue.component('elasticsearch', Elasticsearch)
 window.onload = function () {
 	// create a root instance
 	new Vue({
-	  el: 'body'
+	  el: 'body',
+	  data: {
+	  	hits: ''
+	  },
+	  events: {
+	  	'travel-hits': function(hits) {
+	  		this.hits = hits;
+	  		console.log('triggered');
+	  	}
+	  }
 	})
 }

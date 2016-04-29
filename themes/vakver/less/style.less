@@ -27,7 +27,7 @@ Global style
 body {
 	font-family: @font-family-primary;
 	background: #F3F1E4;
-	margin-bottom: 500px;
+	margin-bottom: 100px;
 }
 h1, h2, h3, h4, h5, h6 {
 	font-family: @font-family-secondary;
@@ -151,6 +151,9 @@ Header
 		margin: 0;
 		text-transform: uppercase;
 	}
+	.pull-right {
+		font-weight: bold;
+	}
 }
 
 /* ==========================================================================
@@ -166,8 +169,17 @@ Index page
     .placeholder-img {
 	    width: 100%;
     	height: 175px;
-    	background: url(../img/placeholder-vacation.jpg);
     	background-size: cover;
+
+    	.star-rating {
+    		color: #F7CE45;
+    		padding: 10px 0 0 10px;
+
+    		.fa {
+    			margin-right: 5px;
+		    	text-shadow: 1px 1px 0 rgba(0,0,0,0.3);
+    		}
+    	}
     }
     .content {
     	padding: 20px;
@@ -183,6 +195,9 @@ Index page
     		font-size: 13px;
     	}
     }
+    & a:hover {
+    	text-decoration: none;
+    }
 }
 .main-content {
 	position: relative;
@@ -197,7 +212,7 @@ Index page
 		.fa-search {
 			position: absolute;
 			top: 8px;
-			left: 0;
+			left: 15px;
 		}
 		.fa {
 			color: #AAA;
@@ -227,7 +242,7 @@ Index page
 		}
 	}
 	.active {
-	    color: #74AF2A !important;
+        color: #4E8EC3 !important;
 	}
 	.list-view {
 		.vacation-item {
@@ -243,10 +258,59 @@ Index page
 	    position: absolute;
 	    top: 0;
 	    left: 0;
-	    width: 250px;
-	    height: 2000px;
-	    background: #F7CE45;
-	    padding: 30px;
+	    width: 275px;
+	    height: 1500px;
+	    background: #FFC54A;
+	    text-align: center;
+
+	    .btn {
+    	    margin: 60px auto 0px auto;
+		    background: rgb(210, 175, 59);
+		    color: white;
+		    font-family: Oxygen;
+		    border-radius: 25px;
+		    font-weight: 300;
+		    padding: 6px 20px;
+		    display: inline-block;
+		    text-align: center;
+		    text-spacing: 1px;
+	        letter-spacing: 0.08em;
+	    }
+	    .filter {
+	    	text-align: left;
+	    	font-family: 'Oxygen', sans-serif;
+	    	border-bottom: 1px solid rgba(0,0,0, 0.1);
+	    	padding: 20px 30px 30px 30px;
+
+	    	h3 {
+    		    font-weight: normal;
+    			font-size: 16px;
+    			margin-bottom: 1em;
+    			float: left;
+	    	}
+	    	.filter-count {
+    		    float: right;
+			    margin: 1em 0;
+			    background: #4E8EC3;
+			    color: white;
+			    border-radius: 35px;
+			    padding: 2px 12px;
+	    	}
+	    	ul {
+	    		padding-left: 16px;
+
+	    		li {
+	    			margin-bottom: 10px;
+	    		}
+	    	}
+	    	.show-more {
+	    		text-align: center;
+			    font-size: 12px;
+			    font-weight: bold;
+			    color: #7F6232;
+			    margin-top: 15px;
+	    	}
+	    }
 	}
 }
 
