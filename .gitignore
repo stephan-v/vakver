@@ -1,0 +1,10 @@
+# Ignore paths that contain user-generated content.
+settings*.php
+files
+private
+
+# Ignore hidden system files
+.DS_Store
+
+# Ignore the NPM modules, install them with: npm install
+themes/vakver/node_modules

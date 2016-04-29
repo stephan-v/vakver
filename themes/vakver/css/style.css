@@ -1,0 +1,249 @@
+/* ==========================================================================
+LESS variables
+========================================================================== */
+/* Less prefixer */
+/* Colors */
+/* Typography */
+/* Bootstrap breakpoints */
+/* ==========================================================================
+Global style
+========================================================================== */
+body {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  background: #F3F1E4;
+  margin-bottom: 500px;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  line-height: 1.2em;
+}
+h1 {
+  font-size: 48px;
+}
+h2 {
+  font-size: 32px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 21px;
+}
+h5 {
+  font-size: 18px;
+}
+h6 {
+  font-size: 16px;
+}
+p {
+  color: #333;
+  font-size: 14px;
+}
+a,
+a:hover,
+a:active,
+a:visited {
+  color: #428BCA;
+}
+img {
+  height: auto;
+  max-width: 100%;
+}
+/* ==========================================================================
+Navigation
+========================================================================== */
+.navbar-default {
+  background: #5B9DF4;
+  padding: 15px 0;
+  margin: 0;
+  border: none;
+}
+.navbar-default .logo {
+  background: url(../img/logo.svg);
+  margin: 7px 0;
+  width: 120px;
+  height: 35px;
+}
+.navbar-default .navbar-nav > .active > a {
+  background: none;
+  color: white;
+  text-transform: uppercase;
+}
+.navbar-default .navbar-nav > li > a {
+  color: white;
+  text-transform: uppercase;
+}
+.navbar-default .navbar-form .form-control {
+  transition: all 400ms cubic-bezier(0.18, 0.89, 0.32, 1.28);
+  box-shadow: inset 0px -1px rgba(255, 255, 255, 0.4);
+  border-radius: 35px;
+  background: #6280BF;
+  padding-left: 15px;
+  color: white;
+  width: 250px;
+  border: 0;
+}
+.navbar-default .navbar-form .form-control::-webkit-input-placeholder {
+  color: rgba(255, 255, 255, 0.6);
+}
+.navbar-default .navbar-form .expand {
+  width: 400px;
+}
+.navbar-default .search {
+  position: absolute;
+  top: 0;
+  right: 0;
+  cursor: pointer;
+}
+.navbar-default .search .fa-search {
+  color: white;
+  position: absolute;
+  top: 34%;
+  left: 64%;
+  transform: translateX(-50%) translateY(-50%);
+  transition: all 400ms cubic-bezier(0.18, 0.89, 0.32, 1.28);
+}
+.navbar-default .search:hover .fa-search {
+  font-size: 2.5em;
+}
+/* ==========================================================================
+Header
+========================================================================== */
+.header {
+  background-size: cover;
+  height: 600px;
+  width: 100%;
+  background-position: center;
+}
+.sort-bar {
+  background: white;
+  border-top: 1px solid #CBCBCB;
+  border-bottom: 1px solid #CBCBCB;
+  padding: 20px 0;
+}
+.sort-bar ul {
+  margin: 0;
+  text-transform: uppercase;
+}
+/* ==========================================================================
+Index page
+========================================================================== */
+.vacation-item {
+  background: white;
+  height: 300px;
+  border-radius: 0;
+  margin-bottom: 30px;
+}
+.vacation-item .placeholder-img {
+  width: 100%;
+  height: 175px;
+  background: url(../img/placeholder-vacation.jpg);
+  background-size: cover;
+}
+.vacation-item .content {
+  padding: 20px;
+}
+.vacation-item .content h2 {
+  font-size: 16px;
+  font-family: 'Oxygen', sans-serif;
+  color: #676767;
+  margin-top: 0;
+}
+.vacation-item .content p {
+  color: #AAA;
+  font-size: 13px;
+}
+.main-content {
+  position: relative;
+}
+.main-content .main-search-wrapper {
+  position: relative;
+  margin-top: 50px;
+  margin-right: -15px;
+  margin-bottom: 50px;
+  margin-left: -15px;
+}
+.main-content .main-search-wrapper .fa-search {
+  position: absolute;
+  top: 8px;
+  left: 0;
+}
+.main-content .main-search-wrapper .fa {
+  color: #AAA;
+}
+.main-content .main-search-wrapper input {
+  width: 100%;
+  background: none;
+  border: none;
+  border-bottom: 2px solid #AAAAAA;
+  padding: 5px 0 5px 40px;
+  font-family: 'Oxygen', sans-serif;
+  font-weight: 300;
+  font-size: 24px;
+}
+.main-content .main-search-wrapper input:focus {
+  outline: none;
+}
+.main-content .main-search-wrapper .view-options {
+  margin-top: 10px;
+  text-align: right;
+}
+.main-content .main-search-wrapper .view-options .fa {
+  margin-left: 10px;
+  cursor: pointer;
+}
+.main-content .active {
+  color: #74AF2A !important;
+}
+.main-content .list-view .vacation-item {
+  float: left;
+  width: 100%;
+  height: auto;
+}
+.main-content .list-view .col-md-3 {
+  padding: 0;
+}
+.main-content aside {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 250px;
+  height: 2000px;
+  background: #F7CE45;
+  padding: 30px;
+}
+/* ==========================================================================
+Footer
+========================================================================== */
+/* ==========================================================================
+Forms
+========================================================================== */
+.form-item label {
+  font-size: 14px;
+}
+.form-item .form-text,
+.form-item .form-textarea {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  max-width: 100%;
+}
+/* ==========================================================================
+Homepage
+========================================================================== */
+/* Section name */
+/* Small devices (tablets, 768px and up) */
+/* Medium devices (desktops, 992px and up) */
+/* Large devices (large desktops, 1200px and up) */
+/* ==========================================================================
+IE bugfixes, good luck astronaut
+========================================================================== */
+/* ==========================================================================
+IE bugfixes, good luck astronaut
+========================================================================== */
+/* Lower then IE9 */

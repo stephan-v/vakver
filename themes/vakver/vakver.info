@@ -1,0 +1,29 @@
+name = vakver
+description = Op maat gemaakte Wemagine website.
+core = 7.x
+
+
+;;;;;;;;;;;;;;;;;;;;;
+;; Regions
+;;;;;;;;;;;;;;;;;;;;;
+regions[wemachine]      = 'Wemachine'
+regions[header]         = 'Header'
+regions[content]        = 'Content'
+regions[sidebar_first]  = 'Primary'
+regions[sidebar_second] = 'Secondary'
+regions[footer]         = 'Footer'
+
+
+;;;;;;;;;;;;;;;;;;;;;
+;; Stylesheets
+;;;;;;;;;;;;;;;;;;;;;
+stylesheets[all][] = 'css/bootstrap.min.css'
+stylesheets[all][] = 'css/style.css'
+stylesheets[all][] = 'css/font-awesome.min.css'
+
+
+; ;;;;;;;;;;;;;;;;;;;;;
+; ;; Scripts
+; ;;;;;;;;;;;;;;;;;;;;;
+scripts[] = 'js/scripts.js'
+scripts[] = 'js/bundle.js'

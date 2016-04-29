@@ -1,0 +1,1 @@
+Kopieer de gehele theme map uit /sites/all/themes/leeg_project hier naar toe en hernoem leeg_project naar de website naam.
