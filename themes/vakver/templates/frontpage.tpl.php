@@ -65,39 +65,38 @@
 
             <div class="filter">
                 <div class="filter-header">
-                    <h3>Landen</h3>
-                    <div class="filter-count">20</div>
+                    <h3>Rating</h3>
                     <div class="clearfix"></div>
                 </div><!-- /.filter-header -->
                 
-                <div class="readmore">
-                    <ul>
-                        <li>Verenigde arabische emiraten</li>
-                        <li>Verenigde arabische emiraten</li>
-                        <li>Verenigde arabische emiraten</li>
-                        <li>Verenigde arabische emiraten</li>
-                        <li>Verenigde arabische emiraten</li>
-                        <li>Verenigde arabische emiraten</li>
-                        <li>Verenigde arabische emiraten</li>
-                        <li>Verenigde arabische emiraten</li>
-                        <li>Verenigde arabische emiraten</li>
-                        <li>Verenigde arabische emiraten</li>
-                        <li>Verenigde arabische emiraten</li>
-                        <li>Verenigde arabische emiraten</li>
-                        <li>Verenigde arabische emiraten</li>
-                        <li>Verenigde arabische emiraten</li>
-                        <li>Verenigde arabische emiraten</li>
-                        <li>Verenigde arabische emiraten</li>
-                        <li>Verenigde arabische emiraten</li>
-                        <li>Verenigde arabische emiraten</li>
-                        <li>Verenigde arabische emiraten</li>
-                        <li>Verenigde arabische emiraten</li>
-                        <li>Verenigde arabische emiraten</li>
-                        <li>Verenigde arabische emiraten</li>
-                        <li>Verenigde arabische emiraten</li>
-                        <li>Verenigde arabische emiraten</li>
-                    </ul>
-                    </div><!-- /.readmore -->
+                <div class="star-rating">
+                    <div class="checkbox">
+                        <label v-on:click="filterStars(5)">
+                            <input type="checkbox" value="">
+                            <i class="fa fa-star fa-lg" aria-hidden="true" v-for="index in 5"></i>
+                        </label>
+
+                        <label v-on:click="filterStars(4)">
+                            <input type="checkbox" value="">
+                            <i class="fa fa-star fa-lg" aria-hidden="true" v-for="index in 4"></i>
+                        </label>
+
+                        <label v-on:click="filterStars(3)">
+                            <input type="checkbox" value="">
+                            <i class="fa fa-star fa-lg" aria-hidden="true" v-for="index in 3"></i>
+                        </label>
+
+                        <label v-on:click="filterStars(2)">
+                            <input type="checkbox" value="">
+                            <i class="fa fa-star fa-lg" aria-hidden="true" v-for="index in 2"></i>
+                        </label>
+
+                        <label v-on:click="filterStars(1)">
+                            <input type="checkbox" value="">
+                            <i class="fa fa-star fa-lg" aria-hidden="true" v-for="index in 1"></i>
+                        </label>
+                    </div>
+                </div><!-- /.readmore -->
             </div><!-- /.filer -->
         </aside>
 

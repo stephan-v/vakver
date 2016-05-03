@@ -34,13 +34,13 @@
 	      paths: [ path.join(__dirname, 'less', 'includes') ]
 	    }))
 	    .pipe(gulp.dest('./css'))
-	    .pipe(browserSync.stream());
+	    .pipe(browserSync.reload({ stream: true}));
 	});
 
 	// Browsersync proxy(uses an existing server)
     gulp.task('browser-sync', function() {
         browserSync.init({
-            proxy: "waddenribtochten.dev",
+            proxy: "vakver.dev",
             // enable shared interactions between devices
             ghostMode: true,
             
@@ -54,7 +54,7 @@
             notify: false,
 
             /* typekit prefixer */
-            xip: true,
+            xip: false,
 
             /* Stop the browser from automatically opening */
 			open: false

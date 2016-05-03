@@ -17,7 +17,11 @@ window.onload = function () {
 	  events: {
 	  	'travel-hits': function(hits) {
 	  		this.hits = hits;
-	  		console.log('triggered');
+	  	}
+	  },
+	  methods: {
+	  	filterStars: function(rating) {
+	  		this.$broadcast('filter-stars', rating);
 	  	}
 	  }
 	})

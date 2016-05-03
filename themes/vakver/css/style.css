@@ -11,7 +11,6 @@ Global style
 body {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   background: #F3F1E4;
-  margin-bottom: 100px;
 }
 h1,
 h2,
@@ -54,6 +53,18 @@ img {
   height: auto;
   max-width: 100%;
 }
+.absolute-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translateY(-50%) translateX(-50%);
+}
+.logo {
+  background: url(../img/logo.svg);
+  margin: 7px 0;
+  width: 120px;
+  height: 35px;
+}
 /* ==========================================================================
 Navigation
 ========================================================================== */
@@ -64,10 +75,7 @@ Navigation
   border: none;
 }
 .navbar-default .logo {
-  background: url(../img/logo.svg);
   margin: 7px 0;
-  width: 120px;
-  height: 35px;
 }
 .navbar-default .navbar-nav > .active > a {
   background: none;
@@ -96,6 +104,7 @@ Navigation
 }
 .navbar-default .search {
   position: absolute;
+  z-index: 1;
   top: 0;
   right: 0;
   cursor: pointer;
@@ -221,7 +230,10 @@ Index page
 .main-content .list-view .col-md-3 {
   padding: 0;
 }
-.main-content aside {
+/* ==========================================================================
+Index Sidebar
+========================================================================== */
+aside {
   position: absolute;
   top: 0;
   left: 0;
@@ -230,7 +242,7 @@ Index page
   background: #FFC54A;
   text-align: center;
 }
-.main-content aside .btn {
+aside .btn {
   margin: 60px auto 0px auto;
   background: #d2af3b;
   color: white;
@@ -243,19 +255,19 @@ Index page
   text-spacing: 1px;
   letter-spacing: 0.08em;
 }
-.main-content aside .filter {
+aside .filter {
   text-align: left;
   font-family: 'Oxygen', sans-serif;
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
   padding: 20px 30px 30px 30px;
 }
-.main-content aside .filter h3 {
+aside .filter h3 {
   font-weight: normal;
   font-size: 16px;
   margin-bottom: 1em;
   float: left;
 }
-.main-content aside .filter .filter-count {
+aside .filter .filter-count {
   float: right;
   margin: 1em 0;
   background: #4E8EC3;
@@ -263,22 +275,144 @@ Index page
   border-radius: 35px;
   padding: 2px 12px;
 }
-.main-content aside .filter ul {
+aside .filter ul {
   padding-left: 16px;
 }
-.main-content aside .filter ul li {
+aside .filter ul li {
   margin-bottom: 10px;
 }
-.main-content aside .filter .show-more {
+aside .filter .show-more {
   text-align: center;
   font-size: 12px;
   font-weight: bold;
   color: #7F6232;
   margin-top: 15px;
 }
+aside .star-rating label {
+  display: block;
+  margin-bottom: 10px;
+}
+aside .star-rating .fa-star {
+  color: #CBA049;
+  margin-right: 3px;
+}
+/* ==========================================================================
+Vakantie pagina(single)
+========================================================================== */
+.vacation-header {
+  height: 500px;
+  background: url(../img/vacation-header.jpg) center center;
+  background-size: cover;
+  position: relative;
+}
+.vacation-header h1 {
+  color: white;
+}
+.vacation {
+  background: white;
+  padding: 40px;
+}
+a.call-to-action {
+  display: block;
+  background: #5B9DF4;
+  color: white;
+  text-align: center;
+  padding: 15px 0;
+  border-radius: 5px;
+  font-size: 18px;
+  position: relative;
+  margin-top: 20px;
+}
+a.call-to-action:hover {
+  color: white;
+}
+a.call-to-action .inner {
+  background: #4D86D0;
+  display: inline-block;
+  padding: 10px 20px;
+  border-radius: 35px;
+  box-shadow: inset 0 -1px rgba(255, 255, 255, 0.4);
+}
+a.call-to-action .inner .fa-plane {
+  margin-left: 10px;
+}
+a.call-to-action .circle {
+  background: #FF6255;
+  border-radius: 100%;
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%) translateX(50%);
+  width: 50px;
+  height: 50px;
+  border: 5px solid #F3F1E4;
+}
+a.call-to-action .circle .fa-arrow-right {
+  margin: 11px 0 0 3px;
+}
+.travel-information {
+  margin: 0;
+  background: white;
+}
+.travel-information .col-md-3 {
+  padding: 30px 0;
+}
 /* ==========================================================================
 Footer
 ========================================================================== */
+#footer {
+  margin-top: 100px;
+}
+#footer .newsletter {
+  background: #4894FF;
+  padding: 20px 0;
+}
+#footer .newsletter p {
+  color: white;
+  margin: 0;
+  line-height: 40px;
+}
+#footer .newsletter .input-group .form-control {
+  border-radius: 5px 0 0 5px;
+  background: rgba(0, 0, 0, 0.1);
+  border: 0;
+  color: white;
+  padding: 20px 15px;
+}
+#footer .newsletter .input-group .form-control::-webkit-input-placeholder {
+  color: white;
+}
+#footer .newsletter .input-group .input-group-addon {
+  background: #9DD915;
+  color: white;
+  text-transform: uppercase;
+  border-radius: 0 5px 5px 0;
+  border: 3px solid #4186E6;
+  padding: 10px 30px;
+}
+#footer .main-content {
+  background: url(../img/footer-background.jpg);
+  background-size: cover;
+  padding: 100px 0;
+  color: white;
+  position: relative;
+}
+#footer .main-content p {
+  color: white;
+}
+#footer .main-content .palm {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+}
+#footer .lower-footer {
+  background: #4E92DC;
+  padding: 20px 0;
+}
+#footer .lower-footer p {
+  margin: 0;
+  color: white;
+}
 /* ==========================================================================
 Forms
 ========================================================================== */
