@@ -14,40 +14,81 @@
             <div class="row">
                 <div class="col-md-9">
                     <div class="travel-information row text-center">
-                        <div class="col-md-3">
-                            <p>Land</p>
-                            <?php print $field_country[0]['value']; ?>
+                        <div class="col-md-3 col-xs-6">
+                            <i class="fa fa-globe fa-3x" aria-hidden="true"></i>
+                            <span class="travel-metadata">
+                                <div class="title">Land</div>
+                                <div class="attribute">
+                                    <?php 
+                                        if(isset($field_country[0]['value'])) {
+                                            print $field_country[0]['value']; 
+                                        } else {
+                                            print "Niet bekend";
+                                        }
+                                    ?>
+                                </div>
+                            </span>
                         </div><!-- /.col-md-3 -->
 
-                        <div class="col-md-3">
-                            <p>Regio</p>
-                            <?php print $field_region[0]['value']; ?>
+                        <div class="col-md-3 col-xs-6">
+                            <i class="fa fa-map-marker fa-3x" aria-hidden="true"></i>
+                            <span class="travel-metadata">
+                                <div class="title">Regio</div>
+                                <div class="attribute">
+                                    <?php 
+                                        if($field_region[0]['value']) {
+                                            print $field_region[0]['value']; 
+                                        } else {
+                                            print "Niet bekend";
+                                        }
+                                    ?>
+                                </div>
+                            </span>
                         </div><!-- /.col-md-3 -->
 
-                        <div class="col-md-3">
-                            <p>Stad</p>
-                            <?php print $field_city[0]['value']; ?>
+                        <div class="col-md-3 col-xs-6">
+                            <i class="fa fa-map-signs fa-3x" aria-hidden="true"></i>
+                            <span class="travel-metadata">
+                                <div class="title">Stad</div>
+                                <div class="attribute">
+                                    <?php 
+                                        if($field_city[0]['value']) {
+                                            print $field_city[0]['value'];
+                                        } else {
+                                            print "Niet bekend";
+                                        }
+                                    ?>
+                                </div>
+                            </span>
                         </div><!-- /.col-md-3 -->
 
-                        <div class="col-md-3">
-                            <p>Vervoer</p>
+                        <div class="col-md-3 col-xs-6">
+                            <span class="travel-metadata">
+                                <div class="title">Vervoer</div>
+                                <div class="attribute">Niet bekend</div>
+                            </span>
                         </div><!-- /.col-md-3 -->
                     </div><!-- travel-information -->
 
                     <div class="vacation">
-                        <?php
-                            print render($content);
-                        ?>
+                        <?php print render($content['field_image']); ?>
+
+                        <h3><?php print $title; ?></h3>
+
+                        <?php print $body[0]['value']; ?>
                     </div><!-- /.vacation -->
                 </div><!-- /.col-md-9 -->
 
                 <div class="col-md-3">
+                    <div class="pricing">
+                        <div class="price">&euro;<?php print $field_price[0]['value']; ?></div>
+                        <div class="person">Per persoon</div>
+                    </div><!-- /.pricing -->
+
                     <a href="<?php print $field_url[0]['url']; ?>" class="call-to-action">
                         <div class="inner">Reis boeken<i class="fa fa-plane fa-lg" aria-hidden="true"></i></div><!-- /.inner -->
                         <div class="circle"><i class="fa fa-arrow-right fa-lg" aria-hidden="true"></i></div><!-- /.circle -->
                     </a><!-- /.call-to-action -->
-
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatum, nostrum explicabo placeat possimus tempore aut dolorem! Vero ducimus rem, delectus laboriosam quos suscipit, voluptate dolores, sapiente magnam architecto eveniet fugit!</p>
                 </div><!-- /.col-md-3 -->
             </div><!-- /.row -->
         </div><!-- /.container -->

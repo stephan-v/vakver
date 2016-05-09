@@ -72,11 +72,14 @@ img {
 }
 .logo {
 	background: url(../img/logo.svg);
+	display: block;
     margin: 7px 0;
     width: 120px;
 	height: 35px;
 }
-
+.bold {
+	font-weight: bold;
+}
 
 /* ==========================================================================
 Navigation
@@ -87,7 +90,11 @@ Navigation
     padding: 15px 0;
     margin: 0;
 	border: none;
+	border-radius: 0;
 
+	.caret {
+	    margin-bottom: 3px;
+	}
 	.logo {
 	    margin: 7px 0;
 	}
@@ -99,8 +106,14 @@ Navigation
 	.navbar-nav > li > a {
 		color: white;
 		text-transform: uppercase;
+	    font-size: 13px;
+	    padding-bottom: 10px;
+	    padding-top: 20px;
 	}
 	.navbar-form {
+	    position: absolute;
+    	right: 0;
+
 		.form-control {
 		    transition: all 400ms cubic-bezier(0.18, 0.89, 0.32, 1.28);
 			box-shadow: inset 0px -1px rgba(255, 255, 255, 0.4);
@@ -146,7 +159,7 @@ Header
 
 .header {
 	background-size: cover;
-	height: 600px;
+	height: 500px;
 	width: 100%;
 	background-position: center;
 }
@@ -171,7 +184,7 @@ Index page
 
 .vacation-item {
 	background: white;
-    height: 300px;
+    height: 320px;
     border-radius: 0;
     margin-bottom: 30px;
 
@@ -355,6 +368,11 @@ Vakantie pagina(single)
 .vacation {
     background: white;
     padding: 40px;
+    line-height: 1.8em;
+
+    h3 {
+    	margin-top: 30px;
+    }
 }
 a.call-to-action {
 	display: block;
@@ -399,11 +417,53 @@ a.call-to-action {
     }
 }
 .travel-information {
-	margin: 0;
+	margin: -123px 0 0 0;
 	background: white;
+	border-bottom: 1px solid lightgrey;
 
 	.col-md-3 {
-		padding: 30px 0;
+		padding: 40px 0;
+		border-right: 1px solid lightgrey;
+
+		&:last-child {
+			border-right: none;
+		}
+		.fa {
+			color: #5B9DF4;
+			margin-right: 10px;
+		}
+		.travel-metadata {
+			display: inline-block;
+			text-align: left;
+			font-family: Oxygen;
+
+			.title {
+				color: #95989A;
+			}
+			.attribute {
+				font-weight: bold;
+			}
+		}
+	}
+}
+
+.pricing {
+	text-align: center;
+	color: white;
+	font-family: Oxygen;
+    margin: -124px 0 57px 0;
+
+	.price {
+	    background: #5B9DF4;
+	    border-radius: 5px 5px 0 0;
+	    padding: 10px 0;
+	    font-size: 22px;
+	}
+	.person {
+		background: rgba(0,0,0,0.4);
+		padding: 10px 0;
+		border-radius: 0 0 5px 5px;
+		font-size: 18px;
 	}
 }
 
@@ -417,6 +477,7 @@ Footer
 	.newsletter {
 		background: #4894FF;
 		padding: 20px 0;
+		position: relative;
 
 		p {
 			color: white;
@@ -452,13 +513,37 @@ Footer
 		color: white;
 		position: relative;
 
+		h3 {
+		    font-size: 16px;
+    		text-transform: uppercase;
+    		margin-bottom: 1em;
+		}
 		p {
 			color: white;
+			line-height: 1.8em;
+		}
+		.logo {
+			margin-bottom: 1em;
+		}
+		.menu-list {
+			list-style: none;
+			padding: 0;
+
+			li a {
+				color: white;
+				margin-bottom: 15px;
+				display: block;
+			}
 		}
 		.palm {
 			position: absolute;
 			bottom: 0;
 			right: 0;
+		}
+		.contact a {
+			font-weight: bold;
+			color: white;
+			text-decoration: underline;
 		}
 	}
 	.lower-footer {

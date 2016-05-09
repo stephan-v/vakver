@@ -4,9 +4,10 @@
     <div class="sort-bar">
         <div class="container">
             <ul class="list-inline pull-left">
-                <li>Sorteer op</li>
-                <li>Test</li>
-                <li>NOg een item</li>
+                <li class="bold">SORTEER OP</li>
+                <li>POPULARITEIT</li>
+                <li>PRIJS</li>
+                <li>RATING</li>
             </ul>
 
             <ul class="list-inline pull-right">
@@ -36,6 +37,8 @@
                 <div class="readmore">
                     <ul>
                         <li>Verenigde arabische emiraten</li>
+                        <li>Canarische Eilanden</li>
+                        <li>Griekenland</li>
                         <li>Verenigde arabische emiraten</li>
                         <li>Verenigde arabische emiraten</li>
                         <li>Verenigde arabische emiraten</li>
@@ -49,6 +52,30 @@
                         <li>Verenigde arabische emiraten</li>
                         <li>Verenigde arabische emiraten</li>
                         <li>Verenigde arabische emiraten</li>
+                        <li>Verenigde arabische emiraten</li>
+                        <li>Verenigde arabische emiraten</li>
+                        <li>Verenigde arabische emiraten</li>
+                        <li>Verenigde arabische emiraten</li>
+                        <li>Verenigde arabische emiraten</li>
+                        <li>Verenigde arabische emiraten</li>
+                        <li>Verenigde arabische emiraten</li>
+                        <li>Verenigde arabische emiraten</li>
+                    </ul>
+                </div><!-- /.readmore -->
+            </div><!-- /.filer -->
+
+            <div class="filter">
+                <div class="filter-header">
+                    <h3>Vervoersmiddel</h3>
+                    <div class="filter-count">7</div>
+                    <div class="clearfix"></div>
+                </div><!-- /.filter-header -->
+
+                <div class="readmore">
+                    <ul>
+                        <li>Vliegtuig</li>
+                        <li>Auto</li>
+                        <li>Boot</li>
                         <li>Verenigde arabische emiraten</li>
                         <li>Verenigde arabische emiraten</li>
                         <li>Verenigde arabische emiraten</li>

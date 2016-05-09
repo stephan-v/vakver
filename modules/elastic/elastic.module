@@ -19,7 +19,23 @@ function _elastic_prepare_node($node) {
   );
 
   // Add the simple properties
-  $wanted = array('vid', 'uid', 'title', 'log', 'status', 'comment', 'promote', 'sticky', 'nid', 'type', 'language', 'created', 'changed', 'revision_timestamp', 'revision_uid');
+  $wanted = array(
+    'vid', 
+    'uid', 
+    'title', 
+    'log', 
+    'status', 
+    'comment', 
+    'promote', 
+    'sticky', 
+    'nid', 
+    'type', 
+    'language', 
+    'created', 
+    'changed', 
+    'revision_timestamp', 
+    'revision_uid'
+    );
   $exist = array_filter($wanted, function($property) use($node) {
     return property_exists($node, $property);
   });
@@ -31,6 +47,12 @@ function _elastic_prepare_node($node) {
   $body_field = isset($node->body) ? field_get_items('node', $node, 'body') : false;
   if ($body_field) {
     $params['body']['body'] = $body_field;
+  }
+
+  // Add the stars field if exists
+  $stars_field = isset($node->field_stars) ? field_get_items('node', $node, 'field_stars') : false;
+  if ($stars_field) {
+    $params['body']['stars'] = $stars_field;
   }
 
   // Add the image field if exists

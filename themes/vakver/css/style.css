@@ -61,9 +61,13 @@ img {
 }
 .logo {
   background: url(../img/logo.svg);
+  display: block;
   margin: 7px 0;
   width: 120px;
   height: 35px;
+}
+.bold {
+  font-weight: bold;
 }
 /* ==========================================================================
 Navigation
@@ -73,6 +77,10 @@ Navigation
   padding: 15px 0;
   margin: 0;
   border: none;
+  border-radius: 0;
+}
+.navbar-default .caret {
+  margin-bottom: 3px;
 }
 .navbar-default .logo {
   margin: 7px 0;
@@ -85,6 +93,13 @@ Navigation
 .navbar-default .navbar-nav > li > a {
   color: white;
   text-transform: uppercase;
+  font-size: 13px;
+  padding-bottom: 10px;
+  padding-top: 20px;
+}
+.navbar-default .navbar-form {
+  position: absolute;
+  right: 0;
 }
 .navbar-default .navbar-form .form-control {
   transition: all 400ms cubic-bezier(0.18, 0.89, 0.32, 1.28);
@@ -125,7 +140,7 @@ Header
 ========================================================================== */
 .header {
   background-size: cover;
-  height: 600px;
+  height: 500px;
   width: 100%;
   background-position: center;
 }
@@ -147,7 +162,7 @@ Index page
 ========================================================================== */
 .vacation-item {
   background: white;
-  height: 300px;
+  height: 320px;
   border-radius: 0;
   margin-bottom: 30px;
 }
@@ -311,6 +326,10 @@ Vakantie pagina(single)
 .vacation {
   background: white;
   padding: 40px;
+  line-height: 1.8em;
+}
+.vacation h3 {
+  margin-top: 30px;
 }
 a.call-to-action {
   display: block;
@@ -351,11 +370,49 @@ a.call-to-action .circle .fa-arrow-right {
   margin: 11px 0 0 3px;
 }
 .travel-information {
-  margin: 0;
+  margin: -123px 0 0 0;
   background: white;
+  border-bottom: 1px solid lightgrey;
 }
 .travel-information .col-md-3 {
-  padding: 30px 0;
+  padding: 40px 0;
+  border-right: 1px solid lightgrey;
+}
+.travel-information .col-md-3:last-child {
+  border-right: none;
+}
+.travel-information .col-md-3 .fa {
+  color: #5B9DF4;
+  margin-right: 10px;
+}
+.travel-information .col-md-3 .travel-metadata {
+  display: inline-block;
+  text-align: left;
+  font-family: Oxygen;
+}
+.travel-information .col-md-3 .travel-metadata .title {
+  color: #95989A;
+}
+.travel-information .col-md-3 .travel-metadata .attribute {
+  font-weight: bold;
+}
+.pricing {
+  text-align: center;
+  color: white;
+  font-family: Oxygen;
+  margin: -124px 0 57px 0;
+}
+.pricing .price {
+  background: #5B9DF4;
+  border-radius: 5px 5px 0 0;
+  padding: 10px 0;
+  font-size: 22px;
+}
+.pricing .person {
+  background: rgba(0, 0, 0, 0.4);
+  padding: 10px 0;
+  border-radius: 0 0 5px 5px;
+  font-size: 18px;
 }
 /* ==========================================================================
 Footer
@@ -366,6 +423,7 @@ Footer
 #footer .newsletter {
   background: #4894FF;
   padding: 20px 0;
+  position: relative;
 }
 #footer .newsletter p {
   color: white;
@@ -397,13 +455,36 @@ Footer
   color: white;
   position: relative;
 }
+#footer .main-content h3 {
+  font-size: 16px;
+  text-transform: uppercase;
+  margin-bottom: 1em;
+}
 #footer .main-content p {
   color: white;
+  line-height: 1.8em;
+}
+#footer .main-content .logo {
+  margin-bottom: 1em;
+}
+#footer .main-content .menu-list {
+  list-style: none;
+  padding: 0;
+}
+#footer .main-content .menu-list li a {
+  color: white;
+  margin-bottom: 15px;
+  display: block;
 }
 #footer .main-content .palm {
   position: absolute;
   bottom: 0;
   right: 0;
+}
+#footer .main-content .contact a {
+  font-weight: bold;
+  color: white;
+  text-decoration: underline;
 }
 #footer .lower-footer {
   background: #4E92DC;

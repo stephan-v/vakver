@@ -1,0 +1,90 @@
+<?php
+
+/*
+|--------------------------------------------------------------------------
+| CSV Parser
+|--------------------------------------------------------------------------
+|
+| Supply url's and automagically convert them to CSV file
+|
+*/
+
+function csv_downloader_menu() {
+  $items = array();
+
+  $items['admin/test'] = array( //this creates a URL that will call this form at "examples/form-example"
+    'title' => 'CSV genereren via URL', //page title
+    'description' => 'A form to mess around with.',
+    'page callback' => 'drupal_get_form', //this is the function that will be called when the page is accessed.  for a form, use drupal_get_form
+    'page arguments' => array('csv_downloader_form'), //put the name of the form here
+    'access callback' => TRUE
+  );
+
+  return $items;
+}
+
+function csv_downloader_form($form, &$form_state) {
+
+    $form = array();
+
+    $form['csv']=array(
+        '#type'=>'fieldset',
+        '#title'=>t('Vul een url in om een CSV bestand te genereren')
+    );
+
+        // Fieldset inputs
+        $form['csv']['name']=array(
+            '#type'=>'textfield',
+            '#title'=>t('Naam van het CSV bestand'),
+            '#description'=>t('voorbeeld.csv')
+        );
+
+        $form['csv']['url']=array(
+            '#type'=>'textfield',
+            '#title'=>t('URL'),
+            '#maxlength'=> 3000,
+            '#description'=>t('URL dat gebruikt wordt om een CSV bestand te genereren')
+        );
+
+    $form['submit']=array(
+        '#type'=>'submit',
+        '#value'=>t('CSV genereren')
+    );
+
+    return $form;
+}
+
+function csv_downloader_form_validate($form, &$form_state) {
+}
+
+function csv_downloader_form_submit($form, &$form_state) {
+    $filename = $form_state['values']['name'];
+    $csv_url = (string)$form_state['values']['url'];
+
+    $csv = file_get_contents($csv_url);
+
+    // for each line(PHP_EOL) create an array and store all of them in $lines
+    $lines = explode(PHP_EOL, $csv);
+
+    // start a new file and dump it into the files folder
+    $file = fopen(drupal_get_path('module', 'csv_downloader') . '/../../files/csv_downloads/' . $filename, "w");
+
+    foreach ($lines as $line) {
+        // strip starting and ending double quotes from the string
+        $line = trim($line,'"');
+
+        // utf-8 encoding
+        // $line = utf8_encode($line);
+
+        // print each line to the file, building it up
+        fputcsv($file, explode('";"',$line));
+    }
+
+    fclose($file);
+
+    // Form submit helper
+    // print '<pre>';
+    //     print_r($form_state['values']['url']);
+    // print '</pre';
+    // die;
+}

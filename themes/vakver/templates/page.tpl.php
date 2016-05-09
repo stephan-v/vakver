@@ -1,18 +1,26 @@
 <div id="page">	
 	<nav class="navbar navbar-default">
-		<div class="container-fluid">
+		<div class="container">
 			<div class="navbar-header">
-				<div class="logo"></div>
+				<a class="logo" href="<?php print url('<front>'); ?>"></a>
 		    </div><!-- /.navbar-header -->
 
-		    <form class="navbar-form navbar-right" role="search">
+		    <ul class="nav navbar-nav navbar-right"> 
+		    	<li><a href="#">Reizen</a></li> 
+		    	<li><a href="#">Mijn bestemming</a></li> 
+		    	<li><a href="#">Reisorganisaties</a></li> 
+		    	<li><a href="#">Blog</a></li> 
+		    	<li class="dropdown"> <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Inloggen <span class="caret"></span></a>
+		    </ul>
+
+		    <form class="navbar-form" role="search">
 				<div class="form-group">
 					<input type="text" class="form-control" placeholder="Vakantie zoeken">
 				</div><!-- /.form-group -->
 			</form>
 
 			<?php print theme('links__system_main_menu', array('links' => $main_menu, 'attributes' => array('class' => array('nav', 'navbar-nav', 'navbar-right')))); ?>
-		</div><!-- /.container-fluid -->
+		</div><!-- /.container-->
 
 	    <div class="search">
 			<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
@@ -65,24 +73,33 @@
 		<div class="main-content">
 			<div class="container">
 				<div class="row">
-					<div class="col-md-4">
+					<div class="col-md-3">
 						<div class="logo"></div>
-						<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nesciunt libero error dolor magni, quam est impedit quis sint quo officia ipsam adipisci rerum reprehenderit repellat facere? Aliquid hic ullam, culpa.</p>
+						<p>Vakver.nl is een onafhankelijke reissite. Wij vergelijken prijzen van bekende reisaanbieders voor de goedkoopste vakantiebestemmingen.</p>
 					</div><!-- /.col-md-4 -->
 
-					<div class="col-md-2">
+					<div class="col-md-2 col-md-offset-1">
 						<h3>Menu</h3>
-						<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nesciunt libero error dolor magni, quam est impedit quis sint quo officia ipsam adipisci rerum reprehenderit repellat facere? Aliquid hic ullam, culpa.</p>
+						<ul class="menu-list">
+							<li><a href="#">Reizen</a></li>
+							<li><a href="#">Mijn bestemmingen</a></li>
+							<li><a href="#">Reisorganisaties</a></li>
+							<li><a href="#">Blog</a></li>
+							<li><a href="#">Inloggen</a></li>
+						</ul><!-- /.menu-list -->
 					</div><!-- /.col-md-2 -->
 
 					<div class="col-md-2">
 						<h3>Menu</h3>
-						<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nesciunt libero error dolor magni, quam est impedit quis sint quo officia ipsam adipisci rerum reprehenderit repellat facere? Aliquid hic ullam, culpa.</p>
+						<ul class="menu-list">
+							<li><a href="#">Privacy</a></li>
+							<li><a href="#">Disclaimer</a></li>
+						</ul><!-- /.menu-list -->
 					</div><!-- /.col-md-2 -->
 
-					<div class="col-md-4">
+					<div class="col-md-4 contact">
 						<h3>Contact</h3>
-						<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nesciunt libero error dolor magni, quam est impedit quis sint quo officia ipsam adipisci rerum reprehenderit repellat facere? Aliquid hic ullam, culpa.</p>
+						<p>Heeft u vragen of opmerkingen? U kunt contact met ons opnemen <a href="#">via dit contactformulier.</a></p>
 					</div><!-- /.col-md-4 -->
 				</div><!-- /.row -->
 			</div><!-- /.container -->
@@ -91,7 +108,7 @@
 		</div><!-- /.main-content -->
 
 		<div class="lower-footer text-center">
-			<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quidem, libero tenetur?</p>
+			<p>Wij verkopen zelf geen reizen, maar helpen u bij het vinden van de goedkoopste aanbieder voor uw zonvakantie.</p>
 		</div><!-- /.lower-footer -->
 
 		<?php print render($page['footer']); ?>

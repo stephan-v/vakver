@@ -1,0 +1,4 @@
+name = CSV Downloader
+description = Downloads CSV files from the interwebz
+core = 7.x
+package = Wemagine
