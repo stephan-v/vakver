@@ -117,7 +117,6 @@
 		data () {
 			return {
 				client: '',
-				msg: 'Vue test',
 				travels: '',
 				query: '',
 				toggleView: true,
@@ -126,7 +125,14 @@
 				activeFilter: false,
 				ratings: [],
 				size: 12,
-				queryDSL: {}
+				queryDSL: {
+					index: 'node',
+					type: 'vakantie',
+					from: 0,
+  					size: 12
+				},
+				// probably refactor this bullshit
+				querySuffix: {}
 			}
 		},
 		events: {
@@ -137,81 +143,79 @@
 			}
 		},
 		methods: {
+
+			/*
+			|--------------------------------------------------------------------------
+			| Global search
+			|--------------------------------------------------------------------------
+			|
+			| Global search method and combination of search queries
+			|
+			*/
+		
 			search: function() {
-				// if a query rating is set
+				// if a query and rating is set
 				if(this.query && this.ratings.length > 0) {
-					this.queryDSL = {
-						index: 'node',
-						type: 'vakantie',
-						from: 0,
-	  					size: this.size,
-						body: {		
-							"highlight": {
-					            "fields": {
-					                "title": {}
-					            },
-					            "pre_tags": ["<span class='highlight'>"],
-	        					"post_tags": ["</span>"]
-					        },			
-							"query": {
-								"match_phrase_prefix": {
-									"title": {
-										"query": this.query,
-										"slop": 10,
-										"max_expansions": 50
-									}
+					this.queryDSL.body = {
+						"highlight": {
+				            "fields": {
+				                "title": {}
+				            },
+				            "pre_tags": ["<span class='highlight'>"],
+        					"post_tags": ["</span>"]
+				        },			
+						"query": {
+							"match_phrase_prefix": {
+								"title": {
+									"query": this.query,
+									"slop": 10,
+									"max_expansions": 50
 								}
-							},
-							"filter": {
-						        "term": { "stars.value": this.ratings }
-						    }
-						}
-					}
+							}
+						},
+						"filter": {
+					        "term": { "stars.value": this.ratings }
+					    }
+					},
+					this.querySuffix = this.queryDSL.body;
+				// if a query is set
 				} else if(this.query) {
-					this.queryDSL = {
-						index: 'node',
-						type: 'vakantie',
-						from: 0,
-	  					size: this.size,
-						body: {		
-							"highlight": {
-					            "fields": {
-					                "title": {}
-					            },
-					            "pre_tags": ["<span class='highlight'>"],
-	        					"post_tags": ["</span>"]
-					        },			
-							"query": {
-								"match_phrase_prefix": {
-									"title": {
-										"query": this.query,
-										"slop": 10,
-										"max_expansions": 50
-									}
+					this.queryDSL.body = {
+						"highlight": {
+				            "fields": {
+				                "title": {}
+				            },
+				            "pre_tags": ["<span class='highlight'>"],
+        					"post_tags": ["</span>"]
+				        },			
+						"query": {
+							"match_phrase_prefix": {
+								"title": {
+									"query": this.query,
+									"slop": 10,
+									"max_expansions": 50
 								}
 							}
 						}
-					}
+					},
+					this.querySuffix = this.queryDSL.body;
+				// if a rating is set
 				} else if(this.ratings.length > 0) {
-					this.queryDSL = {
-						index: 'node',
-						type: 'vakantie',
-						from: 0,
-  						size: this.size,
-  						body: {	
-  							"query": {
-  								"terms": {
-									"stars.value": this.ratings
-								}
-  							}
-  						}
-					}
+					this.queryDSL.body = {
+  						"query": {
+							"terms": {
+								"stars.value": this.ratings
+							}
+						}
+					},
+					this.querySuffix = this.queryDSL.body;
+				// if nothing is set
 				} else {
 					this.queryDSL = {
 						index: 'node',
 						type: 'vakantie',
 						from: 0,
-  						size: this.size
+	  					size: 12
 					}
 				}
 
@@ -230,12 +234,22 @@
 				});
 			},
 
+			/*
+			|--------------------------------------------------------------------------
+			| Pagination Methods
+			|--------------------------------------------------------------------------
+			|
+			| Pagination click handlers. Direct, next and previous.
+			|
+			*/
+		
 			paginate: function(index) {
 				this.client.search({
 						index: 'node',
 						type: 'vakantie',
 						from: 12 * index,
 						size: this.size,
+						body: this.querySuffix
 				}).then(function (resp) {
 					this.travels = resp.hits.hits;
 					
@@ -244,16 +258,13 @@
 					console.trace(err.message);
 				});
 			},
-
 			prevPage: function() {
 				if(this.currentPage > 0) {
 					this.currentPage--;
 					this.paginate(this.currentPage);
 				}
 			},
-
 			nextPage: function() {
-				// totalPages - 1 because currentPage starts at 0
 				if(this.currentPage < (this.totalPages -1)) {
 					this.currentPage++;
 					this.paginate(this.currentPage);
