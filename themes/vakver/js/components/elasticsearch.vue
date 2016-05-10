@@ -27,8 +27,8 @@
 		<div class="col-md-3" v-for="travel in row">
 			<div class="vacation-item">
 				<a href="/node/{{ travel._source.nid }}">
-					<div class="placeholder-img" v-bind:style="{ 'background-image': 'url(' + travel._source.field_image[0].url + ')' }">
-						<div class="star-rating">
+					<div class="placeholder-img" v-if="travel._source.field_image" v-bind:style="{ 'background-image': 'url(' + travel._source.field_image[0].url + ')' }">
+						<div class="star-rating" v-if="travel._source.stars">
 							<i class="fa fa-star fa-lg" aria-hidden="true" v-for="star in parseInt(travel._source.stars[0].value)"></i>
 						</div><!-- /.star-rating -->
 					</div><!-- /.placeholder-img -->
@@ -48,8 +48,8 @@
 			<div class="vacation-item">
 				<a href="/node/{{ travel._source.nid }}">
 					<div class="col-md-3">
-						<div class="placeholder-img" v-bind:style="{ 'background-image': 'url(' + travel._source.field_image[0].url + ')' }">
-							<div class="star-rating">
+						<div class="placeholder-img" v-if="travel._source.field_image" v-bind:style="{ 'background-image': 'url(' + travel._source.field_image[0].url + ')' }">
+							<div class="star-rating" v-if="travel._source.stars">
 								<i class="fa fa-star fa-lg" aria-hidden="true" v-for="star in parseInt(travel._source.stars[0].value)"></i>
 							</div><!-- /.star-rating -->
 						</div><!-- /.placeholder-img -->
@@ -76,8 +76,9 @@
 					</a>
 				</li>
 
-				<li v-for="index in 10" v-bind:class="{'active' : index == this.page }">
-					<a href="#" v-on:click.prevent="paginate(index)">{{ index+1 }}</a>
+				<!-- crucial v-if logic to render the pagination -->
+				<li v-for="pageNumber in totalPages" v-bind:class="{'active' : pageNumber == this.currentPage }" v-if="Math.abs(pageNumber - currentPage) < 4 || pageNumber == totalPages - 1 || pageNumber == 0">
+					<a href="#" v-on:click.prevent="paginate(pageNumber)">{{ pageNumber+1 }}</a>
 				</li>
 
 				<li>
@@ -97,11 +98,21 @@
 
 			this.client = new elasticsearch.Client({
 				host: 'localhost:9200',
-				log: 'trace'
+				// log: 'trace'
 			});
 
 			// perform the initial search
 			this.search();
+
+			// switch pages with left and right keypresses - bind the window scope to this object
+			window.onkeydown = function (e) {
+			    var code = e.keyCode ? e.keyCode : e.which;
+			    if (code === 37) { //left key
+			        this.prevPage();
+			    } else if (code === 39) { //right key
+			        this.nextPage();
+			    }
+			}.bind(this);
 		},
 		data () {
 			return {
@@ -110,133 +121,113 @@
 				travels: '',
 				query: '',
 				toggleView: true,
-				page: 0,
+				currentPage: 0,
+				totalPages: 0,
 				activeFilter: false,
-				rating: 0
+				ratings: [],
+				size: 12,
+				queryDSL: {}
 			}
 		},
 		events: {
-			'filter-stars': function(rating) {
-				this.activeFilter = true;
-				this.rating = rating;
+			'receiveRatings': function(ratings) {
+				this.ratings = ratings;
 
-				this.client.search({
+				this.search();
+			}
+		},
+		methods: {
+			search: function() {
+				// if a query rating is set
+				if(this.query && this.ratings.length > 0) {
+					this.queryDSL = {
 						index: 'node',
 						type: 'vakantie',
 						from: 0,
-  						size: 12,
-  						body: {
-  							query: {
-  								match: {
-  									"stars.value": rating
-  								}
+	  					size: this.size,
+						body: {		
+							"highlight": {
+					            "fields": {
+					                "title": {}
+					            },
+					            "pre_tags": ["<span class='highlight'>"],
+	        					"post_tags": ["</span>"]
+					        },			
+							"query": {
+								"match_phrase_prefix": {
+									"title": {
+										"query": this.query,
+										"slop": 10,
+										"max_expansions": 50
+									}
+								}
+							},
+							"filter": {
+						        "term": { "stars.value": this.ratings }
+						    }
+						}
+					}
+				} else if(this.query) {
+					this.queryDSL = {
+						index: 'node',
+						type: 'vakantie',
+						from: 0,
+	  					size: this.size,
+						body: {		
+							"highlight": {
+					            "fields": {
+					                "title": {}
+					            },
+					            "pre_tags": ["<span class='highlight'>"],
+	        					"post_tags": ["</span>"]
+					        },			
+							"query": {
+								"match_phrase_prefix": {
+									"title": {
+										"query": this.query,
+										"slop": 10,
+										"max_expansions": 50
+									}
+								}
 							}
+						}
+					}
+				} else if(this.ratings.length > 0) {
+					this.queryDSL = {
+						index: 'node',
+						type: 'vakantie',
+						from: 0,
+  						size: this.size,
+  						body: {	
+  							"query": {
+  								"terms": {
+									"stars.value": this.ratings
+								}
+  							}
   						}
-				}).then(function (resp) {
+					}
+				} else {
+					this.queryDSL = {
+						index: 'node',
+						type: 'vakantie',
+						from: 0,
+  						size: this.size
+					}
+				}
+
+				this.client.search(
+					this.queryDSL
+				).then(function (resp) {
 					this.travels = resp.hits.hits;
+
+					// total number of pages rounded up so we also get a page with less than 12 results if need be
+					this.totalPages = Math.ceil(resp.hits.total / this.size);
 
 					// dispatch this data to the entry.js file
 					this.$dispatch('travel-hits', resp.hits.total);
 				}.bind(this), function (err) {
 					console.trace(err.message);
 				});
-			}
-		},
-		methods: {
-			search: function() {
-				if(this.activeFilter && this.query) {
-					this.client.search({
-						index: 'node',
-						type: 'vakantie',
-						from: 0,
-	  					size: 12,
-						body: {			
-					    	"query": {
-						        "bool": {
-						            "must": [
-						                {
-						                    "match": {
-						                        "stars.value": this.rating
-						                    }
-						                },
-						                {
-						                    "match_phrase_prefix": {
-						                        "title": this.query
-						                    }
-						                }
-						            ]
-						        }
-						    },
-						    "highlight": {
-						        "fields": {
-						            "title": {}
-						        },
-						        "pre_tags": ["<span class='highlight'>"],
-								"post_tags": ["</span>"]
-						    }
-						}
-					}).then(function (resp) {
-						this.travels = resp.hits.hits;
-
-						// dispatch this data to the entry.js file
-						this.$dispatch('travel-hits', resp.hits.total);
-					}.bind(this), function (err) {
-						console.trace(err.message);
-					});
-
-					return;
-				}
-
-				// if there is a query from the input we look for that query
-				if(this.query) {
-					this.client.search({
-						index: 'node',
-						type: 'vakantie',
-						from: 0,
-	  					size: 12,
-						body: {					
-							query: {
-								match_phrase_prefix: {
-									title: {
-										query: this.query,
-										slop: 10,
-										max_expansions: 50
-									}
-								}
-							},
-							highlight: {
-					            fields: {
-					                title: {}
-					            },
-					            pre_tags: ["<span class='highlight'>"],
-	        					post_tags: ["</span>"]
-					        }
-						}
-					}).then(function (resp) {
-						this.travels = resp.hits.hits;
-
-						// dispatch this data to the entry.js file
-						this.$dispatch('travel-hits', resp.hits.total);
-					}.bind(this), function (err) {
-						console.trace(err.message);
-					});
-
-				// else we simply run a query to get al results
-				} else {
-					this.client.search({
-							index: 'node',
-							type: 'vakantie',
-							from: 0,
-	  						size: 12,
-					}).then(function (resp) {
-						this.travels = resp.hits.hits;
-
-						// dispatch this data to the entry.js file
-						this.$dispatch('travel-hits', resp.hits.total);
-					}.bind(this), function (err) {
-						console.trace(err.message);
-					});
-				}
 			},
 
 			paginate: function(index) {
@@ -244,24 +235,29 @@
 						index: 'node',
 						type: 'vakantie',
 						from: 12 * index,
-						size: 12,
+						size: this.size,
 				}).then(function (resp) {
 					this.travels = resp.hits.hits;
 					
-					this.page = index;
+					this.currentPage = index;
 				}.bind(this), function (err) {
 					console.trace(err.message);
 				});
 			},
 
 			prevPage: function() {
-				this.page--;
-				this.paginate(this.page);
+				if(this.currentPage > 0) {
+					this.currentPage--;
+					this.paginate(this.currentPage);
+				}
 			},
 
 			nextPage: function() {
-				this.page++;
-				this.paginate(this.page);
+				// totalPages - 1 because currentPage starts at 0
+				if(this.currentPage < (this.totalPages -1)) {
+					this.currentPage++;
+					this.paginate(this.currentPage);
+				}
 			}
 		}
 	}

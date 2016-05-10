@@ -10,12 +10,24 @@ exports.default = {
 		var elasticsearch = require('elasticsearch');
 
 		this.client = new elasticsearch.Client({
-			host: 'localhost:9200',
-			log: 'trace'
+			host: 'localhost:9200'
 		});
 
 		// perform the initial search
+		// log: 'trace'
 		this.search();
+
+		// switch pages with left and right keypresses - bind the window scope to this object
+		window.onkeydown = function (e) {
+			var code = e.keyCode ? e.keyCode : e.which;
+			if (code === 37) {
+				//left key
+				this.prevPage();
+			} else if (code === 39) {
+				//right key
+				this.nextPage();
+			}
+		}.bind(this);
 	},
 	data: function data() {
 		return {
@@ -24,131 +36,112 @@ exports.default = {
 			travels: '',
 			query: '',
 			toggleView: true,
-			page: 0,
+			currentPage: 0,
+			totalPages: 0,
 			activeFilter: false,
-			rating: 0
+			ratings: [],
+			size: 12,
+			queryDSL: {}
 		};
 	},
 
 	events: {
-		'filter-stars': function filterStars(rating) {
-			this.activeFilter = true;
-			this.rating = rating;
+		'receiveRatings': function receiveRatings(ratings) {
+			this.ratings = ratings;
 
-			this.client.search({
-				index: 'node',
-				type: 'vakantie',
-				from: 0,
-				size: 12,
-				body: {
-					query: {
-						match: {
-							"stars.value": rating
-						}
-					}
-				}
-			}).then(function (resp) {
-				this.travels = resp.hits.hits;
-
-				// dispatch this data to the entry.js file
-				this.$dispatch('travel-hits', resp.hits.total);
-			}.bind(this), function (err) {
-				console.trace(err.message);
-			});
+			this.search();
 		}
 	},
 	methods: {
 		search: function search() {
-			if (this.activeFilter && this.query) {
-				this.client.search({
+			// if a query rating is set
+			if (this.query && this.ratings.length > 0) {
+				this.queryDSL = {
 					index: 'node',
 					type: 'vakantie',
 					from: 0,
-					size: 12,
+					size: this.size,
 					body: {
-						"query": {
-							"bool": {
-								"must": [{
-									"match": {
-										"stars.value": this.rating
-									}
-								}, {
-									"match_phrase_prefix": {
-										"title": this.query
-									}
-								}]
-							}
-						},
 						"highlight": {
 							"fields": {
 								"title": {}
 							},
 							"pre_tags": ["<span class='highlight'>"],
 							"post_tags": ["</span>"]
-						}
-					}
-				}).then(function (resp) {
-					this.travels = resp.hits.hits;
-
-					// dispatch this data to the entry.js file
-					this.$dispatch('travel-hits', resp.hits.total);
-				}.bind(this), function (err) {
-					console.trace(err.message);
-				});
-
-				return;
-			}
-
-			// if there is a query from the input we look for that query
-			if (this.query) {
-				this.client.search({
-					index: 'node',
-					type: 'vakantie',
-					from: 0,
-					size: 12,
-					body: {
-						query: {
-							match_phrase_prefix: {
-								title: {
-									query: this.query,
-									slop: 10,
-									max_expansions: 50
+						},
+						"query": {
+							"match_phrase_prefix": {
+								"title": {
+									"query": this.query,
+									"slop": 10,
+									"max_expansions": 50
 								}
 							}
 						},
-						highlight: {
-							fields: {
-								title: {}
-							},
-							pre_tags: ["<span class='highlight'>"],
-							post_tags: ["</span>"]
+						"filter": {
+							"term": { "stars.value": this.ratings }
 						}
 					}
-				}).then(function (resp) {
-					this.travels = resp.hits.hits;
-
-					// dispatch this data to the entry.js file
-					this.$dispatch('travel-hits', resp.hits.total);
-				}.bind(this), function (err) {
-					console.trace(err.message);
-				});
-
-				// else we simply run a query to get al results
+				};
+			} else if (this.query) {
+				this.queryDSL = {
+					index: 'node',
+					type: 'vakantie',
+					from: 0,
+					size: this.size,
+					body: {
+						"highlight": {
+							"fields": {
+								"title": {}
+							},
+							"pre_tags": ["<span class='highlight'>"],
+							"post_tags": ["</span>"]
+						},
+						"query": {
+							"match_phrase_prefix": {
+								"title": {
+									"query": this.query,
+									"slop": 10,
+									"max_expansions": 50
+								}
+							}
+						}
+					}
+				};
+			} else if (this.ratings.length > 0) {
+				this.queryDSL = {
+					index: 'node',
+					type: 'vakantie',
+					from: 0,
+					size: this.size,
+					body: {
+						"query": {
+							"terms": {
+								"stars.value": this.ratings
+							}
+						}
+					}
+				};
 			} else {
-					this.client.search({
-						index: 'node',
-						type: 'vakantie',
-						from: 0,
-						size: 12
-					}).then(function (resp) {
-						this.travels = resp.hits.hits;
+				this.queryDSL = {
+					index: 'node',
+					type: 'vakantie',
+					from: 0,
+					size: this.size
+				};
+			}
 
-						// dispatch this data to the entry.js file
-						this.$dispatch('travel-hits', resp.hits.total);
-					}.bind(this), function (err) {
-						console.trace(err.message);
-					});
-				}
+			this.client.search(this.queryDSL).then(function (resp) {
+				this.travels = resp.hits.hits;
+
+				// total number of pages rounded up so we also get a page with less than 12 results if need be
+				this.totalPages = Math.ceil(resp.hits.total / this.size);
+
+				// dispatch this data to the entry.js file
+				this.$dispatch('travel-hits', resp.hits.total);
+			}.bind(this), function (err) {
+				console.trace(err.message);
+			});
 		},
 
 		paginate: function paginate(index) {
@@ -156,29 +149,34 @@ exports.default = {
 				index: 'node',
 				type: 'vakantie',
 				from: 12 * index,
-				size: 12
+				size: this.size
 			}).then(function (resp) {
 				this.travels = resp.hits.hits;
 
-				this.page = index;
+				this.currentPage = index;
 			}.bind(this), function (err) {
 				console.trace(err.message);
 			});
 		},
 
 		prevPage: function prevPage() {
-			this.page--;
-			this.paginate(this.page);
+			if (this.currentPage > 0) {
+				this.currentPage--;
+				this.paginate(this.currentPage);
+			}
 		},
 
 		nextPage: function nextPage() {
-			this.page++;
-			this.paginate(this.page);
+			// totalPages - 1 because currentPage starts at 0
+			if (this.currentPage < this.totalPages - 1) {
+				this.currentPage++;
+				this.paginate(this.currentPage);
+			}
 		}
 	}
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n\t<div class=\"row main-search-wrapper\">\n        <div class=\"col-md-6 col-md-offset-3\">\n            <i class=\"fa fa-search fa-2x\" aria-hidden=\"true\"></i>\n            <!-- add: debounce=\"500\" for a 500ms delay -->\n            <input type=\"text\" placeholder=\"Zoek op naam, land, stad of regio\" v-on:keyup=\"search\" v-model=\"query\">\n        </div><!-- /.col-md-6 -->\n\n        <div class=\"col-md-3 view-options\">\n            <i class=\"fa fa-bars fa-2x\" aria-hidden=\"true\" v-bind:class=\"{ 'active': !toggleView}\" v-on:click=\"toggleView = false\"></i>\n            <i class=\"fa fa-th-large fa-2x\" aria-hidden=\"true\" v-bind:class=\"{ 'active': toggleView}\" v-on:click=\"toggleView = true\"></i>\n        </div><!-- /.col-md-3 -->\n    </div><!-- /.row -->\n\n\t<div v-if=\"toggleView\" class=\"row\" v-for=\"row in travels | chunk 4\">\n\t\t<div class=\"col-md-3\" v-for=\"travel in row\">\n\t\t\t<div class=\"vacation-item\">\n\t\t\t\t<a href=\"/node/{{ travel._source.nid }}\">\n\t\t\t\t\t<div class=\"placeholder-img\" v-bind:style=\"{ 'background-image': 'url(' + travel._source.field_image[0].url + ')' }\">\n\t\t\t\t\t\t<div class=\"star-rating\">\n\t\t\t\t\t\t\t<i class=\"fa fa-star fa-lg\" aria-hidden=\"true\" v-for=\"star in parseInt(travel._source.stars[0].value)\"></i>\n\t\t\t\t\t\t</div><!-- /.star-rating -->\n\t\t\t\t\t</div><!-- /.placeholder-img -->\n\n\t\t\t\t\t<div class=\"content\">\n\t\t\t\t\t\t<h2 v-if=\"travel.highlight\">{{{ travel.highlight.title }}}</h2>\n\t\t\t\t\t\t<h2 v-else=\"\">{{{ travel._source.title }}}</h2>\n\t\t\t\t\t\t<p>{{ travel._source.body[0].value.substring(0, 85) }}...</p>\n\t\t\t\t\t</div><!-- /.content -->\n\t\t\t\t</a>\n\t\t\t</div><!-- /.vacation-item -->\n\t\t</div><!-- /.col-md-3 -->\n\t</div><!-- /.row -->\n\n\t<div v-if=\"!toggleView\" class=\"row list-view\" v-for=\"travel in travels\">\n\t\t<div class=\"col-md-10 col-md-offset-1\">\n\t\t\t<div class=\"vacation-item\">\n\t\t\t\t<a href=\"/node/{{ travel._source.nid }}\">\n\t\t\t\t\t<div class=\"col-md-3\">\n\t\t\t\t\t\t<div class=\"placeholder-img\" v-bind:style=\"{ 'background-image': 'url(' + travel._source.field_image[0].url + ')' }\">\n\t\t\t\t\t\t\t<div class=\"star-rating\">\n\t\t\t\t\t\t\t\t<i class=\"fa fa-star fa-lg\" aria-hidden=\"true\" v-for=\"star in parseInt(travel._source.stars[0].value)\"></i>\n\t\t\t\t\t\t\t</div><!-- /.star-rating -->\n\t\t\t\t\t\t</div><!-- /.placeholder-img -->\n\t\t\t\t\t</div><!-- /.col-md-3 -->\n\n\t\t\t\t\t<div class=\"col-md-9\">\n\t\t\t\t\t\t<div class=\"content\">\n\t\t\t\t\t\t\t<h2 v-if=\"travel.highlight\">{{{ travel.highlight.title }}}</h2>\n\t\t\t\t\t\t\t<h2 v-else=\"\">{{{ travel._source.title }}}</h2>\n\t\t\t\t\t\t\t<p>{{ travel._source.body[0].value.substring(0, 85) }}...</p>\n\t\t\t\t\t\t</div><!-- /.content -->\n\t\t\t\t\t</div><!-- /.col-md-9 -->\n\t\t\t\t</a></div><!-- /.vacation-item --><a href=\"/node/{{ travel._source.nid }}\">\n\t\t\t</a>\n\t\t</div><!-- /.col-md-3 -->\n\t</div><!-- /.row -->\n\n\t<div class=\"row\">\n\t\t<nav class=\"text-center\">\n\t\t\t<ul class=\"pagination\">\n\t\t\t\t<li>\n\t\t\t\t\t<a href=\"#\" aria-label=\"Previous\" v-on:click.prevent=\"prevPage()\">\n\t\t\t\t\t\t<span aria-hidden=\"true\">«</span>\n\t\t\t\t\t</a>\n\t\t\t\t</li>\n\n\t\t\t\t<li v-for=\"index in 10\" v-bind:class=\"{'active' : index == this.page }\">\n\t\t\t\t\t<a href=\"#\" v-on:click.prevent=\"paginate(index)\">{{ index+1 }}</a>\n\t\t\t\t</li>\n\n\t\t\t\t<li>\n\t\t\t\t\t<a href=\"#\" aria-label=\"Next\" v-on:click.prevent=\"nextPage()\">\n\t\t\t\t\t\t<span aria-hidden=\"true\">»</span>\n\t\t\t\t\t</a>\n\t\t\t\t</li>\n\t\t\t</ul><!-- /.pagination -->\n\t\t</nav>\n\t</div><!-- /.row -->\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n\t<div class=\"row main-search-wrapper\">\n        <div class=\"col-md-6 col-md-offset-3\">\n            <i class=\"fa fa-search fa-2x\" aria-hidden=\"true\"></i>\n            <!-- add: debounce=\"500\" for a 500ms delay -->\n            <input type=\"text\" placeholder=\"Zoek op naam, land, stad of regio\" v-on:keyup=\"search\" v-model=\"query\">\n        </div><!-- /.col-md-6 -->\n\n        <div class=\"col-md-3 view-options\">\n            <i class=\"fa fa-bars fa-2x\" aria-hidden=\"true\" v-bind:class=\"{ 'active': !toggleView}\" v-on:click=\"toggleView = false\"></i>\n            <i class=\"fa fa-th-large fa-2x\" aria-hidden=\"true\" v-bind:class=\"{ 'active': toggleView}\" v-on:click=\"toggleView = true\"></i>\n        </div><!-- /.col-md-3 -->\n    </div><!-- /.row -->\n\n\t<div v-if=\"toggleView\" class=\"row\" v-for=\"row in travels | chunk 4\">\n\t\t<div class=\"col-md-3\" v-for=\"travel in row\">\n\t\t\t<div class=\"vacation-item\">\n\t\t\t\t<a href=\"/node/{{ travel._source.nid }}\">\n\t\t\t\t\t<div class=\"placeholder-img\" v-if=\"travel._source.field_image\" v-bind:style=\"{ 'background-image': 'url(' + travel._source.field_image[0].url + ')' }\">\n\t\t\t\t\t\t<div class=\"star-rating\" v-if=\"travel._source.stars\">\n\t\t\t\t\t\t\t<i class=\"fa fa-star fa-lg\" aria-hidden=\"true\" v-for=\"star in parseInt(travel._source.stars[0].value)\"></i>\n\t\t\t\t\t\t</div><!-- /.star-rating -->\n\t\t\t\t\t</div><!-- /.placeholder-img -->\n\n\t\t\t\t\t<div class=\"content\">\n\t\t\t\t\t\t<h2 v-if=\"travel.highlight\">{{{ travel.highlight.title }}}</h2>\n\t\t\t\t\t\t<h2 v-else=\"\">{{{ travel._source.title }}}</h2>\n\t\t\t\t\t\t<p>{{ travel._source.body[0].value.substring(0, 85) }}...</p>\n\t\t\t\t\t</div><!-- /.content -->\n\t\t\t\t</a>\n\t\t\t</div><!-- /.vacation-item -->\n\t\t</div><!-- /.col-md-3 -->\n\t</div><!-- /.row -->\n\n\t<div v-if=\"!toggleView\" class=\"row list-view\" v-for=\"travel in travels\">\n\t\t<div class=\"col-md-10 col-md-offset-1\">\n\t\t\t<div class=\"vacation-item\">\n\t\t\t\t<a href=\"/node/{{ travel._source.nid }}\">\n\t\t\t\t\t<div class=\"col-md-3\">\n\t\t\t\t\t\t<div class=\"placeholder-img\" v-if=\"travel._source.field_image\" v-bind:style=\"{ 'background-image': 'url(' + travel._source.field_image[0].url + ')' }\">\n\t\t\t\t\t\t\t<div class=\"star-rating\" v-if=\"travel._source.stars\">\n\t\t\t\t\t\t\t\t<i class=\"fa fa-star fa-lg\" aria-hidden=\"true\" v-for=\"star in parseInt(travel._source.stars[0].value)\"></i>\n\t\t\t\t\t\t\t</div><!-- /.star-rating -->\n\t\t\t\t\t\t</div><!-- /.placeholder-img -->\n\t\t\t\t\t</div><!-- /.col-md-3 -->\n\n\t\t\t\t\t<div class=\"col-md-9\">\n\t\t\t\t\t\t<div class=\"content\">\n\t\t\t\t\t\t\t<h2 v-if=\"travel.highlight\">{{{ travel.highlight.title }}}</h2>\n\t\t\t\t\t\t\t<h2 v-else=\"\">{{{ travel._source.title }}}</h2>\n\t\t\t\t\t\t\t<p>{{ travel._source.body[0].value.substring(0, 85) }}...</p>\n\t\t\t\t\t\t</div><!-- /.content -->\n\t\t\t\t\t</div><!-- /.col-md-9 -->\n\t\t\t\t</a></div><!-- /.vacation-item --><a href=\"/node/{{ travel._source.nid }}\">\n\t\t\t</a>\n\t\t</div><!-- /.col-md-3 -->\n\t</div><!-- /.row -->\n\n\t<div class=\"row\">\n\t\t<nav class=\"text-center\">\n\t\t\t<ul class=\"pagination\">\n\t\t\t\t<li>\n\t\t\t\t\t<a href=\"#\" aria-label=\"Previous\" v-on:click.prevent=\"prevPage()\">\n\t\t\t\t\t\t<span aria-hidden=\"true\">«</span>\n\t\t\t\t\t</a>\n\t\t\t\t</li>\n\n\t\t\t\t<!-- crucial v-if logic to render the pagination -->\n\t\t\t\t<li v-for=\"pageNumber in totalPages\" v-bind:class=\"{'active' : pageNumber == this.currentPage }\" v-if=\"Math.abs(pageNumber - currentPage) < 4 || pageNumber == totalPages - 1 || pageNumber == 0\">\n\t\t\t\t\t<a href=\"#\" v-on:click.prevent=\"paginate(pageNumber)\">{{ pageNumber+1 }}</a>\n\t\t\t\t</li>\n\n\t\t\t\t<li>\n\t\t\t\t\t<a href=\"#\" aria-label=\"Next\" v-on:click.prevent=\"nextPage()\">\n\t\t\t\t\t\t<span aria-hidden=\"true\">»</span>\n\t\t\t\t\t</a>\n\t\t\t\t</li>\n\t\t\t</ul><!-- /.pagination -->\n\t\t</nav>\n\t</div><!-- /.row -->\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -206,21 +204,22 @@ Vue.component('elasticsearch', Elasticsearch)
 
 window.onload = function () {
 	// create a root instance
-	new Vue({
-	  el: 'body',
-	  data: {
-	  	hits: ''
-	  },
-	  events: {
-	  	'travel-hits': function(hits) {
-	  		this.hits = hits;
-	  	}
-	  },
-	  methods: {
-	  	filterStars: function(rating) {
-	  		this.$broadcast('filter-stars', rating);
-	  	}
-	  }
+	var vue = new Vue({
+		el: 'body',
+		data: {
+			hits: '',
+			ratings: []
+		},
+		watch: {
+			'ratings': function() {
+				this.$broadcast('receiveRatings', this.ratings);
+			}
+		},
+		events: {
+			'travel-hits': function(hits) {
+				this.hits = hits;
+			}
+		}
 	})
 }
 },{"./components/elasticsearch.vue":1,"vue":84,"vue-chunk":58,"vue-resource":73}],3:[function(require,module,exports){

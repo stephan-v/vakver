@@ -36,5 +36,6 @@
 			collapsedHeight: 75,
 			speed: 1000
 		});
+		
 	});
 }(jQuery));

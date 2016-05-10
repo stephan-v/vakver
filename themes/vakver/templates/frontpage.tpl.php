@@ -97,32 +97,12 @@
                 </div><!-- /.filter-header -->
                 
                 <div class="star-rating">
-                    <div class="checkbox">
-                        <label v-on:click="filterStars(5)">
-                            <input type="checkbox" value="">
-                            <i class="fa fa-star fa-lg" aria-hidden="true" v-for="index in 5"></i>
+                    <div class="checkbox" v-for="index in 5">
+                        <input type="checkbox" value="{{5-index}}" id="rating-{{5-index}}" v-model="ratings">
+                        <label for="rating-{{5-index}}">
+                            <i class="fa fa-star fa-lg" aria-hidden="true" v-for="n in 5-index"></i>
                         </label>
-
-                        <label v-on:click="filterStars(4)">
-                            <input type="checkbox" value="">
-                            <i class="fa fa-star fa-lg" aria-hidden="true" v-for="index in 4"></i>
-                        </label>
-
-                        <label v-on:click="filterStars(3)">
-                            <input type="checkbox" value="">
-                            <i class="fa fa-star fa-lg" aria-hidden="true" v-for="index in 3"></i>
-                        </label>
-
-                        <label v-on:click="filterStars(2)">
-                            <input type="checkbox" value="">
-                            <i class="fa fa-star fa-lg" aria-hidden="true" v-for="index in 2"></i>
-                        </label>
-
-                        <label v-on:click="filterStars(1)">
-                            <input type="checkbox" value="">
-                            <i class="fa fa-star fa-lg" aria-hidden="true" v-for="index in 1"></i>
-                        </label>
-                    </div>
+                    </div><!-- /.checkbox -->
                 </div><!-- /.readmore -->
             </div><!-- /.filer -->
         </aside>
