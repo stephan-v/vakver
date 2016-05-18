@@ -1,5 +1,5 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-var __vueify_style__ = require("vueify-insert-css").insert("\n.highlight {\n\tcolor: #74AF2A;\n\tfont-weight: bold;\n}\n[v-cloak] {\n  display: none;\n}\n")
+var __vueify_style__ = require("vueify-insert-css").insert("\n.highlight {\n\tcolor: #74AF2A;\n\tfont-weight: bold;\n}\n")
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -16,6 +16,9 @@ exports.default = {
 		// perform the initial search
 		// log: 'trace'
 		this.search();
+
+		// perform a search for a list of all unique countries
+		this.searchUniqueCountries();
 
 		// switch pages with left and right keypresses - bind the window scope to this object
 		window.onkeydown = function (e) {
@@ -44,21 +47,104 @@ exports.default = {
 				index: 'node',
 				type: 'vakantie',
 				from: 0,
-				size: 12
+				size: 12,
+				body: {
+					"highlight": {
+						"fields": {
+							"title": {}
+						},
+						"pre_tags": ["<span class='highlight'>"],
+						"post_tags": ["</span>"]
+					}
+				}
 			},
-			// probably refactor this bullshit
-			querySuffix: {}
+			sortRatingDesc: false,
+			sortPriceDesc: false,
+
+			// apply filter to these countries
+			countriesToFilter: []
 		};
 	},
-
 	events: {
-		'receiveRatings': function receiveRatings(ratings) {
+		'ratingsListener': function ratingsListener(ratings) {
 			this.ratings = ratings;
 
 			this.search();
+		},
+		'sortListener': function sortListener(sort) {
+			this.sort(sort);
+		},
+		'removeSortListener': function removeSortListener(sort) {
+			this.removeSort(sort);
+		},
+		'countryListener': function countryListener(countries) {
+			this.countriesToFilter = countries;
+
+			console.log(this.countriesToFilter);
 		}
 	},
 	methods: {
+		/*
+  |--------------------------------------------------------------------------
+  | Sort functionality for elasticsearch
+  |--------------------------------------------------------------------------
+  |
+  | Implement a sort filter on top of any query that might be set
+  |
+  */
+
+		sort: function sort(_sort) {
+			if (_sort == 'rating') {
+				this.sortRatingDesc = !this.sortRatingDesc;
+
+				// dispatch this data to the entry.js file
+				this.$dispatch('sort-order', this.sortRatingDesc, 'rating');
+
+				if (this.sortRatingDesc) {
+					this.queryDSL.body.sort = {
+						"stars.value": { "order": "desc" }
+					};
+				} else {
+					this.queryDSL.body.sort = {
+						"stars.value": { "order": "asc" }
+					};
+				}
+			}
+
+			if (_sort == 'price') {
+				this.sortPriceDesc = !this.sortPriceDesc;
+
+				// dispatch this data to the entry.js file
+				this.$dispatch('sort-order', this.sortPriceDesc, 'price');
+
+				if (this.sortPriceDesc) {
+					this.queryDSL.body.sort = {
+						"price.value": { "order": "desc" }
+					};
+				} else {
+					this.queryDSL.body.sort = {
+						"price.value": { "order": "asc" }
+					};
+				}
+			}
+
+			this.search();
+		},
+
+		/*
+  |--------------------------------------------------------------------------
+  | remove sort functionality for elasticsearch
+  |--------------------------------------------------------------------------
+  |
+  | delete the sort property from the main query
+  |
+  */
+
+		removeSort: function removeSort(sort) {
+			delete this.queryDSL.body.sort;
+
+			this.search();
+		},
 
 		/*
   |--------------------------------------------------------------------------
@@ -70,67 +156,41 @@ exports.default = {
   */
 
 		search: function search() {
+
 			// if a query and rating is set
 			if (this.query && this.ratings.length > 0) {
-				this.queryDSL.body = {
-					"highlight": {
-						"fields": {
-							"title": {}
-						},
-						"pre_tags": ["<span class='highlight'>"],
-						"post_tags": ["</span>"]
-					},
-					"query": {
-						"match_phrase_prefix": {
-							"title": {
-								"query": this.query,
-								"slop": 10,
-								"max_expansions": 50
-							}
+				this.queryDSL.body.query = {
+					"match_phrase_prefix": {
+						"title": {
+							"query": this.query,
+							"slop": 10,
+							"max_expansions": 50
 						}
-					},
-					"filter": {
-						"term": { "stars.value": this.ratings }
 					}
-				}, this.querySuffix = this.queryDSL.body;
+				}, this.queryDSL.body.filter = {
+					"term": { "stars.value": this.ratings }
+				};
 				// if a query is set
 			} else if (this.query) {
-					this.queryDSL.body = {
-						"highlight": {
-							"fields": {
-								"title": {}
-							},
-							"pre_tags": ["<span class='highlight'>"],
-							"post_tags": ["</span>"]
-						},
-						"query": {
-							"match_phrase_prefix": {
-								"title": {
-									"query": this.query,
-									"slop": 10,
-									"max_expansions": 50
-								}
-							}
+					// create this value
+					this.queryDSL.body.query = {}, this.queryDSL.body.query.match_phrase_prefix = {
+						"title": {
+							"query": this.query,
+							"slop": 10,
+							"max_expansions": 50
 						}
-					}, this.querySuffix = this.queryDSL.body;
+					}, this.queryBody = this.queryDSL.body;
 					// if a rating is set
 				} else if (this.ratings.length > 0) {
-						this.queryDSL.body = {
-							"query": {
-								"terms": {
-									"stars.value": this.ratings
-								}
+						this.queryDSL.body.query = {
+							"terms": {
+								"stars.value": this.ratings
 							}
-						}, this.querySuffix = this.queryDSL.body;
-						// if nothing is set
+						};
 					} else {
-							this.queryDSL = {
-								index: 'node',
-								type: 'vakantie',
-								from: 0,
-								size: 12
-							};
-						}
+						// if no query, filter or sort has been set delete the query property from the object entirely to prevent elasticsearch errors
+						delete this.queryDSL.body.query;
+					}
 
 			this.client.search(this.queryDSL).then(function (resp) {
 				this.travels = resp.hits.hits;
@@ -160,7 +220,8 @@ exports.default = {
 				type: 'vakantie',
 				from: 12 * index,
 				size: this.size,
-				body: this.querySuffix
+				// append the suffix from others filters if there are any
+				body: this.queryDSL.body
 			}).then(function (resp) {
 				this.travels = resp.hits.hits;
 
@@ -180,18 +241,51 @@ exports.default = {
 				this.currentPage++;
 				this.paginate(this.currentPage);
 			}
+		},
+
+		/*
+  |--------------------------------------------------------------------------
+  | Aggregation query to get a list of all unique countries
+  |--------------------------------------------------------------------------
+  |
+  | Size is set to zero so we don't get a full hit, this results in much
+  | faster searches. With this query we get a unique value and how many 
+  | hits per unique value.
+  |
+  */
+
+		searchUniqueCountries: function searchUniqueCountries() {
+			this.client.search({
+				index: 'node',
+				type: 'vakantie',
+				body: {
+					"size": 0,
+					"aggs": {
+						"countries": {
+							"terms": {
+								"field": "country.value"
+							}
+						}
+					}
+				}
+			}).then(function (resp) {
+				// dispatch this data to the entry.js file
+				this.$dispatch('unique-countries', resp.aggregations.countries.buckets);
+			}.bind(this), function (err) {
+				console.trace(err.message);
+			});
 		}
 	}
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n\t<div class=\"row main-search-wrapper\">\n        <div class=\"col-md-6 col-md-offset-3\">\n            <i class=\"fa fa-search fa-2x\" aria-hidden=\"true\"></i>\n            <!-- add: debounce=\"500\" for a 500ms delay -->\n            <input type=\"text\" placeholder=\"Zoek op naam, land, stad of regio\" v-on:keyup=\"search\" v-model=\"query\">\n        </div><!-- /.col-md-6 -->\n\n        <div class=\"col-md-3 view-options\">\n            <i class=\"fa fa-bars fa-2x\" aria-hidden=\"true\" v-bind:class=\"{ 'active': !toggleView}\" v-on:click=\"toggleView = false\"></i>\n            <i class=\"fa fa-th-large fa-2x\" aria-hidden=\"true\" v-bind:class=\"{ 'active': toggleView}\" v-on:click=\"toggleView = true\"></i>\n        </div><!-- /.col-md-3 -->\n    </div><!-- /.row -->\n\n\t<div v-if=\"toggleView\" class=\"row\" v-for=\"row in travels | chunk 4\">\n\t\t<div class=\"col-md-3\" v-for=\"travel in row\">\n\t\t\t<div class=\"vacation-item\">\n\t\t\t\t<a href=\"/node/{{ travel._source.nid }}\">\n\t\t\t\t\t<div class=\"placeholder-img\" v-if=\"travel._source.field_image\" v-bind:style=\"{ 'background-image': 'url(' + travel._source.field_image[0].url + ')' }\">\n\t\t\t\t\t\t<div class=\"star-rating\" v-if=\"travel._source.stars\">\n\t\t\t\t\t\t\t<i class=\"fa fa-star fa-lg\" aria-hidden=\"true\" v-for=\"star in parseInt(travel._source.stars[0].value)\"></i>\n\t\t\t\t\t\t</div><!-- /.star-rating -->\n\t\t\t\t\t</div><!-- /.placeholder-img -->\n\n\t\t\t\t\t<div class=\"content\">\n\t\t\t\t\t\t<h2 v-if=\"travel.highlight\">{{{ travel.highlight.title }}}</h2>\n\t\t\t\t\t\t<h2 v-else=\"\">{{{ travel._source.title }}}</h2>\n\t\t\t\t\t\t<p>{{ travel._source.body[0].value.substring(0, 85) }}...</p>\n\t\t\t\t\t</div><!-- /.content -->\n\t\t\t\t</a>\n\t\t\t</div><!-- /.vacation-item -->\n\t\t</div><!-- /.col-md-3 -->\n\t</div><!-- /.row -->\n\n\t<div v-if=\"!toggleView\" class=\"row list-view\" v-for=\"travel in travels\">\n\t\t<div class=\"col-md-10 col-md-offset-1\">\n\t\t\t<div class=\"vacation-item\">\n\t\t\t\t<a href=\"/node/{{ travel._source.nid }}\">\n\t\t\t\t\t<div class=\"col-md-3\">\n\t\t\t\t\t\t<div class=\"placeholder-img\" v-if=\"travel._source.field_image\" v-bind:style=\"{ 'background-image': 'url(' + travel._source.field_image[0].url + ')' }\">\n\t\t\t\t\t\t\t<div class=\"star-rating\" v-if=\"travel._source.stars\">\n\t\t\t\t\t\t\t\t<i class=\"fa fa-star fa-lg\" aria-hidden=\"true\" v-for=\"star in parseInt(travel._source.stars[0].value)\"></i>\n\t\t\t\t\t\t\t</div><!-- /.star-rating -->\n\t\t\t\t\t\t</div><!-- /.placeholder-img -->\n\t\t\t\t\t</div><!-- /.col-md-3 -->\n\n\t\t\t\t\t<div class=\"col-md-9\">\n\t\t\t\t\t\t<div class=\"content\">\n\t\t\t\t\t\t\t<h2 v-if=\"travel.highlight\">{{{ travel.highlight.title }}}</h2>\n\t\t\t\t\t\t\t<h2 v-else=\"\">{{{ travel._source.title }}}</h2>\n\t\t\t\t\t\t\t<p>{{ travel._source.body[0].value.substring(0, 85) }}...</p>\n\t\t\t\t\t\t</div><!-- /.content -->\n\t\t\t\t\t</div><!-- /.col-md-9 -->\n\t\t\t\t</a></div><!-- /.vacation-item --><a href=\"/node/{{ travel._source.nid }}\">\n\t\t\t</a>\n\t\t</div><!-- /.col-md-3 -->\n\t</div><!-- /.row -->\n\n\t<div class=\"row\">\n\t\t<nav class=\"text-center\">\n\t\t\t<ul class=\"pagination\">\n\t\t\t\t<li>\n\t\t\t\t\t<a href=\"#\" aria-label=\"Previous\" v-on:click.prevent=\"prevPage()\">\n\t\t\t\t\t\t<span aria-hidden=\"true\">«</span>\n\t\t\t\t\t</a>\n\t\t\t\t</li>\n\n\t\t\t\t<!-- crucial v-if logic to render the pagination -->\n\t\t\t\t<li v-for=\"pageNumber in totalPages\" v-bind:class=\"{'active' : pageNumber == this.currentPage }\" v-if=\"Math.abs(pageNumber - currentPage) < 4 || pageNumber == totalPages - 1 || pageNumber == 0\">\n\t\t\t\t\t<a href=\"#\" v-on:click.prevent=\"paginate(pageNumber)\">{{ pageNumber+1 }}</a>\n\t\t\t\t</li>\n\n\t\t\t\t<li>\n\t\t\t\t\t<a href=\"#\" aria-label=\"Next\" v-on:click.prevent=\"nextPage()\">\n\t\t\t\t\t\t<span aria-hidden=\"true\">»</span>\n\t\t\t\t\t</a>\n\t\t\t\t</li>\n\t\t\t</ul><!-- /.pagination -->\n\t\t</nav>\n\t</div><!-- /.row -->\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n\t<div class=\"row main-search-wrapper\">\n        <div class=\"col-md-6 col-md-offset-3\">\n            <i class=\"fa fa-search fa-2x\" aria-hidden=\"true\"></i>\n            <!-- add: debounce=\"500\" for a 500ms delay -->\n            <input type=\"text\" placeholder=\"Zoek op naam, land, stad of regio\" v-on:keyup=\"search\" v-model=\"query\">\n        </div><!-- /.col-md-6 -->\n\n        <div class=\"col-md-3 view-options\">\n            <i class=\"fa fa-bars fa-2x\" aria-hidden=\"true\" v-bind:class=\"{ 'active': !toggleView}\" v-on:click=\"toggleView = false\"></i>\n            <i class=\"fa fa-th-large fa-2x\" aria-hidden=\"true\" v-bind:class=\"{ 'active': toggleView}\" v-on:click=\"toggleView = true\"></i>\n        </div><!-- /.col-md-3 -->\n    </div><!-- /.row -->\n\n\t<div v-if=\"toggleView\" class=\"row\" v-for=\"row in travels | chunk 4\">\n\t\t<div class=\"col-xs-6 col-lg-3\" v-for=\"travel in row\">\n\t\t\t<div class=\"vacation-item\">\n\t\t\t\t<a href=\"/node/{{ travel._source.nid }}\">\n\t\t\t\t\t<div class=\"placeholder-img\" v-if=\"travel._source.field_image\" v-bind:style=\"{ 'background-image': 'url(' + travel._source.field_image[0].url + ')' }\">\n\t\t\t\t\t\t<div class=\"star-rating\" v-if=\"travel._source.stars\">\n\t\t\t\t\t\t\t<i class=\"fa fa-star fa-lg\" aria-hidden=\"true\" v-for=\"star in travel._source.stars[0].value\"></i>\n\t\t\t\t\t\t</div><!-- /.star-rating -->\n\t\t\t\t\t\t<div class=\"pricing\">€ {{ travel._source.price[0].value }}</div><!-- /.pricing -->\n\t\t\t\t\t</div><!-- /.placeholder-img -->\n\n\t\t\t\t\t<div class=\"content\">\n\t\t\t\t\t\t<h2 v-if=\"travel.highlight\">{{{ travel.highlight.title }}}</h2>\n\t\t\t\t\t\t<h2 v-else=\"\">{{{ travel._source.title }}}</h2>\n\t\t\t\t\t\t<p>{{ travel._source.body[0].value.substring(0, 85) }}...</p>\n\t\t\t\t\t</div><!-- /.content -->\n\t\t\t\t</a>\n\t\t\t</div><!-- /.vacation-item -->\n\t\t</div><!-- /.col-md-3 -->\n\t</div><!-- /.row -->\n\n\t<div v-if=\"!toggleView\" class=\"row list-view\" v-for=\"travel in travels\">\n\t\t<div class=\"col-md-10 col-md-offset-1\">\n\t\t\t<div class=\"vacation-item\">\n\t\t\t\t<a href=\"/node/{{ travel._source.nid }}\">\n\t\t\t\t\t<div class=\"col-md-3\">\n\t\t\t\t\t\t<div class=\"placeholder-img\" v-if=\"travel._source.field_image\" v-bind:style=\"{ 'background-image': 'url(' + travel._source.field_image[0].url + ')' }\">\n\t\t\t\t\t\t\t<div class=\"star-rating\" v-if=\"travel._source.stars\">\n\t\t\t\t\t\t\t\t<i class=\"fa fa-star fa-lg\" aria-hidden=\"true\" v-for=\"star in travel._source.stars[0].value\"></i>\n\t\t\t\t\t\t\t</div><!-- /.star-rating -->\n\t\t\t\t\t\t\t<div class=\"pricing\">€ {{ travel._source.price[0].value }}</div><!-- /.pricing -->\n\t\t\t\t\t\t</div><!-- /.placeholder-img -->\n\t\t\t\t\t</div><!-- /.col-md-3 -->\n\n\t\t\t\t\t<div class=\"col-md-9\">\n\t\t\t\t\t\t<div class=\"content\">\n\t\t\t\t\t\t\t<h2 v-if=\"travel.highlight\">{{{ travel.highlight.title }}}</h2>\n\t\t\t\t\t\t\t<h2 v-else=\"\">{{{ travel._source.title }}}</h2>\n\t\t\t\t\t\t\t<p>{{ travel._source.body[0].value.substring(0, 85) }}...</p>\n\t\t\t\t\t\t</div><!-- /.content -->\n\t\t\t\t\t</div><!-- /.col-md-9 -->\n\t\t\t\t</a></div><!-- /.vacation-item --><a href=\"/node/{{ travel._source.nid }}\">\n\t\t\t</a>\n\t\t</div><!-- /.col-md-3 -->\n\t</div><!-- /.row -->\n\n\t<div class=\"row\" v-if=\"this.travels == 0\">\n\t\t<div class=\"col-md-6 col-md-offset-3 text-center no-results\">\n\t\t\t<h2>We hebben helaas geen resultaten kunnen vinden binnen deze zoekcriteria. Probeer het nog eens.</h2>\n\t\t</div><!-- /.col-md-6 -->\n\t</div><!-- /.row -->\n\n\t<div class=\"row\">\n\t\t<nav class=\"text-center\">\n\t\t\t<ul class=\"pagination\">\n\t\t\t\t<li>\n\t\t\t\t\t<a href=\"#\" aria-label=\"Previous\" v-on:click.prevent=\"prevPage()\">\n\t\t\t\t\t\t<span aria-hidden=\"true\">«</span>\n\t\t\t\t\t</a>\n\t\t\t\t</li>\n\n\t\t\t\t<!-- crucial v-if logic to render the pagination -->\n\t\t\t\t<li v-for=\"pageNumber in totalPages\" v-bind:class=\"{'active' : pageNumber == this.currentPage }\" v-if=\"Math.abs(pageNumber - currentPage) < 4 || pageNumber == totalPages - 1 || pageNumber == 0\">\n\t\t\t\t\t<a href=\"#\" v-on:click.prevent=\"paginate(pageNumber)\">{{ pageNumber+1 }}</a>\n\t\t\t\t</li>\n\n\t\t\t\t<li>\n\t\t\t\t\t<a href=\"#\" aria-label=\"Next\" v-on:click.prevent=\"nextPage()\">\n\t\t\t\t\t\t<span aria-hidden=\"true\">»</span>\n\t\t\t\t\t</a>\n\t\t\t\t</li>\n\t\t\t</ul><!-- /.pagination -->\n\t\t</nav>\n\t</div><!-- /.row -->\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
   var id = "/Users/stephan/Code/wemachine/sites/vakver.local/themes/vakver/js/components/elasticsearch.vue"
   module.hot.dispose(function () {
-    require("vueify-insert-css").cache["\n.highlight {\n\tcolor: #74AF2A;\n\tfont-weight: bold;\n}\n[v-cloak] {\n  display: none;\n}\n"] = false
+    require("vueify-insert-css").cache["\n.highlight {\n\tcolor: #74AF2A;\n\tfont-weight: bold;\n}\n"] = false
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {
@@ -207,6 +301,8 @@ var Elasticsearch 	= require('./components/elasticsearch.vue')
 Vue.use(require('vue-resource'));
 Vue.use(require('vue-chunk'));
 
+Vue.config.debug = true;
+
 // Globally register the component with tag: my-component
 Vue.component('elasticsearch', Elasticsearch)
 
@@ -216,16 +312,90 @@ window.onload = function () {
 		el: 'body',
 		data: {
 			hits: '',
-			ratings: []
+			ratings: [],
+
+			// enabled / disabled filters
+			sortPopularity: false,
+			sortPrice: false,
+			sortRating: false,
+
+			// sortorder for filters
+			sortPopularityDesc: false,
+			sortRatingDesc: false,
+			sortPriceDesc: false,
+
+			// array of unique countries to build a sidebar list
+			countries: [],
+
+			// array of countries to filter(sent to the child component)
+			countriesToFilter: []
 		},
 		watch: {
 			'ratings': function() {
-				this.$broadcast('receiveRatings', this.ratings);
+				this.$broadcast('ratingsListener', this.ratings);
 			}
 		},
 		events: {
+			// capture the dispatch event from the child component
 			'travel-hits': function(hits) {
 				this.hits = hits;
+			},
+			'sort-order': function(sortOrder, filterName) {
+				if(filterName == 'rating') {
+					this.sortRatingDesc = sortOrder;
+				} else {
+					this.sortPriceDesc = sortOrder;
+				}
+			},
+			'unique-countries': function(countries) {
+				this.countries = countries;
+			}
+		},
+		methods: {
+			// enable a sort
+			sort: function(sort) {
+				this.sortPopularity = false;
+				this.sortPrice = false;
+				this.sortRating = false;
+
+				if(sort == 'popularity') {
+					this.sortPopularity = true;
+				} else if(sort == 'price') {
+					this.sortPrice = true;
+				} else {
+					this.sortRating = true;
+				}
+
+				// broadcast the event to the child component listener
+				this.$broadcast('sortListener', sort);
+			},
+
+			// disable a sort
+			removeSort: function() {
+				// welcome to syntax hell(set all to false)
+				this.sortPopularity = this.sortPrice = this.sortRating = false;
+
+				// broadcast the event to the child component listener
+				this.$broadcast('removeSortListener', [this.sortPopularity, this.sortPrice, this.sortRating]);
+			},
+
+			// helper function to capatilize the first letter of a string
+			ucfirst: function(string) { 
+			    return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase(); 
+			},
+
+			countryFilter: function(country) {
+				index = this.countriesToFilter.indexOf(country)
+
+				// if in array already remove, otherwise add
+				if(index > -1) {
+					this.countriesToFilter.splice(index, 1);
+				} else {
+					this.countriesToFilter.push(country);
+				}
+
+				// broadcast the event to the child component listener
+				this.$broadcast('countryListener', this.countriesToFilter);
 			}
 		}
 	})

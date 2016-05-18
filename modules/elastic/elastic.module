@@ -39,6 +39,7 @@ function _elastic_prepare_node($node) {
   $exist = array_filter($wanted, function($property) use($node) {
     return property_exists($node, $property);
   });
+
   foreach ($exist as $field) {
     $params['body'][$field] = $node->{$field};
   }
@@ -52,7 +53,22 @@ function _elastic_prepare_node($node) {
   // Add the stars field if exists
   $stars_field = isset($node->field_stars) ? field_get_items('node', $node, 'field_stars') : false;
   if ($stars_field) {
+    // typecasting to make sure this is set as an integer
+    $stars_field[0]['value'] = (int)$stars_field[0]['value'];
+
     $params['body']['stars'] = $stars_field;
+  }
+
+  // Add the price field if exists
+  $price_field = isset($node->field_price) ? field_get_items('node', $node, 'field_price') : false;
+  if ($price_field) {
+    $params['body']['price'] = $price_field;
+  }
+
+  // Add the country field if exists
+  $country_field = isset($node->field_country) ? field_get_items('node', $node, 'field_country') : false;
+  if ($country_field) {
+    $params['body']['country'] = $country_field;
   }
 
   // Add the image field if exists
@@ -104,6 +120,7 @@ function elastic_node_insert($node) {
     return;
   }
 
+  // This actually inserts the node into elasticsearch, utisiling the $client->index() method from the elasticsearch php client
   $result = $client->index($params);
   if ($result && $result['created'] === false) {
     drupal_set_message(t('There was a problem saving this node to Elastic.'));

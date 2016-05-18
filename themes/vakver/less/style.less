@@ -172,9 +172,55 @@ Header
 	ul {
 		margin: 0;
 		text-transform: uppercase;
+
+		li {
+			cursor: pointer;
+		}
 	}
-	.pull-right {
-		font-weight: bold;
+	.col-sm-8 {
+		border-bottom: 1px solid #CBCBCB;
+	    padding-bottom: 20px;
+	}
+	.col-sm-4 {
+		padding-top: 20px;
+
+		ul li {
+			font-weight: bold;
+		}
+	}
+	.fa-times-circle {
+	    background: #4E8EC3;
+	    color: white;
+	    padding: 5px 7px 4px 4px;
+	    border-radius: 35px 0 0 35px;
+	}
+	.active.toggle-sort {
+	    background: #4E8EC3;
+	    color: white;
+	    border-radius: 0 35px 35px 0;
+        padding: 2px 9px 1px 4px;
+        float: right;
+
+	    .fa-sort-desc, .fa-sort-asc {
+			float: right;
+			margin-left: 10px;
+		    margin-top: -1px;
+		}
+		.fa-sort-asc {
+	        margin-top: 14px;
+    		line-height: 0;
+		}
+	}
+}
+@media (min-width: 768px) { 
+	.sort-bar {
+		.col-sm-8 {
+		    border-bottom: none;
+		    padding-bottom: 0;
+		}
+		.col-sm-4 {
+			padding-top: 0;
+		}
 	}
 }
 
@@ -183,15 +229,15 @@ Index page
 ========================================================================== */
 
 .vacation-item {
-	background: white;
-    height: 320px;
     border-radius: 0;
     margin-bottom: 30px;
+    background: white;
 
     .placeholder-img {
 	    width: 100%;
     	height: 175px;
     	background-size: cover;
+    	position: relative;
 
     	.star-rating {
     		color: #F7CE45;
@@ -202,9 +248,20 @@ Index page
 		    	text-shadow: 1px 1px 0 rgba(0,0,0,0.3);
     		}
     	}
+    	.pricing {
+		    background: #568DE8;
+		    position: absolute;
+		    bottom: 0;
+		    right: 0;
+		    color: white;
+	        padding: 7px 20px;
+		    font-family: Oxygen;
+		    font-size: 16px;
+    	}
     }
     .content {
     	padding: 20px;
+    	min-height: 142px;
 
     	h2 {
     		font-size: 16px;
@@ -215,6 +272,7 @@ Index page
     	p {
 		    color: #AAA;
     		font-size: 13px;
+    		margin-bottom: 0;
     	}
     }
     & a:hover {
@@ -224,6 +282,16 @@ Index page
 .main-content {
 	position: relative;
 
+	/* Same padding as the sidebar */
+	.wrapper {
+		padding-left: 0;
+		min-height: 800px;
+		transition: all 250ms linear;
+
+		.container {
+			width: 100%;
+		}
+	}
 	.main-search-wrapper {
 		position: relative;
 		margin-top: 50px;
@@ -263,9 +331,6 @@ Index page
 			}
 		}
 	}
-	.active {
-        color: #4E8EC3 !important;
-	}
 	.list-view {
 		.vacation-item {
 		    float: left;
@@ -277,6 +342,23 @@ Index page
 		}
 	}
 }
+.no-results h2 {
+    color: #B1AFA3;
+    font-family: Oxygen;
+    font-size: 24px;
+    line-height: 1.6;
+    margin-top: 0;
+}
+@media (min-width: 1755px) { 
+	/* Same padding as the sidebar */
+	.main-content .wrapper {
+		padding-left: 0px;
+
+		.container {
+			width: 1170px;
+		}
+	}
+}
 
 /* ==========================================================================
 Index Sidebar
@@ -285,11 +367,12 @@ Index Sidebar
 aside {
     position: absolute;
     top: 0;
-    left: 0;
-    width: 275px;
-    height: 1500px;
+    left: -300px;
+    width: 300px;
+    height: 100%;
     background: #FFC54A;
     text-align: center;
+    transition: all 250ms linear;
 
     .btn {
 	    margin: 60px auto 0px auto;
@@ -310,6 +393,9 @@ aside {
     	border-bottom: 1px solid rgba(0,0,0, 0.1);
     	padding: 20px 30px 30px 30px;
 
+		&:last-child {
+			border: none;
+		}
     	h3 {
 		    font-weight: normal;
 			font-size: 16px;
@@ -338,6 +424,18 @@ aside {
 		    color: #7F6232;
 		    margin-top: 15px;
     	}
+    	.countries li {
+    		&.active {
+			    background: #4E8EC3;
+			    border-radius: 35px;
+			    padding: 3px 20px;
+			    color: white;
+			    margin-bottom: 7px;
+		    }
+	    	&:hover {
+	    		cursor: pointer;
+	    	}
+    	}
     }
     .star-rating {
     	label {
@@ -353,120 +451,133 @@ aside {
     	}
     }
 }
+// custom breakpoint to move the sibebar
+@media (min-width: 800px) { 
+	aside {
+		left: 0;
+	}
+	.main-content .wrapper {
+		padding-left: 300px;
+	}
+}
+
+
 
 /* ==========================================================================
 Vakantie pagina(single)
 ========================================================================== */
 
-.vacation-header {
-	height: 500px;
-	background: url(../img/vacation-header.jpg) center center;
-	background-size: cover;
-	position: relative;
+.node-type-vakantie {
+	.vacation-header {
+		height: 500px;
+		background: url(../img/vacation-header.jpg) center center;
+		background-size: cover;
+		position: relative;
 
-	h1 {
-		color: white;
+		h1 {
+			color: white;
+		}
 	}
-}
-.vacation {
-    background: white;
-    padding: 40px;
-    line-height: 1.8em;
+	.vacation {
+	    background: white;
+	    padding: 40px;
+	    line-height: 1.8em;
 
-    h3 {
-    	margin-top: 30px;
-    }
-}
-a.call-to-action {
-	display: block;
-    background: #5B9DF4;
-    color: white;
-    text-align: center;
-    padding: 15px 0;
-    border-radius: 5px;
-    font-size: 18px;
-    position: relative;
-
-    margin-top: 20px;
-
-	&:hover {
-		color: white;
-	}
-    .inner {
-    	background: #4D86D0;
-	    display: inline-block;
-	    padding: 10px 20px;
-	    border-radius: 35px;
-	    box-shadow: inset 0 -1px rgba(255, 255, 255, 0.4);
-
-	    .fa-plane {
-	    	margin-left: 10px;
+	    h3 {
+	    	margin-top: 30px;
 	    }
-    }
-    .circle {
-	    background: #FF6255;
-	    border-radius: 100%;
-	    position: absolute;
-	    right: 0;
-	    top: 50%;
-	    transform: translateY(-50%) translateX(50%);
-	    width: 50px;
-	    height: 50px;
-	    border: 5px solid #F3F1E4;
-
-	    .fa-arrow-right {
-    	    margin: 11px 0 0 3px;
-	    }
-    }
-}
-.travel-information {
-	margin: -123px 0 0 0;
-	background: white;
-	border-bottom: 1px solid lightgrey;
-
-	.col-md-3 {
-		padding: 40px 0;
-		border-right: 1px solid lightgrey;
-
-		&:last-child {
-			border-right: none;
-		}
-		.fa {
-			color: #5B9DF4;
-			margin-right: 10px;
-		}
-		.travel-metadata {
-			display: inline-block;
-			text-align: left;
-			font-family: Oxygen;
-
-			.title {
-				color: #95989A;
-			}
-			.attribute {
-				font-weight: bold;
-			}
-		}
 	}
-}
-
-.pricing {
-	text-align: center;
-	color: white;
-	font-family: Oxygen;
-    margin: -124px 0 57px 0;
-
-	.price {
+	a.call-to-action {
+		display: block;
 	    background: #5B9DF4;
-	    border-radius: 5px 5px 0 0;
-	    padding: 10px 0;
-	    font-size: 22px;
+	    color: white;
+	    text-align: center;
+	    padding: 15px 0;
+	    border-radius: 5px;
+	    font-size: 18px;
+	    position: relative;
+
+	    margin-top: 20px;
+
+		&:hover {
+			color: white;
+		}
+	    .inner {
+	    	background: #4D86D0;
+		    display: inline-block;
+		    padding: 10px 20px;
+		    border-radius: 35px;
+		    box-shadow: inset 0 -1px rgba(255, 255, 255, 0.4);
+
+		    .fa-plane {
+		    	margin-left: 10px;
+		    }
+	    }
+	    .circle {
+		    background: #FF6255;
+		    border-radius: 100%;
+		    position: absolute;
+		    right: 0;
+		    top: 50%;
+		    transform: translateY(-50%) translateX(50%);
+		    width: 50px;
+		    height: 50px;
+		    border: 5px solid #F3F1E4;
+
+		    .fa-arrow-right {
+	    	    margin: 11px 0 0 3px;
+		    }
+	    }
 	}
-	.person {
-		background: rgba(0,0,0,0.4);
-		padding: 10px 0;
-		border-radius: 0 0 5px 5px;
-		font-size: 18px;
+	.travel-information {
+		margin: -123px 0 0 0;
+		background: white;
+		border-bottom: 1px solid lightgrey;
+
+		.col-md-3 {
+			padding: 40px 0;
+			border-right: 1px solid lightgrey;
+
+			&:last-child {
+				border-right: none;
+			}
+			.fa {
+				color: #5B9DF4;
+				margin-right: 10px;
+			}
+			.travel-metadata {
+				display: inline-block;
+				text-align: left;
+				font-family: Oxygen;
+
+				.title {
+					color: #95989A;
+				}
+				.attribute {
+					font-weight: bold;
+				}
+			}
+		}
+	}
+
+	.pricing {
+		text-align: center;
+		color: white;
+		font-family: Oxygen;
+	    margin: -124px 0 57px 0;
+
+		.price {
+		    background: #5B9DF4;
+		    border-radius: 5px 5px 0 0;
+		    padding: 10px 0;
+		    font-size: 22px;
+		}
+		.person {
+			background: rgba(0,0,0,0.4);
+			padding: 10px 0;
+			border-radius: 0 0 5px 5px;
+			font-size: 18px;
+		}
 	}
 }
 
@@ -475,7 +586,6 @@ Footer
 ========================================================================== */
 
 #footer {
-	margin-top: 100px;
 
 	.newsletter {
 		background: #4894FF;

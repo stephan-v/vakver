@@ -154,22 +154,64 @@ Header
   margin: 0;
   text-transform: uppercase;
 }
-.sort-bar .pull-right {
+.sort-bar ul li {
+  cursor: pointer;
+}
+.sort-bar .col-sm-8 {
+  border-bottom: 1px solid #CBCBCB;
+  padding-bottom: 20px;
+}
+.sort-bar .col-sm-4 {
+  padding-top: 20px;
+}
+.sort-bar .col-sm-4 ul li {
   font-weight: bold;
+}
+.sort-bar .fa-times-circle {
+  background: #4E8EC3;
+  color: white;
+  padding: 5px 7px 4px 4px;
+  border-radius: 35px 0 0 35px;
+}
+.sort-bar .active.toggle-sort {
+  background: #4E8EC3;
+  color: white;
+  border-radius: 0 35px 35px 0;
+  padding: 2px 9px 1px 4px;
+  float: right;
+}
+.sort-bar .active.toggle-sort .fa-sort-desc,
+.sort-bar .active.toggle-sort .fa-sort-asc {
+  float: right;
+  margin-left: 10px;
+  margin-top: -1px;
+}
+.sort-bar .active.toggle-sort .fa-sort-asc {
+  margin-top: 14px;
+  line-height: 0;
+}
+@media (min-width: 768px) {
+  .sort-bar .col-sm-8 {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+  .sort-bar .col-sm-4 {
+    padding-top: 0;
+  }
 }
 /* ==========================================================================
 Index page
 ========================================================================== */
 .vacation-item {
-  background: white;
-  height: 320px;
   border-radius: 0;
   margin-bottom: 30px;
+  background: white;
 }
 .vacation-item .placeholder-img {
   width: 100%;
   height: 175px;
   background-size: cover;
+  position: relative;
 }
 .vacation-item .placeholder-img .star-rating {
   color: #F7CE45;
@@ -179,8 +221,19 @@ Index page
   margin-right: 5px;
   text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.3);
 }
+.vacation-item .placeholder-img .pricing {
+  background: #568DE8;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  color: white;
+  padding: 7px 20px;
+  font-family: Oxygen;
+  font-size: 16px;
+}
 .vacation-item .content {
   padding: 20px;
+  min-height: 142px;
 }
 .vacation-item .content h2 {
   font-size: 16px;
@@ -191,12 +244,22 @@ Index page
 .vacation-item .content p {
   color: #AAA;
   font-size: 13px;
+  margin-bottom: 0;
 }
 .vacation-item a:hover {
   text-decoration: none;
 }
 .main-content {
   position: relative;
+  /* Same padding as the sidebar */
+}
+.main-content .wrapper {
+  padding-left: 0;
+  min-height: 800px;
+  transition: all 250ms linear;
+}
+.main-content .wrapper .container {
+  width: 100%;
 }
 .main-content .main-search-wrapper {
   position: relative;
@@ -234,9 +297,6 @@ Index page
   margin-left: 10px;
   cursor: pointer;
 }
-.main-content .active {
-  color: #4E8EC3 !important;
-}
 .main-content .list-view .vacation-item {
   float: left;
   width: 100%;
@@ -245,17 +305,34 @@ Index page
 .main-content .list-view .col-md-3 {
   padding: 0;
 }
+.no-results h2 {
+  color: #B1AFA3;
+  font-family: Oxygen;
+  font-size: 24px;
+  line-height: 1.6;
+  margin-top: 0;
+}
+@media (min-width: 1755px) {
+  /* Same padding as the sidebar */
+  .main-content .wrapper {
+    padding-left: 0px;
+  }
+  .main-content .wrapper .container {
+    width: 1170px;
+  }
+}
 /* ==========================================================================
 Index Sidebar
 ========================================================================== */
 aside {
   position: absolute;
   top: 0;
-  left: 0;
-  width: 275px;
-  height: 1500px;
+  left: -300px;
+  width: 300px;
+  height: 100%;
   background: #FFC54A;
   text-align: center;
+  transition: all 250ms linear;
 }
 aside .btn {
   margin: 60px auto 0px auto;
@@ -275,6 +352,9 @@ aside .filter {
   font-family: 'Oxygen', sans-serif;
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
   padding: 20px 30px 30px 30px;
+}
+aside .filter:last-child {
+  border: none;
 }
 aside .filter h3 {
   font-weight: normal;
@@ -303,6 +383,16 @@ aside .filter .show-more {
   color: #7F6232;
   margin-top: 15px;
 }
+aside .filter .countries li.active {
+  background: #4E8EC3;
+  border-radius: 35px;
+  padding: 3px 20px;
+  color: white;
+  margin-bottom: 7px;
+}
+aside .filter .countries li:hover {
+  cursor: pointer;
+}
 aside .star-rating label {
   display: block;
   margin-bottom: 12px;
@@ -314,27 +404,35 @@ aside .star-rating .fa-star {
 aside .star-rating .checkbox input[type="checkbox"] {
   margin-left: 0;
 }
+@media (min-width: 800px) {
+  aside {
+    left: 0;
+  }
+  .main-content .wrapper {
+    padding-left: 300px;
+  }
+}
 /* ==========================================================================
 Vakantie pagina(single)
 ========================================================================== */
-.vacation-header {
+.node-type-vakantie .vacation-header {
   height: 500px;
   background: url(../img/vacation-header.jpg) center center;
   background-size: cover;
   position: relative;
 }
-.vacation-header h1 {
+.node-type-vakantie .vacation-header h1 {
   color: white;
 }
-.vacation {
+.node-type-vakantie .vacation {
   background: white;
   padding: 40px;
   line-height: 1.8em;
 }
-.vacation h3 {
+.node-type-vakantie .vacation h3 {
   margin-top: 30px;
 }
-a.call-to-action {
+.node-type-vakantie a.call-to-action {
   display: block;
   background: #5B9DF4;
   color: white;
@@ -345,20 +443,20 @@ a.call-to-action {
   position: relative;
   margin-top: 20px;
 }
-a.call-to-action:hover {
+.node-type-vakantie a.call-to-action:hover {
   color: white;
 }
-a.call-to-action .inner {
+.node-type-vakantie a.call-to-action .inner {
   background: #4D86D0;
   display: inline-block;
   padding: 10px 20px;
   border-radius: 35px;
   box-shadow: inset 0 -1px rgba(255, 255, 255, 0.4);
 }
-a.call-to-action .inner .fa-plane {
+.node-type-vakantie a.call-to-action .inner .fa-plane {
   margin-left: 10px;
 }
-a.call-to-action .circle {
+.node-type-vakantie a.call-to-action .circle {
   background: #FF6255;
   border-radius: 100%;
   position: absolute;
@@ -369,49 +467,49 @@ a.call-to-action .circle {
   height: 50px;
   border: 5px solid #F3F1E4;
 }
-a.call-to-action .circle .fa-arrow-right {
+.node-type-vakantie a.call-to-action .circle .fa-arrow-right {
   margin: 11px 0 0 3px;
 }
-.travel-information {
+.node-type-vakantie .travel-information {
   margin: -123px 0 0 0;
   background: white;
   border-bottom: 1px solid lightgrey;
 }
-.travel-information .col-md-3 {
+.node-type-vakantie .travel-information .col-md-3 {
   padding: 40px 0;
   border-right: 1px solid lightgrey;
 }
-.travel-information .col-md-3:last-child {
+.node-type-vakantie .travel-information .col-md-3:last-child {
   border-right: none;
 }
-.travel-information .col-md-3 .fa {
+.node-type-vakantie .travel-information .col-md-3 .fa {
   color: #5B9DF4;
   margin-right: 10px;
 }
-.travel-information .col-md-3 .travel-metadata {
+.node-type-vakantie .travel-information .col-md-3 .travel-metadata {
   display: inline-block;
   text-align: left;
   font-family: Oxygen;
 }
-.travel-information .col-md-3 .travel-metadata .title {
+.node-type-vakantie .travel-information .col-md-3 .travel-metadata .title {
   color: #95989A;
 }
-.travel-information .col-md-3 .travel-metadata .attribute {
+.node-type-vakantie .travel-information .col-md-3 .travel-metadata .attribute {
   font-weight: bold;
 }
-.pricing {
+.node-type-vakantie .pricing {
   text-align: center;
   color: white;
   font-family: Oxygen;
   margin: -124px 0 57px 0;
 }
-.pricing .price {
+.node-type-vakantie .pricing .price {
   background: #5B9DF4;
   border-radius: 5px 5px 0 0;
   padding: 10px 0;
   font-size: 22px;
 }
-.pricing .person {
+.node-type-vakantie .pricing .person {
   background: rgba(0, 0, 0, 0.4);
   padding: 10px 0;
   border-radius: 0 0 5px 5px;
@@ -420,9 +518,6 @@ a.call-to-action .circle .fa-arrow-right {
 /* ==========================================================================
 Footer
 ========================================================================== */
-#footer {
-  margin-top: 100px;
-}
 #footer .newsletter {
   background: #4894FF;
   padding: 20px 0;
