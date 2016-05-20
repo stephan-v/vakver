@@ -58,33 +58,62 @@ function csv_downloader_form_validate($form, &$form_state) {
 }
 
 function csv_downloader_form_submit($form, &$form_state) {
-    $filename = $form_state['values']['name'];
-    $csv_url = (string)$form_state['values']['url'];
+    // $filename = $form_state['values']['name'];
+    // $csv_url = (string)$form_state['values']['url'];
+    
+    $csv = array(
+        'd-reizen1.csv' => 'http://xml.ds1.nl/update/?wi=254480&xid[]=7087&si[]=9806&xid[]=7117&si[]=9806&xid[]=7093&si[]=9806&xid[]=7091&si[]=9806&xid[]=6933&si[]=9806&f=title;link;description;minimum_price;daisycon_unique_id;category;img_medium;internal_id;priority;accommodation_name;accommodation_type;city_of_destination;country_of_destination;departure_date;duration;min_nr_people;port_of_departure;region_of_destination;stars;transportation_type&type=csv&encoding=UTF-8&general=false&nospecialchars=true',
 
-    $csv = file_get_contents($csv_url);
+        'd-reizen2.csv' => 'http://xml.ds1.nl/update/?wi=254480&xid[]=7079&si[]=9806&xid[]=7083&si[]=9806&xid[]=7089&si[]=9806&xid[]=7095&si[]=9806&xid[]=7175&si[]=9806&f=title;link;description;minimum_price;daisycon_unique_id;category;img_medium;img_small;internal_id;maximum_price;priority;sub_category;accommodation_name;accommodation_type;board_type;city;city_of_destination;country;country_of_destination;departure_date;discount_percentage;duration;min_nr_people;old_price;port_of_departure;region_of_destination;stars;transportation_type&type=csv&encoding=UTF-8&general=false&nospecialchars=true',
 
-    // for each line(PHP_EOL) create an array and store all of them in $lines
-    $lines = explode(PHP_EOL, $csv);
+        'eliza.csv' => 'http://pf.tradetracker.net/?aid=243215&encoding=utf-8&type=csv&fid=481317&categoryType=2&additionalType=2&csvDelimiter=%3B&csvEnclosure=%22&filter_extended=1',
 
-    // start a new file and dump it into the files folder
-    $file = fopen(drupal_get_path('module', 'csv_downloader') . '/../../files/csv_downloads/' . $filename, "w");
+        'tjingo.csv' => 'http://xml.ds1.nl/update/?wi=254480&xid=1903&si=2554&type=csv&encoding=UTF-8&general=false&nospecialchars=true'
+    );
 
-    foreach ($lines as $line) {
-        // strip starting and ending double quotes from the string
-        $line = trim($line,'"');
+    foreach($csv as $filename => $csv_url) {
+        $csv = file_get_contents($csv_url);
 
-        // utf-8 encoding
-        // $line = utf8_encode($line);
+        if(checkDownloadable($csv_url)) {
+            // extremely pretty solution that will never break...
+            file_put_contents(drupal_get_path('module', 'csv_downloader') . '/../../files/csv_downloads/' . $filename, $csv);
+        } else {
+            // for each line(PHP_EOL) create an array and store all of them in $lines
+            $lines = explode(PHP_EOL, $csv);
 
-        // print each line to the file, building it up
-        fputcsv($file, explode('";"',$line));
+            // start a new file and dump it into the files folder
+            $file = fopen(drupal_get_path('module', 'csv_downloader') . '/../../files/csv_downloads/' . $filename, "w");
+
+            foreach ($lines as $line) {
+                // strip starting and ending double quotes from the string
+                $line = trim($line,'"');
+
+                // print each line to the file, building it up
+                fputcsv($file, explode('";"',$line));
+            }
+
+            fclose($file);
+        }
     }
-
-    fclose($file);
 
     // Form submit helper
     // print '<pre>';
     //     print_r($form_state['values']['url']);
     // print '</pre';
     // die;
+}
+
+// helper function to check if the url offers a download
+function checkDownloadable($url) {
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL,$url);
+    curl_setopt($ch, CURLOPT_NOBODY, 1);
+    curl_setopt($ch, CURLOPT_FAILONERROR, 1);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+    
+    if(curl_exec($ch) !== FALSE) {
+        return true;
+    } else {
+        return false;
+    }
 }

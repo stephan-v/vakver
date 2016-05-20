@@ -77,6 +77,14 @@
 
                         <?php print $body[0]['value']; ?>
                     </div><!-- /.vacation -->
+
+                    <!-- vakantie view -->
+                    <div class="row">
+                        <div class="col-md-12 related-vacations-header">
+                            <h3>VERGELIJKERBARE VAKANTIES</h3>
+                        </div><!-- /.col-md-12 -->
+                        <?php print views_embed_view('vakantie', $display_id = 'block_1', 'Cyprus'); ?>
+                    </div>
                 </div><!-- /.col-md-9 -->
 
                 <div class="col-md-3">
@@ -89,6 +97,9 @@
                         <div class="inner">Reis boeken<i class="fa fa-plane fa-lg" aria-hidden="true"></i></div><!-- /.inner -->
                         <div class="circle"><i class="fa fa-arrow-right fa-lg" aria-hidden="true"></i></div><!-- /.circle -->
                     </a><!-- /.call-to-action -->
+
+                    <!-- pass the city and country iso as props down to the component(weatherapi.vue) -->
+                    <weatherapi city="<?php print $field_city[0]['value']; ?>" iso="<?php print $field_country_iso[0]['value']; ?>"></weatherapi>
                 </div><!-- /.col-md-3 -->
             </div><!-- /.row -->
         </div><!-- /.container -->

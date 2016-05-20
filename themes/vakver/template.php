@@ -19,3 +19,10 @@ function field_collection_load_multiple($field) {
 function vakver_preprocess_html(&$variables) {
     drupal_add_css('https://fonts.googleapis.com/css?family=Oxygen:400,300,700', array('type' => 'external'));
 }
+
+function vakver_preprocess_node(&$vars) {
+  if($vars['view_mode'] == 'teaser') {
+    $vars['theme_hook_suggestions'][] = 'node__' . $vars['node']->type . '__teaser';   
+    $vars['theme_hook_suggestions'][] = 'node__' . $vars['node']->nid . '__teaser';
+  }
+}

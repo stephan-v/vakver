@@ -46,7 +46,7 @@
 	<?php endif; ?>
 	
 	<div class="container">
-		<?php print $messages; ?>
+		<?php //print $messages; ?>
 	</div><!-- /.container -->
 
 	<?php if(drupal_is_front_page()): ?>
@@ -60,7 +60,6 @@
 			<?php print render($page['sidebar_first']); ?>
 		</div> <!-- /#sidebar-first -->
 	<?php endif; ?>
-
 	
 	<div id="footer">
 		<div class="newsletter">

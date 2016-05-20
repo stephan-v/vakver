@@ -152,8 +152,8 @@
 				sortPriceDesc: false,
 
 				// apply filter to these countries
-				countriesToFilter: []
-			}
+				countries: []
+			};
 		},
 		events: {
 			'ratingsListener': function(ratings) {
@@ -168,9 +168,9 @@
 				this.removeSort(sort);
 			},
 			'countryListener': function(countries) {
-				this.countriesToFilter = countries;
+				this.countries = countries;
 
-				console.log(this.countriesToFilter);
+				this.search();
 			}
 		},
 		methods: {
@@ -241,30 +241,17 @@
 			| Global search
 			|--------------------------------------------------------------------------
 			|
-			| Global search method and combination of search queries
+			| Global search method and combination of search queries, these will all 
+			| append or delete so a single if statement for each one is adequate
 			|
 			*/
 		
 			search: function() {
-				
-				
-				// if a query and rating is set
-				if(this.query && this.ratings.length > 0) {
-					this.queryDSL.body.query = {	
-						"match_phrase_prefix": {
-							"title": {
-								"query": this.query,
-								"slop": 10,
-								"max_expansions": 50
-							}
-						}
-					},
-					this.queryDSL.body.filter = {
-				        "term": { "stars.value": this.ratings }
-				    }
-				// if a query is set
-				} else if(this.query) {
-					// create this value
+				// if a query has been set
+				if(this.query) {
+					console.log('test');
+					// create the query value because we can't have an empty query field in the elasticsearch body
+					// this will result in an error
 					this.queryDSL.body.query = {},
 
 					this.queryDSL.body.query.match_phrase_prefix = {
@@ -273,18 +260,60 @@
 							"slop": 10,
 							"max_expansions": 50
 						}
-					},
-					this.queryBody = this.queryDSL.body;
-				// if a rating is set
-				} else if(this.ratings.length > 0) {
-					this.queryDSL.body.query = {
-						"terms": {
-							"stars.value": this.ratings
-						}
 					}
 				} else {
 					// if no query, filter or sort has been set delete the query property from the object entirely to prevent elasticsearch errors
 					delete this.queryDSL.body.query;
+				}
+
+				// if a filter vaue has been set also set a filter for it, otherwise delete it to prevent elasticsearch errors
+				if(this.ratings.length > 0 || this.countries.length > 0) {
+					// iterative approach is needed to build up to the nested property(lol javacript)
+					this.queryDSL.body.filter = {};
+					this.queryDSL.body.filter.bool = {};
+					this.queryDSL.body.filter.bool.must = [];
+				} else {
+					delete this.queryDSL.body.filter;
+				}
+
+				// if a rating has been set
+				if(this.ratings.length > 0) {
+					filterRating = false;
+
+					for (var i = 0, len = this.queryDSL.body.filter.bool.must.length; i < len; i++) {
+						// if the value is in the must query update it, otherwise create it
+						if ("stars.value" in this.queryDSL.body.filter.bool.must[i].terms) {
+							this.queryDSL.body.filter.bool.must[i].terms["stars.value"] = this.ratings;
+							
+							filterRating = true;
+						}
+					}
+
+					// if the filter has not been set yet set it one time only
+					if(!filterRating) {
+						this.queryDSL.body.filter.bool.must.push({ "terms": { "stars.value": this.ratings } });
+					}
+
+				}
+
+				// if a rating has been set
+				if(this.countries.length > 0) {
+					filterRating = false;
+
+					for (var i = 0, len = this.queryDSL.body.filter.bool.must.length; i < len; i++) {
+						// if the value is in the must query update it, otherwise create it
+						if ("country.value" in this.queryDSL.body.filter.bool.must[i].terms) {
+							this.queryDSL.body.filter.bool.must[i].terms["country.value"] = this.countries;
+							
+							filterRating = true;
+						}
+					}
+
+					// if the filter has not been set yet set it one time only
+					if(!filterRating) {
+						this.queryDSL.body.filter.bool.must.push({ "terms": { "country.value": this.countries } });
+					}
+
 				}
 
 				this.client.search(

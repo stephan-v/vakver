@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the vakver feature.
+ */
+
+include_once 'vakver.features.inc';

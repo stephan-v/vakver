@@ -1,5 +1,11 @@
 var Vue 			= require('vue');
 var Elasticsearch 	= require('./components/elasticsearch.vue')
+var WeatherAPI 		= require('./components/weatherapi.vue')
+
+// moment.js settings(timehelper)
+var moment 			= require('moment');
+require('moment/locale/nl');
+global.moment 		= moment;
 
 Vue.use(require('vue-resource'));
 Vue.use(require('vue-chunk'));
@@ -7,11 +13,15 @@ Vue.use(require('vue-chunk'));
 Vue.config.debug = true;
 
 // Globally register the component with tag: my-component
-Vue.component('elasticsearch', Elasticsearch)
+Vue.component('elasticsearch', Elasticsearch);
+Vue.component('weatherapi', WeatherAPI);
+
+// give window access to the vue module, this is needed for the Vue resource to work with it in child components aswell
+window.Vue = Vue;
 
 window.onload = function () {
 	// create a root instance
-	var vue = new Vue({
+	global.Vue = new Vue({
 		el: 'body',
 		data: {
 			hits: '',
