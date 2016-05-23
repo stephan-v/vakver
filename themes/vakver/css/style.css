@@ -97,6 +97,14 @@ Navigation
   padding-bottom: 10px;
   padding-top: 20px;
 }
+.navbar-default .navbar-nav > li > a:hover {
+  color: #4E71B9;
+  background: none;
+}
+.navbar-default .navbar-nav > .active > a,
+.navbar-default .navbar-default .navbar-nav > .active > a:hover {
+  background: none !important;
+}
 .navbar-default .navbar-form {
   position: absolute;
   top: 20px;
