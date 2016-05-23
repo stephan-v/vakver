@@ -47,6 +47,7 @@
                 <ul class="list-inline">
                     <li v-if="hits > 1 || hits == 0">{{ hits }} vakanties gevonden</li>
                     <li v-else="">{{ hits }} vakantie gevonden</li>
+                    <i class="fa fa-filter" aria-hidden="true"></i>
                 </ul>
             </div><!-- /.col-sm-4 -->
             </div>

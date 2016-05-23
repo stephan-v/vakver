@@ -27,15 +27,23 @@
 		});
 
 		/* ==========================================================================
-		Sidebar more/less functionality
+		Readmore functionality
 		========================================================================== */
 
-		$('.readmore').readmore({
-			moreLink: '<a href="#" class="show-more">Toon alles</a>',
-			lessLink: '<a href="#" class="show-more">Toon minder</a>',
-			collapsedHeight: 75,
-			speed: 1000
+		Vue.nextTick(function () {
+			$('.readmore').readmore({
+				moreLink: '<a href="#" class="show-more">Toon alles</a>',
+				lessLink: '<a href="#" class="show-more">Toon minder</a>',
+				collapsedHeight: 75,
+				speed: 1000
+			});
 		});
-		
+
+		/* ==========================================================================
+		Show / Hide mobile filter sidebar
+		========================================================================== */
+		$(".fa-filter").click(function() {
+			$("aside").toggleClass("active");
+		});
 	});
 }(jQuery));

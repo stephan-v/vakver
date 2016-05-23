@@ -1,5 +1,11 @@
 <div id="page">	
 	<nav class="navbar navbar-default">
+		<form class="navbar-form" role="search">
+			<div class="form-group">
+				<input type="text" class="form-control" placeholder="Vakantie zoeken">
+			</div><!-- /.form-group -->
+		</form>
+
 		<div class="container">
 			<!-- Brand and toggle get grouped for better mobile display -->
 			<div class="navbar-header">
@@ -9,14 +15,8 @@
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 				</button>
-				<a class="logo" href="<?php print url('<front>'); ?>"></a>
+				<a class="logo" href="<?php print url('<front>'); ?>">Vakver.nl</a>
 			</div><!-- /.navbar-header -->
-
-		    <form class="navbar-form" role="search">
-				<div class="form-group">
-					<input type="text" class="form-control" placeholder="Vakantie zoeken">
-				</div><!-- /.form-group -->
-			</form>
 
 			<!-- Collect the nav links, forms, and other content for toggling -->
 	    	<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -75,7 +75,7 @@
 			<div class="container">
 				<div class="row">
 					<div class="col-md-3">
-						<div class="logo"></div>
+						<a class="logo" href="<?php print url('<front>'); ?>">Vakver.nl</a>
 						<p>Vakver.nl is een onafhankelijke reissite. Wij vergelijken prijzen van bekende reisaanbieders voor de goedkoopste vakantiebestemmingen.</p>
 					</div><!-- /.col-md-4 -->
 
