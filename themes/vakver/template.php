@@ -18,6 +18,7 @@ function field_collection_load_multiple($field) {
 
 function vakver_preprocess_html(&$variables) {
     drupal_add_css('https://fonts.googleapis.com/css?family=Oxygen:400,300,700', array('type' => 'external'));
+    drupal_add_css('https://fonts.googleapis.com/css?family=Kaushan+Script', array('type' => 'external'));
 }
 
 function vakver_preprocess_node(&$vars) {
