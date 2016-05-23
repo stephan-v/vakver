@@ -30,18 +30,24 @@
 		Readmore functionality
 		========================================================================== */
 
-		Vue.nextTick(function () {
+		// sloppy hotfix
+		setTimeout(function() {
 			$('.readmore').readmore({
 				moreLink: '<a href="#" class="show-more">Toon alles</a>',
 				lessLink: '<a href="#" class="show-more">Toon minder</a>',
 				collapsedHeight: 75,
 				speed: 1000
 			});
+		}, 1000);
+
+		Vue.nextTick(function () {
+		  console.log('dom updated');
 		});
 
 		/* ==========================================================================
 		Show / Hide mobile filter sidebar
 		========================================================================== */
+		
 		$(".fa-filter").click(function() {
 			$("aside").toggleClass("active");
 		});

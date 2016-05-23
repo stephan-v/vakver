@@ -249,7 +249,6 @@
 			search: function() {
 				// if a query has been set
 				if(this.query) {
-					console.log('test');
 					// create the query value because we can't have an empty query field in the elasticsearch body
 					// this will result in an error
 					this.queryDSL.body.query = {},

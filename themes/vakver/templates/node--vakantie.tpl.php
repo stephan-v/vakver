@@ -83,7 +83,7 @@
                         <div class="col-md-12 related-vacations-header">
                             <h3>VERGELIJKERBARE VAKANTIES</h3>
                         </div><!-- /.col-md-12 -->
-                        <?php print views_embed_view('vakantie', $display_id = 'block_1', 'Cyprus'); ?>
+                        <?php print views_embed_view('vakantie', $display_id = 'block_1', $field_country[0]['value']); ?>
                     </div>
                 </div><!-- /.col-md-9 -->
 

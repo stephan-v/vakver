@@ -570,12 +570,12 @@ Vakantie pagina(single)
 }
 .node-type-vakantie .weather {
   margin-top: 30px;
+  font-family: Oxygen;
 }
 .node-type-vakantie .weather .current-weather {
   border-radius: 5px 5px 0 0;
   background: #FFCA5C;
   color: white;
-  font-family: Oxygen;
   text-align: center;
   padding: 20px 0;
 }
@@ -585,23 +585,24 @@ Vakantie pagina(single)
   list-style: none;
   background: white;
   border-radius: 0 0 5px 5px;
+  padding: 5px 30px;
 }
 .node-type-vakantie .weather .forecast li {
   line-height: 50px;
-  padding-left: 20px;
   float: left;
   width: 100%;
 }
 .node-type-vakantie .weather .forecast li .day {
   display: inline-block;
+  color: #676767;
 }
 .node-type-vakantie .weather .forecast li .temp {
   float: right;
   margin-right: 40px;
+  font-weight: bold;
 }
 .node-type-vakantie .weather .forecast li img {
   float: right;
-  margin-right: 20px;
 }
 .node-type-vakantie .related-vacations-header h3 {
   margin: 2em 0 1em 0;
@@ -644,12 +645,12 @@ Footer
 ========================================================================== */
 #footer {
   margin-top: 50px;
+  position: relative;
+  z-index: 2;
 }
 #footer .newsletter {
   background: #4894FF;
   padding: 20px 0;
-  position: relative;
-  z-index: 2;
 }
 #footer .newsletter p {
   color: white;
