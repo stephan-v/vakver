@@ -105,7 +105,7 @@
 				</div><!-- /.row -->
 			</div><!-- /.container -->
 
-			<img src="<?php print path_to_theme(); ?>/img/palm.png" alt="" class="palm">
+			<img src="/<?php print path_to_theme(); ?>/img/palm.png" alt="" class="palm">
 		</div><!-- /.main-content -->
 
 		<div class="lower-footer text-center">

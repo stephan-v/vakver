@@ -104,20 +104,30 @@
 
                     <div class="row">
                         <div class="col-md-12">
-                            <!-- switch block travel agency -->
                             <?php
+                                // search for a node by travel_agency field
+                                $agency = (new EntityFieldQuery())
+                                  ->entityCondition('entity_type', 'node')
+                                  ->propertyCondition('title', $field_travel_agency[0]['value'])
+                                  ->execute();
 
-                                if($field_travel_agency[0]['value'] === 'Tjingo') {
-                                    print 'Hello Tjingo';
-                                } elseif($field_travel_agency[0]['value'] === 'D-reizen') {
-                                    print 'Hello D-reizen';
-                                } else {
-                                    print 'Hello ElizaWasHere';
-                                }
-
+                                  // array_shift to get rid of the first array item
+                                  $agency_node = node_load(array_shift(array_keys($agency['node'])));
                             ?>
-                        </div>
-                    </div>
+
+                            <?php if(isset($agency_node->field_logo['und'][0]['uri'])): ?>
+                                <a href="<?php print drupal_get_path_alias('node/' . $agency_node->nid); ?>">
+                                    <?php print theme_image_style(array(
+                                        'style_name' => 'large',
+                                        'path' => $agency_node->field_logo['und'][0]['uri'],
+                                        'width' => $agency_node->field_logo['und'][0]['width'],
+                                        'height' => $agency_node->field_logo['und'][0]['height'],
+                                        'attributes' => array('class' => 'travel-provided-by')
+                                    )); ?>
+                                </a>
+                            <?php endif; ?>
+                        </div><!-- /.col-md-12 -->
+                    </div><!-- /.row -->
 
                     <!-- pass the city and country iso as props down to the component(weatherapi.vue) -->
                     <weatherapi city="<?php print $field_city[0]['value']; ?>" iso="<?php print $field_country_iso[0]['value']; ?>"></weatherapi>
