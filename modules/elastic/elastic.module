@@ -115,6 +115,11 @@ function elastic_node_insert($node) {
   $client = elasticsearch_connector_get_client_by_id('elasticsearch');
   $params = _elastic_prepare_node($node);
 
+  if (empty($params['body']['field_image'])) {
+    drupal_set_message(t('Skipped this insert because there is no image found for it'));
+    return;
+  }
+
   if ( ! $params) {
     drupal_set_message(t('There was a problem saving this node to Elastic.'));
     return;
@@ -122,6 +127,7 @@ function elastic_node_insert($node) {
 
   // This actually inserts the node into elasticsearch, utisiling the $client->index() method from the elasticsearch php client
   $result = $client->index($params);
+
   if ($result && $result['created'] === false) {
     drupal_set_message(t('There was a problem saving this node to Elastic.'));
     return;

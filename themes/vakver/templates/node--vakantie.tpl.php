@@ -71,37 +71,68 @@
                     </div><!-- travel-information -->
 
                     <div class="vacation">
+                        <div class="social-media">
+                            <i class="fa fa-facebook-square fa-2x" aria-hidden="true"></i>
+                            <i class="fa fa-twitter fa-2x" aria-hidden="true"></i>
+                            <i class="fa fa-google-plus fa-lg" aria-hidden="true"></i>
+                        </div><!-- /.social-media -->
+
                         <?php print render($content['field_image']); ?>
 
                         <h3><?php print $title; ?></h3>
 
                         <?php print $body[0]['value']; ?>
                     </div><!-- /.vacation -->
-
-                    <!-- vakantie view -->
-                    <div class="row">
-                        <div class="col-md-12 related-vacations-header">
-                            <h3>VERGELIJKERBARE VAKANTIES</h3>
-                        </div><!-- /.col-md-12 -->
-                        <?php print views_embed_view('vakantie', $display_id = 'block_1', $field_country[0]['value']); ?>
-                    </div>
                 </div><!-- /.col-md-9 -->
 
                 <div class="col-md-3">
-                    <div class="pricing">
-                        <div class="price">&euro;<?php print $field_price[0]['value']; ?></div>
-                        <div class="person">Per persoon</div>
-                    </div><!-- /.pricing -->
+                    <div class="row">
+                        <div class="col-sm-6 col-md-12">
+                            <div class="pricing">
+                                <div class="price">&euro;<?php print $field_price[0]['value']; ?></div>
+                                <div class="person">Per persoon</div>
+                            </div><!-- /.pricing -->
+                        </div><!-- /.col-xs-6 -->
 
-                    <a href="<?php print $field_url[0]['url']; ?>" class="call-to-action">
-                        <div class="inner">Reis boeken<i class="fa fa-plane fa-lg" aria-hidden="true"></i></div><!-- /.inner -->
-                        <div class="circle"><i class="fa fa-arrow-right fa-lg" aria-hidden="true"></i></div><!-- /.circle -->
-                    </a><!-- /.call-to-action -->
+                        <div class="col-sm-6 col-md-12">
+                            <a href="<?php print $field_url[0]['url']; ?>" class="call-to-action">
+                                <div class="inner">Reis boeken<i class="fa fa-plane fa-lg" aria-hidden="true"></i></div><!-- /.inner -->
+                                <div class="circle"><i class="fa fa-arrow-right fa-lg" aria-hidden="true"></i></div><!-- /.circle -->
+                            </a><!-- /.call-to-action -->
+                        </div><!-- /.col-xs-6 -->
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <!-- switch block travel agency -->
+                            <?php
+
+                                if($field_travel_agency[0]['value'] === 'Tjingo') {
+                                    print 'Hello Tjingo';
+                                } elseif($field_travel_agency[0]['value'] === 'D-reizen') {
+                                    print 'Hello D-reizen';
+                                } else {
+                                    print 'Hello ElizaWasHere';
+                                }
+
+                            ?>
+                        </div>
+                    </div>
 
                     <!-- pass the city and country iso as props down to the component(weatherapi.vue) -->
                     <weatherapi city="<?php print $field_city[0]['value']; ?>" iso="<?php print $field_country_iso[0]['value']; ?>"></weatherapi>
                 </div><!-- /.col-md-3 -->
             </div><!-- /.row -->
+
+            <?php print_r($node->field_images); ?>
+
+            <!-- vakantie view -->
+            <div class="row">
+                <div class="col-md-12 related-vacations-header">
+                    <h3>vergelijkbare vakanties</h3>
+                </div><!-- /.col-md-12 -->
+                <?php print views_embed_view('vakantie', $display_id = 'block_1', $field_country[0]['value']); ?>
+            </div>
         </div><!-- /.container -->
     </div><!-- /.content -->
 </div><!-- /#node -->

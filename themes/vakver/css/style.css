@@ -481,9 +481,30 @@ Vakantie pagina(single)
   background: white;
   padding: 40px;
   line-height: 1.8em;
+  min-height: 0;
 }
 .node-type-vakantie .vacation h3 {
   margin-top: 30px;
+}
+.node-type-vakantie .vacation .social-media {
+  position: absolute;
+  left: -31px;
+  background: white;
+  padding: 15px 10px;
+}
+.node-type-vakantie .vacation .social-media .fa {
+  display: block;
+}
+.node-type-vakantie .vacation .social-media .fa-facebook-square {
+  color: #3b5998;
+  margin-bottom: 10px;
+}
+.node-type-vakantie .vacation .social-media .fa-twitter {
+  color: #55acee;
+  margin-bottom: 15px;
+}
+.node-type-vakantie .vacation .social-media .fa-google-plus {
+  color: #d34836;
 }
 .node-type-vakantie a.call-to-action {
   display: block;
@@ -493,6 +514,7 @@ Vakantie pagina(single)
   padding: 15px 0;
   border-radius: 5px;
   font-size: 18px;
+  margin-right: 15px;
   position: relative;
   margin-top: 20px;
 }
@@ -532,6 +554,10 @@ Vakantie pagina(single)
   padding: 40px 0;
   border-right: 1px solid lightgrey;
 }
+.node-type-vakantie .travel-information .col-md-3:nth-child(1),
+.node-type-vakantie .travel-information .col-md-3:nth-child(2) {
+  border-bottom: 1px solid lightgrey;
+}
 .node-type-vakantie .travel-information .col-md-3:last-child {
   border-right: none;
 }
@@ -554,7 +580,7 @@ Vakantie pagina(single)
   text-align: center;
   color: white;
   font-family: Oxygen;
-  margin: -124px 0 57px 0;
+  margin: 20px 0 0 0;
 }
 .node-type-vakantie .pricing .price {
   background: #5B9DF4;
@@ -577,7 +603,7 @@ Vakantie pagina(single)
   background: #FFCA5C;
   color: white;
   text-align: center;
-  padding: 20px 0;
+  padding: 15px 0;
 }
 .node-type-vakantie .weather .forecast {
   float: left;
@@ -598,21 +624,41 @@ Vakantie pagina(single)
 }
 .node-type-vakantie .weather .forecast li .temp {
   float: right;
-  margin-right: 40px;
+  margin-right: 0;
   font-weight: bold;
 }
 .node-type-vakantie .weather .forecast li img {
   float: right;
 }
-.node-type-vakantie .related-vacations-header h3 {
+.related-vacations-header h3 {
   margin: 2em 0 1em 0;
   font-family: Oxygen;
   font-weight: lighter;
   color: #84816D;
   font-size: 1.4em;
 }
+@media (min-width: 992px) {
+  .node-type-vakantie .vacation {
+    min-height: 622px;
+  }
+  .node-type-vakantie a.call-to-action {
+    margin-right: 0;
+  }
+  .node-type-vakantie .pricing {
+    margin: -124px 0 37px 0;
+  }
+  .node-type-vakantie .travel-information .col-md-3:nth-child(1),
+  .node-type-vakantie .travel-information .col-md-3:nth-child(2) {
+    border-bottom: none;
+  }
+}
+@media (min-width: 1200px) {
+  .node-type-vakantie .weather .forecast li .temp {
+    margin-right: 40px;
+  }
+}
 /* ==========================================================================
-Reisaanbieder pagina
+Reisaanbieder pagina(single)
 ========================================================================== */
 .node-type-reisaanbieder .agency-header {
   height: 600px;
@@ -622,6 +668,10 @@ Reisaanbieder pagina
 }
 .node-type-reisaanbieder .agency-header h1 {
   color: white;
+}
+.node-type-reisaanbieder .agency-logo {
+  display: block;
+  margin-bottom: 20px;
 }
 .node-type-reisaanbieder .agency-content {
   background: white;
@@ -634,11 +684,65 @@ Reisaanbieder pagina
   font-weight: bold;
   color: #95989A;
 }
+.node-type-reisaanbieder .agency-content .readmore + [data-readmore-toggle] {
+  background: #FF6255;
+  display: inline-block;
+  width: 50px;
+  height: 50px;
+  border-radius: 100%;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 5px solid #F3F1E4;
+  color: #FF6255;
+  padding: 5px;
+  z-index: 1;
+}
+.node-type-reisaanbieder .agency-content .readmore + [data-readmore-toggle]:before {
+  content: "\f063";
+  font-family: FontAwesome;
+  font-style: normal;
+  font-weight: normal;
+  text-decoration: inherit;
+  /*--adjust as necessary--*/
+  color: white;
+  font-size: 18px;
+  padding-right: 0.5em;
+  position: absolute;
+  top: 10px;
+  left: 11px;
+  text-decoration: none;
+}
+.node-type-reisaanbieder .agency-content .readmore[aria-expanded="true"] + [data-readmore-toggle]:before {
+  content: "\f062";
+  top: 8px;
+}
 .node-type-reisaanbieder .overlap {
   margin-top: -50px;
 }
 .node-type-reisaanbieder .agency-logo {
   border: 1px solid #E0E0E0;
+}
+/* ==========================================================================
+Reisaanbieder overzichtspagina
+========================================================================== */
+.reisaanbieders-overzicht h2 {
+  font-family: Oxygen;
+  margin: 60px 0 30px 0;
+  text-align: center;
+  color: #5B9DF4;
+  font-size: 24px;
+  text-transform: uppercase;
+  display: inline-block;
+  border-bottom: 3px solid #9DD915;
+  padding-bottom: 10px;
+  font-weight: bold;
+}
+.reisaanbieders-overzicht a {
+  position: relative;
+  height: 255px;
+  background: white;
+  display: block;
 }
 /* ==========================================================================
 Footer

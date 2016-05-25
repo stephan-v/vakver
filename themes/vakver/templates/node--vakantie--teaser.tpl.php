@@ -1,4 +1,4 @@
-<div class="col-md-4">
+<div class="col-md-3 col-sm-6">
 	<div class="vacation-item">
 		<a href="<?php print url('node/'. $node->nid); ?>">
 			<div class="placeholder-img" style="background-image: url(<?php print_r(file_create_url($field_image['und'][0]['uri'])); ?>);">
@@ -16,4 +16,4 @@
 			</div><!-- /.content -->
 		</a>
 	</div><!-- /.vacation-item -->
-</div><!-- /.col-md-4 -->
+</div><!-- /.col-md-3 -->

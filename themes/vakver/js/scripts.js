@@ -32,7 +32,7 @@
 
 		// sloppy hotfix
 		setTimeout(function() {
-			$('.readmore').readmore({
+			$('.filter .readmore').readmore({
 				moreLink: '<a href="#" class="show-more">Toon alles</a>',
 				lessLink: '<a href="#" class="show-more">Toon minder</a>',
 				collapsedHeight: 75,
@@ -40,8 +40,12 @@
 			});
 		}, 1000);
 
-		Vue.nextTick(function () {
-		  console.log('dom updated');
+		// without timeout
+		$('.agency-content .readmore').readmore({
+			moreLink: '<a href="#" class="show-more">a</a>',
+			lessLink: '<a href="#" class="show-more">a</a>',
+			collapsedHeight: 100,
+			speed: 1000
 		});
 
 		/* ==========================================================================

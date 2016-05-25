@@ -93,26 +93,39 @@
     </div>
     <div class="container">
         <div class="content overlap"<?php print $content_attributes; ?>>
-            <div class="col-md-3">
-                <?php if(isset($node->field_logo['und'][0]['uri'])): ?>
-                    <a href="<?php $node->field_logo['und'][0]['uri']; ?>" class="agency-logo">
-                        <?php print theme_image_style(array(
-                            'style_name' => 'large',
-                            'path' => $node->field_logo['und'][0]['uri'],
-                            'width' => $node->field_logo['und'][0]['width'],
-                            'height' => $node->field_logo['und'][0]['height'],
-                        )); ?>
-                    </a>
-                <?php endif; ?>
-            </div><!-- /.col-md-3 -->
+            <div class="row">
+                <div class="col-md-3">
+                    <?php if(isset($node->field_logo['und'][0]['uri'])): ?>
+                        <a href="<?php $node->field_logo['und'][0]['uri']; ?>" class="agency-logo">
+                            <?php print theme_image_style(array(
+                                'style_name' => 'large',
+                                'path' => $node->field_logo['und'][0]['uri'],
+                                'width' => $node->field_logo['und'][0]['width'],
+                                'height' => $node->field_logo['und'][0]['height'],
+                            )); ?>
+                        </a>
+                    <?php endif; ?>
+                </div><!-- /.col-md-3 -->
 
-            <div class="col-md-9">
-                <div class="agency-content">
-                    <h3>Over <?php print $title; ?></h3>
-                    <?php print $body[0]['value']; ?>
-                </div><!-- /.agency-content -->
-            </div><!-- /.col-md-9 -->
+                <div class="col-md-9">
+                    <div class="agency-content">
+                        <div class="readmore">
+                            <h3>Over <?php print $title; ?></h3>
+                            <?php print $body[0]['value']; ?>
+                        </div>
+                    </div><!-- /.agency-content -->
+                </div><!-- /.col-md-9 -->
+            </div><!-- /.row -->
         </div><!-- /.content -->
-    </div><!-- /.container -->
 
+        <?php if(!$teaser): ?>
+            <!-- vakantie view -->
+            <div class="row">
+                <div class="col-md-12 related-vacations-header">
+                    <h3>vakanties aangeboden door <?php print $node->title; ?></h3>
+                </div><!-- /.col-md-12 -->
+                <?php print views_embed_view('reisaanbieders', $display_id = 'block_1', $field_travel_agency[0]['value']); ?>
+            </div>
+        <?php endif; ?>
+    </div><!-- /.container -->
 </div><!-- /#node -->
