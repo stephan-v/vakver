@@ -102,7 +102,7 @@
 			var elasticsearch = require('elasticsearch');
 
 			this.client = new elasticsearch.Client({
-				host: '46.182.217.108:9200',
+				host: 'localhost:9200',
 				// log: 'trace'
 			});
 
