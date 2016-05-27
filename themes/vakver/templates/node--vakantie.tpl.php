@@ -106,7 +106,8 @@
                         <div class="col-md-12">
                             <?php
                                 // search for a node by travel_agency field
-                                $agency = (new EntityFieldQuery())
+                                $agencyObject = new EntityFieldQuery;
+                                $agency = $agencyObject
                                   ->entityCondition('entity_type', 'node')
                                   ->propertyCondition('title', $field_travel_agency[0]['value'])
                                   ->execute();

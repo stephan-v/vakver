@@ -932,14 +932,27 @@ Labels, buttons, etc.
 /* ==========================================================================
 Contact form
 ========================================================================== */
+.contact-header {
+  position: relative;
+}
+.contact-header .absolute-center {
+  color: white;
+  top: 40%;
+}
+.contact-us {
+  margin-top: -150px;
+  margin-bottom: 100px;
+}
 .form-wrapper {
   background: white;
   font-family: Oxygen;
+  padding: 30px;
 }
 .form-wrapper h2 {
   color: #F8B332;
   font-size: 24px;
   font-weight: bold;
+  margin-top: 0;
 }
 .form-wrapper input,
 .form-wrapper textarea {
@@ -951,6 +964,7 @@ Contact form
 }
 .form-wrapper .form-actions {
   text-align: center;
+  margin-bottom: 0;
 }
 .form-wrapper .form-actions .webform-submit {
   width: auto;
@@ -962,18 +976,20 @@ Contact form
   background: #FFC14D;
 }
 .contact-form-img {
-  padding: 0 !important;
   overflow: hidden;
 }
 .contact-form-img .palmtree {
-  height: 471px;
-  background: url(../img/palmtree.jpg);
+  height: 497px;
+  background: url(../img/palmtree.jpg) no-repeat;
   display: none;
 }
 /* Medium devices (desktops, 992px and up) */
 @media (min-width: 992px) {
   .contact-form-img .palmtree {
     display: block;
+  }
+  .contact-us .col-md-6 {
+    padding: 0 !important;
   }
 }
 /* ==========================================================================

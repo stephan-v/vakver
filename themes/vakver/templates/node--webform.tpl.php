@@ -1,8 +1,8 @@
 <div class="contact-header">
-    <div class="text-overlay">
+    <div class="absolute-center">
         <h2><?php print $node->title; ?></h2>
         <?php if($field_image[0]['title']): ?>
-            <span class="subheading"><?php print $field_image[0]['title']; ?></span>
+            <?php print $field_image[0]['title']; ?>
         <?php endif; ?>
     </div><!-- /.text-overlay -->
     <?php print render($content['field_image']); ?>
@@ -17,14 +17,18 @@
         <?php print render($title_suffix); ?>
 
         <div class="content"<?php print $content_attributes; ?>>
-            <div class="col-md-6 form-wrapper">
-                <?php print render($content['body']); ?>
-                <?php print render($content['webform']); ?>
-            </div><!-- /.col-md-6 -->
+            <div class="row contact-us">
+                <div class="col-md-6">
+                    <div class="form-wrapper">
+                        <?php print render($content['body']); ?>
+                        <?php print render($content['webform']); ?>
+                    </div><!-- /.form-wrapper -->
+                </div><!-- /.col-md-6 -->
 
-            <div class="col-md-6 contact-form-img">
-                <div class="palmtree"></div>
-            </div><!-- /.col-md-6 -->
+                <div class="col-md-6 contact-form-img">
+                    <div class="palmtree"></div>
+                </div><!-- /.col-md-6 -->
+            </div><!-- /.contact-us -->
         </div><!-- /.content -->
     </div><!-- /.container -->
 </div><!-- /#node -->

@@ -1051,15 +1051,28 @@ Labels, buttons, etc.
 Contact form
 ========================================================================== */
 
+.contact-header {
+	position: relative;
 
+	.absolute-center {
+		color: white;
+		top: 40%;
+	}
+}
+.contact-us {
+	margin-top: -150px;
+	margin-bottom: 100px;
+}
 .form-wrapper {
 	background: white;
 	font-family: Oxygen;
+	padding: 30px;
 
 	h2 {
 		color: #F8B332;
 	    font-size: 24px;
 	    font-weight: bold;
+	    margin-top: 0;
 	}
 	input, textarea {
 		background: #EBEBEB;
@@ -1070,6 +1083,7 @@ Contact form
 	}
 	.form-actions {
 		text-align: center;
+		margin-bottom: 0;
 
 		.webform-submit {
 			width: auto;
@@ -1084,12 +1098,11 @@ Contact form
 	}
 }
 .contact-form-img {
-	padding: 0 !important;
 	overflow: hidden;
 
 	.palmtree {
-		height: 471px;
-		background: url(../img/palmtree.jpg);
+		height: 497px;
+		background: url(../img/palmtree.jpg) no-repeat;
 		display: none;
 	}
 }
@@ -1097,6 +1110,9 @@ Contact form
 @media (min-width: @screen-md-min) { 
 	.contact-form-img .palmtree {
 		display: block;
+	}
+	.contact-us .col-md-6 {
+		padding: 0 !important;
 	}
 }
 
