@@ -1047,6 +1047,59 @@ Labels, buttons, etc.
 	top: 45%;
 }
 
+/* ==========================================================================
+Contact form
+========================================================================== */
+
+
+.form-wrapper {
+	background: white;
+	font-family: Oxygen;
+
+	h2 {
+		color: #F8B332;
+	    font-size: 24px;
+	    font-weight: bold;
+	}
+	input, textarea {
+		background: #EBEBEB;
+	    border: none;
+	    padding: 10px;
+	    border-radius: 5px;
+	    width: 100%;
+	}
+	.form-actions {
+		text-align: center;
+
+		.webform-submit {
+			width: auto;
+			padding: 10px 50px;
+			background: #F8B332;
+			color: white;
+
+			&:hover {
+				background: #FFC14D;
+			}
+		}
+	}
+}
+.contact-form-img {
+	padding: 0 !important;
+	overflow: hidden;
+
+	.palmtree {
+		height: 471px;
+		background: url(../img/palmtree.jpg);
+		display: none;
+	}
+}
+/* Medium devices (desktops, 992px and up) */
+@media (min-width: @screen-md-min) { 
+	.contact-form-img .palmtree {
+		display: block;
+	}
+}
+
 
 /* ==========================================================================
 Homepage

@@ -930,6 +930,53 @@ Labels, buttons, etc.
   top: 45%;
 }
 /* ==========================================================================
+Contact form
+========================================================================== */
+.form-wrapper {
+  background: white;
+  font-family: Oxygen;
+}
+.form-wrapper h2 {
+  color: #F8B332;
+  font-size: 24px;
+  font-weight: bold;
+}
+.form-wrapper input,
+.form-wrapper textarea {
+  background: #EBEBEB;
+  border: none;
+  padding: 10px;
+  border-radius: 5px;
+  width: 100%;
+}
+.form-wrapper .form-actions {
+  text-align: center;
+}
+.form-wrapper .form-actions .webform-submit {
+  width: auto;
+  padding: 10px 50px;
+  background: #F8B332;
+  color: white;
+}
+.form-wrapper .form-actions .webform-submit:hover {
+  background: #FFC14D;
+}
+.contact-form-img {
+  padding: 0 !important;
+  overflow: hidden;
+}
+.contact-form-img .palmtree {
+  height: 471px;
+  background: url(../img/palmtree.jpg);
+  display: none;
+}
+/* Medium devices (desktops, 992px and up) */
+@media (min-width: 992px) {
+  .contact-form-img .palmtree {
+    display: block;
+  }
+}
+/* ==========================================================================
 Homepage
 ========================================================================== */
 /* Section name */

@@ -468,7 +468,7 @@ window.onload = function () {
 
 			// disable a sort
 			removeSort: function() {
-				// welcome to syntax hell(set all to false)
+				// chain these to set all them to false
 				this.sortPopularity = this.sortPrice = this.sortRating = false;
 
 				// broadcast the event to the child component listener
