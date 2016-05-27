@@ -10,7 +10,7 @@ exports.default = {
 		var elasticsearch = require('elasticsearch');
 
 		this.client = new elasticsearch.Client({
-			host: 'localhost:9200'
+			host: '46.182.217.108:9200'
 		});
 
 		// perform the initial search
