@@ -154,6 +154,47 @@ Navigation
 .navbar-default .search:hover .fa-search {
   font-size: 2.5em;
 }
+.container .navbar-header {
+  display: inline-block;
+}
+.responsive-menus {
+  text-align: right;
+  margin-top: -50px;
+}
+.responsive-menus.responsified.absolute {
+  float: right;
+}
+.responsive-menus.responsified.responsive-toggled span.toggler {
+  color: #3E669A;
+}
+.responsive-menus.responsified span.toggler {
+  background: none;
+  box-shadow: none;
+  margin-top: 7px;
+  font-size: 2em;
+  display: inline-block;
+  border: none !important;
+}
+.responsive-menus.responsified .responsive-menus-simple {
+  background: none;
+  box-shadow: none;
+  margin-top: 16px !important;
+  border-radius: 0 !important;
+}
+.responsive-menus.responsified .responsive-menus-simple ul {
+  margin-left: -15px !important;
+  margin-right: -15px !important;
+  background: #5B9DF4;
+}
+.responsive-menus.responsified .responsive-menus-simple li a {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+}
+.responsive-menus.responsified .responsive-menus-simple li:first-child a {
+  border-top: 1px solid rgba(0, 0, 0, 0.2);
+}
+.responsive-menus.responsified .responsive-menus-simple li:last-child a {
+  border-bottom: none;
+}
 @media (min-width: 800px) {
   .navbar-default .search {
     display: block;
@@ -474,9 +515,6 @@ Vakantie pagina(single)
   background-size: cover;
   position: relative;
 }
-.node-type-vakantie .vacation-header h1 {
-  color: white;
-}
 .node-type-vakantie .vacation {
   background: white;
   padding: 40px;
@@ -667,7 +705,7 @@ Vakantie pagina(single)
 Reisaanbieder pagina(single)
 ========================================================================== */
 .node-type-reisaanbieder .agency-header {
-  height: 600px;
+  height: 400px;
   background: url(../img/agency-header.jpg) center 70%;
   background-size: cover;
   position: relative;
@@ -678,6 +716,11 @@ Reisaanbieder pagina(single)
 .node-type-reisaanbieder .agency-logo {
   display: block;
   margin-bottom: 20px;
+  background: white;
+}
+.node-type-reisaanbieder .agency-logo img {
+  margin: 0 auto;
+  display: block;
 }
 .node-type-reisaanbieder .agency-content {
   background: white;
@@ -757,6 +800,7 @@ Footer
   margin-top: 50px;
   position: relative;
   z-index: 2;
+  text-align: center;
 }
 #footer .newsletter {
   background: #4894FF;
@@ -792,6 +836,10 @@ Footer
   color: white;
   position: relative;
 }
+#footer .main-content .container {
+  position: relative;
+  z-index: 1;
+}
 #footer .main-content h3 {
   font-size: 16px;
   text-transform: uppercase;
@@ -817,6 +865,7 @@ Footer
   position: absolute;
   bottom: 0;
   right: 0;
+  display: none;
 }
 #footer .main-content .contact a {
   font-weight: bold;
@@ -831,6 +880,27 @@ Footer
   margin: 0;
   color: white;
 }
+/* Medium devices (desktops, 992px and up) */
+@media (min-width: 992px) {
+  #footer {
+    text-align: left;
+  }
+  #footer .main-content .palm {
+    display: block;
+  }
+}
+/* Small devices 1600px and up */
+@media (max-width: 1600px) {
+  #footer .main-content .palm {
+    max-height: 275px;
+  }
+}
+/* Small devices 1100px and up */
+@media (max-width: 1100px) {
+  #footer .main-content .palm {
+    max-height: 250px;
+  }
+}
 /* ==========================================================================
 Forms
 ========================================================================== */
@@ -843,6 +913,21 @@ Forms
   -moz-box-sizing: border-box;
   box-sizing: border-box;
   max-width: 100%;
+}
+/* ==========================================================================
+Labels, buttons, etc.
+========================================================================== */
+.skewed-label {
+  color: white;
+  background: #5B9DF4;
+  font-size: 30px;
+  padding: 15px 30px;
+  transform: skewY(-3deg) translateY(-50%) translateX(-50%);
+  top: 40%;
+  text-align: center;
+}
+.agency-header .skewed-label {
+  top: 45%;
 }
 /* ==========================================================================
 Homepage

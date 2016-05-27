@@ -341,8 +341,6 @@ exports.default = {
 	props: ['city', 'iso'],
 
 	ready: function ready() {
-		console.log('WeatherAPI active');
-
 		// 7 days weather forecast
 		Vue.http.get('http://api.openweathermap.org/data/2.5/forecast/daily?q=' + this.city + ',' + this.iso + '&units=metric&lang=nl&mode=json&APPID=317947b4843d1f4de1eb935a78fe6554').then(function (resp) {
 			this.dailyForecast = resp.data.list;
@@ -369,7 +367,7 @@ exports.default = {
 	}
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"weather\">\n\t<div class=\"current-weather\">\n\t\t<h1>{{ currentTemp }}°</h1>\n\t</div><!-- /.current-weather -->\n\t<ul class=\"forecast\">\n\t\t<li v-for=\"forecast in dailyForecast\">\n\t\t\t<div class=\"day\">{{ getDay($index) }}</div>\n\t\t\t<img src=\"http://openweathermap.org/img/w/{{ forecast.weather[0].icon }}.png\" alt=\"\">\n\t\t\t<div class=\"temp\">{{ Math.floor(forecast.temp.day) }}°</div>\n\t\t</li>\n\t</ul>\n</div>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"weather\" v-if=\"currentTemp\">\n\t<div class=\"current-weather\">\n\t\t<h1>{{ currentTemp }}°</h1>\n\t</div><!-- /.current-weather -->\n\t<ul class=\"forecast\">\n\t\t<li v-for=\"forecast in dailyForecast\">\n\t\t\t<div class=\"day\">{{ getDay($index) }}</div>\n\t\t\t<img v-bind:src=\"'http://openweathermap.org/img/w/' + forecast.weather[0].icon + '.png'\" alt=\"\">\n\t\t\t<div class=\"temp\">{{ Math.floor(forecast.temp.day) }}°</div>\n\t\t</li>\n\t</ul>\n</div>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)

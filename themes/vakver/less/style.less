@@ -173,6 +173,51 @@ Navigation
 		}
 	}
 }
+.container .navbar-header {
+	display: inline-block;
+}
+
+.responsive-menus {
+    text-align: right;
+    margin-top: -50px;
+}
+.responsive-menus.responsified {
+	&.absolute {
+    	float: right;
+	}
+	&.responsive-toggled span.toggler {
+	    color: #3E669A;
+	}
+	span.toggler {
+		background: none;
+	    box-shadow: none;
+	    margin-top: 7px;
+	    font-size: 2em;
+	    display: inline-block;
+	    border: none !important;
+	}
+	.responsive-menus-simple {
+		background: none;
+		box-shadow: none;
+		margin-top: 16px !important;
+		border-radius: 0 !important;
+
+		ul {
+		    margin-left: -15px !important;
+    		margin-right: -15px !important;
+    		background: #5B9DF4;
+		}
+		li a {
+			border-bottom: 1px solid rgba(0,0,0,0.2);
+		}
+		li:first-child a {
+			border-top: 1px solid rgba(0,0,0,0.2);
+		}
+		li:last-child a {
+			border-bottom: none;
+		}
+	}
+}
 
 // custom breakpoint to move the sibebar
 @media (min-width: 800px) { 
@@ -533,10 +578,6 @@ Vakantie pagina(single)
 		background: url(../img/vacation-header.jpg) center center;
 		background-size: cover;
 		position: relative;
-
-		h1 {
-			color: white;
-		}
 	}
 	.vacation {
 	    background: white;
@@ -756,7 +797,7 @@ Reisaanbieder pagina(single)
 
 .node-type-reisaanbieder {
 	.agency-header {
-		height: 600px;
+		height: 400px;
 		background: url(../img/agency-header.jpg) center 70%;
 		background-size: cover;
 		position: relative;
@@ -768,6 +809,12 @@ Reisaanbieder pagina(single)
 	.agency-logo {
 		display: block;
 		margin-bottom: 20px;
+	    background: white;
+
+	    img {
+    	    margin: 0 auto;
+    		display: block;
+	    }
 	}
 	.agency-content {
 	    background: white;
@@ -856,6 +903,7 @@ Footer
 	margin-top: 50px;
 	position: relative;
     z-index: 2;
+    text-align: center;
 
 	.newsletter {
 		background: #4894FF;
@@ -895,6 +943,10 @@ Footer
 		color: white;
 		position: relative;
 
+		.container {
+		    position: relative;
+    		z-index: 1;
+		}
 		h3 {
 		    font-size: 16px;
     		text-transform: uppercase;
@@ -921,6 +973,7 @@ Footer
 			position: absolute;
 			bottom: 0;
 			right: 0;
+			display: none;
 		}
 		.contact a {
 			font-weight: bold;
@@ -939,6 +992,29 @@ Footer
 	}
 }
 
+/* Medium devices (desktops, 992px and up) */
+@media (min-width: @screen-md-min) {
+	#footer {
+		text-align: left;
+
+		.main-content .palm {
+			display: block;
+		}
+	}
+}
+
+/* Small devices 1600px and up */
+@media (max-width: 1600px) {
+	#footer .main-content .palm {
+		max-height: 275px;
+	}
+}
+/* Small devices 1100px and up */
+@media (max-width: 1100px) {
+	#footer .main-content .palm {
+		max-height: 250px;
+	}
+}
 
 /* ==========================================================================
 Forms
@@ -952,6 +1028,23 @@ Forms
 		.box-sizing(border-box);
 		max-width: 100%;
 	}
+}
+
+/* ==========================================================================
+Labels, buttons, etc.
+========================================================================== */
+
+.skewed-label {
+	color: white;
+    background: #5B9DF4;
+    font-size: 30px;
+    padding: 15px 30px;
+    transform: skewY(-3deg) translateY(-50%) translateX(-50%);
+    top: 40%;
+    text-align: center;
+}
+.agency-header .skewed-label {
+	top: 45%;
 }
 
 

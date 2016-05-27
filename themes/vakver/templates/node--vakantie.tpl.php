@@ -6,7 +6,7 @@
     <?php print render($title_suffix); ?>
     
     <div class="vacation-header">
-        <h1 class="absolute-center"><?php print $title; ?></h1>
+        <h1 class="absolute-center skewed-label"><?php print $title; ?></h1>
     </div><!-- /.vacation-header -->
 
     <div class="content"<?php print $content_attributes; ?>>
@@ -116,7 +116,7 @@
                             ?>
 
                             <?php if(isset($agency_node->field_logo['und'][0]['uri'])): ?>
-                                <a href="<?php print drupal_get_path_alias('node/' . $agency_node->nid); ?>">
+                                <a href="/<?php print drupal_get_path_alias('node/' . $agency_node->nid); ?>">
                                     <?php print theme_image_style(array(
                                         'style_name' => 'large',
                                         'path' => $agency_node->field_logo['und'][0]['uri'],
