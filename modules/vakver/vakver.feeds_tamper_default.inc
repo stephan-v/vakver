@@ -40,6 +40,21 @@ function vakver_feeds_tamper_default() {
   $feeds_tamper = new stdClass();
   $feeds_tamper->disabled = FALSE; /* Edit this to true to make a default feeds_tamper disabled initially */
   $feeds_tamper->api_version = 2;
+  $feeds_tamper->id = 'd_reizen-blank_travel_agency-default_value';
+  $feeds_tamper->importer = 'd_reizen';
+  $feeds_tamper->source = 'Blank travel_agency';
+  $feeds_tamper->plugin_id = 'default_value';
+  $feeds_tamper->settings = array(
+    'default_value' => 'D-reizen',
+    'only_if_empty' => 0,
+  );
+  $feeds_tamper->weight = 0;
+  $feeds_tamper->description = 'Set value or default value';
+  $export['d_reizen-blank_travel_agency-default_value'] = $feeds_tamper;
+
+  $feeds_tamper = new stdClass();
+  $feeds_tamper->disabled = FALSE; /* Edit this to true to make a default feeds_tamper disabled initially */
+  $feeds_tamper->api_version = 2;
   $feeds_tamper->id = 'd_reizen-img_medium-find_replace';
   $feeds_tamper->importer = 'd_reizen';
   $feeds_tamper->source = 'img_medium';
@@ -104,6 +119,21 @@ function vakver_feeds_tamper_default() {
   $feeds_tamper = new stdClass();
   $feeds_tamper->disabled = FALSE; /* Edit this to true to make a default feeds_tamper disabled initially */
   $feeds_tamper->api_version = 2;
+  $feeds_tamper->id = 'd_reizen2-blank_travel_agency-default_value';
+  $feeds_tamper->importer = 'd_reizen2';
+  $feeds_tamper->source = 'Blank travel_agency';
+  $feeds_tamper->plugin_id = 'default_value';
+  $feeds_tamper->settings = array(
+    'default_value' => 'D-reizen',
+    'only_if_empty' => 0,
+  );
+  $feeds_tamper->weight = 0;
+  $feeds_tamper->description = 'Set value or default value';
+  $export['d_reizen2-blank_travel_agency-default_value'] = $feeds_tamper;
+
+  $feeds_tamper = new stdClass();
+  $feeds_tamper->disabled = FALSE; /* Edit this to true to make a default feeds_tamper disabled initially */
+  $feeds_tamper->api_version = 2;
   $feeds_tamper->id = 'd_reizen2-img_medium-find_replace';
   $feeds_tamper->importer = 'd_reizen2';
   $feeds_tamper->source = 'img_medium';
@@ -160,10 +190,25 @@ function vakver_feeds_tamper_default() {
   $feeds_tamper->importer = 'elizawashere';
   $feeds_tamper->source = 'Blank country';
   $feeds_tamper->plugin_id = 'country_to_code';
-  $feeds_tamper->settings = '';
+  $feeds_tamper->settings = array();
   $feeds_tamper->weight = 1;
   $feeds_tamper->description = 'Convert country to ISO code';
   $export['elizawashere-blank_country-country_to_code'] = $feeds_tamper;
+
+  $feeds_tamper = new stdClass();
+  $feeds_tamper->disabled = FALSE; /* Edit this to true to make a default feeds_tamper disabled initially */
+  $feeds_tamper->api_version = 2;
+  $feeds_tamper->id = 'elizawashere-blank_travel_agency-default_value';
+  $feeds_tamper->importer = 'elizawashere';
+  $feeds_tamper->source = 'Blank travel_agency';
+  $feeds_tamper->plugin_id = 'default_value';
+  $feeds_tamper->settings = array(
+    'default_value' => 'Eliza was here',
+    'only_if_empty' => 0,
+  );
+  $feeds_tamper->weight = 0;
+  $feeds_tamper->description = 'Set value or default value';
+  $export['elizawashere-blank_travel_agency-default_value'] = $feeds_tamper;
 
   $feeds_tamper = new stdClass();
   $feeds_tamper->disabled = FALSE; /* Edit this to true to make a default feeds_tamper disabled initially */
@@ -211,6 +256,21 @@ function vakver_feeds_tamper_default() {
   $feeds_tamper->weight = 0;
   $feeds_tamper->description = 'Copy source value';
   $export['tjingo-blank_country_of_destination_1-copy'] = $feeds_tamper;
+
+  $feeds_tamper = new stdClass();
+  $feeds_tamper->disabled = FALSE; /* Edit this to true to make a default feeds_tamper disabled initially */
+  $feeds_tamper->api_version = 2;
+  $feeds_tamper->id = 'tjingo-blank_travel_agency-default_value';
+  $feeds_tamper->importer = 'tjingo';
+  $feeds_tamper->source = 'Blank travel_agency';
+  $feeds_tamper->plugin_id = 'default_value';
+  $feeds_tamper->settings = array(
+    'default_value' => 'Tjingo',
+    'only_if_empty' => 0,
+  );
+  $feeds_tamper->weight = 0;
+  $feeds_tamper->description = 'Set value or default value';
+  $export['tjingo-blank_travel_agency-default_value'] = $feeds_tamper;
 
   $feeds_tamper = new stdClass();
   $feeds_tamper->disabled = FALSE; /* Edit this to true to make a default feeds_tamper disabled initially */

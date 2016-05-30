@@ -128,3 +128,19 @@ function vakver_default_search_api_index() {
   }');
   return $items;
 }
+
+/**
+ * Implements hook_default_search_api_server().
+ */
+function vakver_default_search_api_server() {
+  $items = array();
+  $items['elasticsearch_server'] = entity_import('search_api_server', '{
+    "name" : "elasticsearch_server",
+    "machine_name" : "elasticsearch_server",
+    "description" : "",
+    "class" : "search_api_elasticsearch_connector",
+    "options" : { "cluster" : "elasticsearch", "facet_limit" : 10 },
+    "enabled" : "1"
+  }');
+  return $items;
+}

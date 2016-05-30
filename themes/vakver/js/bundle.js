@@ -10,11 +10,14 @@ exports.default = {
 		var elasticsearch = require('elasticsearch');
 
 		this.client = new elasticsearch.Client({
-			host: '46.182.217.108:9200'
+			/* production */
+			// host: '46.182.217.108:9200'
+
+			/* development */
+			host: 'localhost:9200'
 		});
 
 		// perform the initial search
-		// log: 'trace'
 		this.search();
 
 		// perform a search for a list of all unique countries

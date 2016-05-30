@@ -36,7 +36,7 @@
                                 <div class="title">Regio</div>
                                 <div class="attribute">
                                     <?php 
-                                        if($field_region[0]['value']) {
+                                        if(isset($field_region[0]['value'])) {
                                             print $field_region[0]['value']; 
                                         } else {
                                             print "Niet bekend";
@@ -52,7 +52,7 @@
                                 <div class="title">Stad</div>
                                 <div class="attribute">
                                     <?php 
-                                        if($field_city[0]['value']) {
+                                        if(isset($field_city[0]['value'])) {
                                             print $field_city[0]['value'];
                                         } else {
                                             print "Niet bekend";
@@ -134,8 +134,6 @@
                     <weatherapi city="<?php print $field_city[0]['value']; ?>" iso="<?php print $field_country_iso[0]['value']; ?>"></weatherapi>
                 </div><!-- /.col-md-3 -->
             </div><!-- /.row -->
-
-            <?php print_r($node->field_images); ?>
 
             <!-- vakantie view -->
             <div class="row">

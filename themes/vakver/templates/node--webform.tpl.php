@@ -1,11 +1,7 @@
-<div class="contact-header">
+<div class="contact-header" style="background-image: url(<?php print file_create_url($field_image[0]['uri']); ?>);">
     <div class="absolute-center">
         <h2><?php print $node->title; ?></h2>
-        <?php if($field_image[0]['title']): ?>
-            <?php print $field_image[0]['title']; ?>
-        <?php endif; ?>
     </div><!-- /.text-overlay -->
-    <?php print render($content['field_image']); ?>
 </div><!-- /.contact-header -->
 
 <div id="node-<?php print $node->nid; ?>" class="<?php print $classes; ?> clearfix"<?php print $attributes; ?>>

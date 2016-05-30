@@ -185,15 +185,15 @@ Navigation
   margin-left: -15px !important;
   margin-right: -15px !important;
   background: #5B9DF4;
+  box-shadow: 0px 4px 5px rgba(0, 0, 0, 0.15);
 }
 .responsive-menus.responsified .responsive-menus-simple li a {
   border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+  padding: 1.5em 5%;
+  font-weight: bold;
 }
 .responsive-menus.responsified .responsive-menus-simple li:first-child a {
   border-top: 1px solid rgba(0, 0, 0, 0.2);
-}
-.responsive-menus.responsified .responsive-menus-simple li:last-child a {
-  border-bottom: none;
 }
 @media (min-width: 800px) {
   .navbar-default .search {
@@ -775,6 +775,9 @@ Reisaanbieder pagina(single)
 /* ==========================================================================
 Reisaanbieder overzichtspagina
 ========================================================================== */
+.reisaanbieders-overzicht .absolute-center {
+  max-height: 100%;
+}
 .reisaanbieders-overzicht h2 {
   font-family: Oxygen;
   margin: 60px 0 30px 0;
@@ -792,6 +795,7 @@ Reisaanbieder overzichtspagina
   height: 255px;
   background: white;
   display: block;
+  margin-bottom: 30px;
 }
 /* ==========================================================================
 Footer
@@ -934,10 +938,17 @@ Contact form
 ========================================================================== */
 .contact-header {
   position: relative;
+  background-size: cover;
+  height: 300px;
+  width: 100%;
 }
 .contact-header .absolute-center {
   color: white;
-  top: 40%;
+  top: 25%;
+  text-align: center;
+}
+.contact-header .absolute-center h2 {
+  font-size: 26px;
 }
 .contact-us {
   margin-top: -150px;
@@ -983,8 +994,20 @@ Contact form
   background: url(../img/palmtree.jpg) no-repeat;
   display: none;
 }
+/* Small devices (tablets, 768px and up) */
+@media (min-width: 768px) {
+  .contact-header .absolute-center h2 {
+    font-size: 32px;
+  }
+}
 /* Medium devices (desktops, 992px and up) */
 @media (min-width: 992px) {
+  .contact-header {
+    height: 500px;
+  }
+  .contact-header .absolute-center {
+    top: 40%;
+  }
   .contact-form-img .palmtree {
     display: block;
   }

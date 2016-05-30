@@ -102,8 +102,11 @@
 			var elasticsearch = require('elasticsearch');
 
 			this.client = new elasticsearch.Client({
-				host: '46.182.217.108:9200',
-				// log: 'trace'
+				/* production */
+				// host: '46.182.217.108:9200'
+			
+				/* development */
+				host: 'localhost:9200'
 			});
 
 			// perform the initial search

@@ -101,6 +101,13 @@ function vakver_feeds_importer_default() {
             'source' => 'Blank country_of_destination 1',
             'target' => 'field_country',
             'unique' => FALSE,
+            'language' => 'und',
+          ),
+          10 => array(
+            'source' => 'Blank travel_agency',
+            'target' => 'field_travel_agency',
+            'unique' => FALSE,
+            'language' => 'und',
           ),
         ),
         'insert_new' => '1',
@@ -211,6 +218,12 @@ function vakver_feeds_importer_default() {
           9 => array(
             'source' => 'Blank country_of_destination 1',
             'target' => 'field_country',
+            'unique' => FALSE,
+            'language' => 'und',
+          ),
+          10 => array(
+            'source' => 'Blank travel_agency',
+            'target' => 'field_travel_agency',
             'unique' => FALSE,
           ),
         ),
@@ -323,6 +336,12 @@ function vakver_feeds_importer_default() {
             'source' => 'Blank country',
             'target' => 'field_country_iso',
             'unique' => FALSE,
+            'language' => 'und',
+          ),
+          10 => array(
+            'source' => 'Blank travel_agency',
+            'target' => 'field_travel_agency',
+            'unique' => FALSE,
           ),
         ),
         'insert_new' => '1',
@@ -433,6 +452,12 @@ function vakver_feeds_importer_default() {
           9 => array(
             'source' => 'Blank country_of_destination 1',
             'target' => 'field_country',
+            'unique' => FALSE,
+            'language' => 'und',
+          ),
+          10 => array(
+            'source' => 'Blank travel_agency',
+            'target' => 'field_travel_agency',
             'unique' => FALSE,
           ),
         ),
