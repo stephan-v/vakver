@@ -1,6 +1,6 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 var __vueify_style__ = require("vueify-insert-css").insert("\n.highlight {\n\tcolor: #74AF2A;\n\tfont-weight: bold;\n}\n")
-'use strict';
+"use strict";
 
 Object.defineProperty(exports, "__esModule", {
 	value: true
@@ -9,13 +9,18 @@ exports.default = {
 	ready: function ready() {
 		var elasticsearch = require('elasticsearch');
 
-		this.client = new elasticsearch.Client({
-			/* production */
-			host: '46.182.217.108:9200'
-
-			/* development */
-			// host: 'localhost:9200'
-		});
+		// check with TLD() helper if the top level domain is .dev or .local
+		if (this.getTLD() == "dev" || this.getTLD() == "local") {
+			this.client = new elasticsearch.Client({
+				/* development */
+				host: 'localhost:9200'
+			});
+		} else {
+			this.client = new elasticsearch.Client({
+				/* production */
+				host: '46.182.217.108:9200'
+			});
+		}
 
 		// perform the initial search
 		this.search();
@@ -306,6 +311,14 @@ exports.default = {
 			}.bind(this), function (err) {
 				console.trace(err.message);
 			});
+		},
+
+		getTLD: function getTLD() {
+			var hostName = window.location.hostname;
+			var hostNameArray = hostName.split(".");
+			var posOfTld = hostNameArray.length - 1;
+			var tld = hostNameArray[posOfTld];
+			return tld;
 		}
 	}
 };

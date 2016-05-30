@@ -101,13 +101,19 @@
 		ready: function() {
 			var elasticsearch = require('elasticsearch');
 
-			this.client = new elasticsearch.Client({
-				/* production */
-				host: '46.182.217.108:9200'
 			
-				/* development */
-				// host: 'localhost:9200'
-			});
+			// check with TLD() helper if the top level domain is .dev or .local
+			if(this.getTLD() == "dev" || this.getTLD() == "local") {
+				this.client = new elasticsearch.Client({				
+					/* development */
+					host: 'localhost:9200'
+				});
+			} else {
+				this.client = new elasticsearch.Client({
+					/* production */
+					host: '46.182.217.108:9200'
+				});
+			}
 
 			// perform the initial search
 			this.search();
@@ -402,7 +408,15 @@
 				}.bind(this), function (err) {
 					console.trace(err.message);
 				});
-			}
+			},
+
+			getTLD: function() {  
+			      var hostName = window.location.hostname;  
+			      var hostNameArray = hostName.split(".");  
+			      var posOfTld = hostNameArray.length - 1;  
+			      var tld = hostNameArray[posOfTld];  
+			      return tld;  
+			 }  
 		}
 	}
 </script>
