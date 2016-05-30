@@ -11,10 +11,10 @@ exports.default = {
 
 		this.client = new elasticsearch.Client({
 			/* production */
-			// host: '46.182.217.108:9200'
+			host: '46.182.217.108:9200'
 
 			/* development */
-			host: 'localhost:9200'
+			// host: 'localhost:9200'
 		});
 
 		// perform the initial search
