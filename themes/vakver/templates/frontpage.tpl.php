@@ -73,33 +73,7 @@
 
                 <div class="readmore">
                     <ul class="countries">
-                        <li v-for="country in countries" v-on:click="countryFilter(country.key)" v-bind:class="{ 'active': countriesToFilter.indexOf(country.key) > -1 }">{{ ucfirst(country.key) }}</li>
-                    </ul>
-                </div><!-- /.readmore -->
-            </div><!-- /.filer -->
-
-            <div class="filter">
-                <div class="filter-header">
-                    <h3>Vervoersmiddel</h3>
-                    <div class="filter-count">7</div>
-                    <div class="clearfix"></div>
-                </div><!-- /.filter-header -->
-
-                <div class="readmore">
-                    <ul>
-                        <li>Vliegtuig</li>
-                        <li>Auto</li>
-                        <li>Boot</li>
-                        <li>Verenigde arabische emiraten</li>
-                        <li>Verenigde arabische emiraten</li>
-                        <li>Verenigde arabische emiraten</li>
-                        <li>Verenigde arabische emiraten</li>
-                        <li>Verenigde arabische emiraten</li>
-                        <li>Verenigde arabische emiraten</li>
-                        <li>Verenigde arabische emiraten</li>
-                        <li>Verenigde arabische emiraten</li>
-                        <li>Verenigde arabische emiraten</li>
-                        <li>Verenigde arabische emiraten</li>
+                        <li v-for="country in countries | orderBy 'key'" v-on:click="countryFilter(country.key)" v-bind:class="{ 'active': countriesToFilter.indexOf(country.key) > -1 }">{{ ucfirst(country.key) }}</li>
                     </ul>
                 </div><!-- /.readmore -->
             </div><!-- /.filer -->
