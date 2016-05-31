@@ -28,7 +28,7 @@
 						<div class="star-rating" v-if="travel._source.stars">
 							<i class="fa fa-star fa-lg" aria-hidden="true" v-for="star in travel._source.stars[0].value"></i>
 						</div><!-- /.star-rating -->
-						<div class="pricing">&euro; {{ travel._source.price[0].value }}</div><!-- /.pricing -->
+						<div class="pricing">&euro; {{ Math.floor(travel._source.price[0].value) }}</div><!-- /.pricing -->
 					</div><!-- /.placeholder-img -->
 
 					<div class="content">
@@ -50,7 +50,7 @@
 							<div class="star-rating" v-if="travel._source.stars">
 								<i class="fa fa-star fa-lg" aria-hidden="true" v-for="star in travel._source.stars[0].value"></i>
 							</div><!-- /.star-rating -->
-							<div class="pricing">&euro; {{ travel._source.price[0].value }}</div><!-- /.pricing -->
+							<div class="pricing">&euro; {{ Math.floor(travel._source.price[0].value) }}</div><!-- /.pricing -->
 						</div><!-- /.placeholder-img -->
 					</div><!-- /.col-md-3 -->
 

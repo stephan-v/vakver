@@ -109,6 +109,11 @@ function vakver_feeds_importer_default() {
             'unique' => FALSE,
             'language' => 'und',
           ),
+          11 => array(
+            'source' => 'category',
+            'target' => 'field_board_type',
+            'unique' => FALSE,
+          ),
         ),
         'insert_new' => '1',
         'update_existing' => '2',
@@ -224,6 +229,12 @@ function vakver_feeds_importer_default() {
           10 => array(
             'source' => 'Blank travel_agency',
             'target' => 'field_travel_agency',
+            'unique' => FALSE,
+            'language' => 'und',
+          ),
+          11 => array(
+            'source' => 'category',
+            'target' => 'field_board_type',
             'unique' => FALSE,
           ),
         ),
@@ -342,6 +353,12 @@ function vakver_feeds_importer_default() {
             'source' => 'Blank travel_agency',
             'target' => 'field_travel_agency',
             'unique' => FALSE,
+            'language' => 'und',
+          ),
+          11 => array(
+            'source' => 'lodgement',
+            'target' => 'field_board_type',
+            'unique' => FALSE,
           ),
         ),
         'insert_new' => '1',
@@ -458,6 +475,12 @@ function vakver_feeds_importer_default() {
           10 => array(
             'source' => 'Blank travel_agency',
             'target' => 'field_travel_agency',
+            'unique' => FALSE,
+            'language' => 'und',
+          ),
+          11 => array(
+            'source' => 'board_type',
+            'target' => 'field_board_type',
             'unique' => FALSE,
           ),
         ),

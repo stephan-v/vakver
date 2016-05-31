@@ -33,7 +33,7 @@
                         <i class="fa fa-times-circle fa-lg" aria-hidden="true" v-if="sortRating" v-on:click="removeSort('rating')"></i>
 
                         <div class="toggle-sort" v-on:click.prevent="sort('rating')" v-bind:class="{'active' : sortRating }">
-                            <span>RATING</span>
+                            <span>STERREN</span>
                             <span v-if="sortRating">
                                 <i class="fa fa-sort-desc fa-lg" aria-hidden="true" v-if="sortRatingDesc"></i>
                                 <i class="fa fa-sort-asc fa-lg" aria-hidden="true" v-else></i>

@@ -89,13 +89,13 @@
                     <div class="row">
                         <div class="col-sm-6 col-md-12">
                             <div class="pricing">
-                                <div class="price">&euro;<?php print $field_price[0]['value']; ?></div>
+                                <div class="price">vanaf &euro;<?php print round($field_price[0]['value']); ?></div>
                                 <div class="person">Per persoon</div>
                             </div><!-- /.pricing -->
                         </div><!-- /.col-xs-6 -->
 
                         <div class="col-sm-6 col-md-12">
-                            <a href="<?php print $field_url[0]['url']; ?>" class="call-to-action">
+                            <a href="<?php print $field_url[0]['url']; ?>" class="call-to-action" target="_blank">
                                 <div class="inner">Reis boeken<i class="fa fa-plane fa-lg" aria-hidden="true"></i></div><!-- /.inner -->
                                 <div class="circle"><i class="fa fa-arrow-right fa-lg" aria-hidden="true"></i></div><!-- /.circle -->
                             </a><!-- /.call-to-action -->
@@ -112,8 +112,10 @@
                                   ->propertyCondition('title', $field_travel_agency[0]['value'])
                                   ->execute();
 
-                                  // array_shift to get rid of the first array item
-                                  $agency_node = node_load(array_shift(array_keys($agency['node'])));
+                                  if(isset($agency['node'])) {
+                                    // array_shift to get rid of the first array item
+                                    $agency_node = node_load(array_shift(array_keys($agency['node'])));
+                                  }
                             ?>
 
                             <?php if(isset($agency_node->field_logo['und'][0]['uri'])): ?>

@@ -7,7 +7,7 @@
 						<i class="fa fa-star fa-lg" aria-hidden="true" v-for="index in <?php print $node->field_stars['und'][0]['value']; ?>"></i>
 					</div><!-- /.star-rating -->
 				<?php endif; ?>
-				<div class="pricing">&euro; <?php print $node->field_price['und'][0]['value']; ?></div><!-- /.pricing -->
+				<div class="pricing">&euro; <?php print round($node->field_price['und'][0]['value']); ?></div><!-- /.pricing -->
 			</div><!-- /.placeholder-img -->
 
 			<div class="content">
