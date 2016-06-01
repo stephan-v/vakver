@@ -328,6 +328,7 @@ exports.default = {
 					"aggs": {
 						"countries": {
 							"terms": {
+								"size": 100,
 								"field": "country.value.raw"
 							}
 						}
@@ -359,6 +360,7 @@ exports.default = {
 					"aggs": {
 						"boards": {
 							"terms": {
+								"size": 100,
 								"field": "board_type.value.raw"
 							}
 						}
