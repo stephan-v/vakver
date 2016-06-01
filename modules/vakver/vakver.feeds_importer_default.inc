@@ -113,6 +113,12 @@ function vakver_feeds_importer_default() {
             'source' => 'category',
             'target' => 'field_board_type',
             'unique' => FALSE,
+            'language' => 'und',
+          ),
+          12 => array(
+            'source' => 'duration',
+            'target' => 'field_duration',
+            'unique' => FALSE,
           ),
         ),
         'insert_new' => '1',
@@ -235,6 +241,12 @@ function vakver_feeds_importer_default() {
           11 => array(
             'source' => 'category',
             'target' => 'field_board_type',
+            'unique' => FALSE,
+            'language' => 'und',
+          ),
+          12 => array(
+            'source' => 'duration',
+            'target' => 'field_duration',
             'unique' => FALSE,
           ),
         ),
@@ -481,6 +493,12 @@ function vakver_feeds_importer_default() {
           11 => array(
             'source' => 'board_type',
             'target' => 'field_board_type',
+            'unique' => FALSE,
+            'language' => 'und',
+          ),
+          12 => array(
+            'source' => 'duration',
+            'target' => 'field_duration',
             'unique' => FALSE,
           ),
         ),
