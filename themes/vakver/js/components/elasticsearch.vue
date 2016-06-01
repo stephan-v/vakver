@@ -121,15 +121,15 @@
 			// perform a search for a list of all unique countries
 			this.searchUniqueCountries();
 
-			// perform a search for a list of all unique accomodations
-			this.searchUniqueAccomodations();
+			// perform a search for a list of all unique board types
+			this.searchUniqueBoards();
 
 			// switch pages with left and right keypresses - bind the window scope to this object
 			window.onkeydown = function (e) {
 			    var code = e.keyCode ? e.keyCode : e.which;
-			    if (code === 37) { //left key
+			    if (code === 37) {
 			        this.prevPage();
-			    } else if (code === 39) { //right key
+			    } else if (code === 39) {
 			        this.nextPage();
 			    }
 			}.bind(this);
@@ -166,8 +166,8 @@
 				// apply filter with these countries
 				countries: [],
 
-				// apply filter with these accomdations
-				accomodations: []
+				// apply filter with these board types
+				boards: []
 			};
 		},
 		events: {
@@ -187,8 +187,8 @@
 
 				this.search();
 			},
-			'accomodationListener': function(accomodations) {
-				this.accomodations = accomodations;
+			'boardListener': function(boards) {
+				this.boards = boards;
 
 				this.search();
 			}
@@ -285,73 +285,39 @@
 					delete this.queryDSL.body.query;
 				}
 
+				/*
+				|--------------------------------------------------------------------------
+				| Search Filters
+				|--------------------------------------------------------------------------
+				|
+				| Add new search filters here with arguments: itemsToFilter, filterValue
+				| itemsToFilter being an array, filterValue the Elasticsearch db value
+				|
+				*/
+			
 				// if a filter vaue has been set also set a filter for it, otherwise delete it to prevent elasticsearch errors
-				if(this.ratings.length > 0 || this.countries.length > 0 || this.accomodations.length > 0) {
-					// iterative approach is needed to build up to the nested property(lol javacript)
+				if(this.ratings.length > 0 || this.countries.length > 0 || this.boards.length > 0) {
 					this.queryDSL.body.filter = {};
 					this.queryDSL.body.filter.bool = {};
 					this.queryDSL.body.filter.bool.must = [];
 				} else {
 					delete this.queryDSL.body.filter;
 				}
-
-				// if a rating has been set
+			
 				if(this.ratings.length > 0) {
-					filterRating = false;
-
-					for (var i = 0, len = this.queryDSL.body.filter.bool.must.length; i < len; i++) {
-						// if the value is in the must query update it, otherwise create it
-						if ("stars.value" in this.queryDSL.body.filter.bool.must[i].terms) {
-							this.queryDSL.body.filter.bool.must[i].terms["stars.value"] = this.ratings;
-							
-							filterRating = true;
-						}
-					}
-
-					// if the filter has not been set yet set it one time only
-					if(!filterRating) {
-						this.queryDSL.body.filter.bool.must.push({ "terms": { "stars.value": this.ratings } });
-					}
+					this.searchFilter(this.ratings, "stars.value");
 				}
 
-				// if a country has been set
 				if(this.countries.length > 0) {
-					filterRating = false;
-
-					for (var i = 0, len = this.queryDSL.body.filter.bool.must.length; i < len; i++) {
-						// if the value is in the must query update it, otherwise create it
-						if ("country.value" in this.queryDSL.body.filter.bool.must[i].terms) {
-							this.queryDSL.body.filter.bool.must[i].terms["country.value.raw"] = this.countries;
-							
-							filterRating = true;
-						}
-					}
-
-					// if the filter has not been set yet set it one time only
-					if(!filterRating) {
-						this.queryDSL.body.filter.bool.must.push({ "terms": { "country.value.raw": this.countries } });
-					}
+					this.searchFilter(this.countries, "country.value.raw");
 				}
 
-				// if an accomodation has been set
-				if(this.accomodations.length > 0) {
-					filterRating = false;
-
-					for (var i = 0, len = this.queryDSL.body.filter.bool.must.length; i < len; i++) {
-						// if the value is in the must query update it, otherwise create it
-						if ("accomodation.value" in this.queryDSL.body.filter.bool.must[i].terms) {
-							this.queryDSL.body.filter.bool.must[i].terms["board_type.value.raw"] = this.accomodations;
-							
-							filterRating = true;
-						}
-					}
-
-					// if the filter has not been set yet set it one time only
-					if(!filterRating) {
-						this.queryDSL.body.filter.bool.must.push({ "terms": { "board_type.value.raw": this.accomodations } });
-					}
+				if(this.boards.length > 0) {
+					this.searchFilter(this.boards, "board_type.value.raw");
 				}
 
+
+				/* The main search function */
 				this.client.search(
 					this.queryDSL
 				).then(function (resp) {
@@ -366,6 +332,35 @@
 					console.trace(err.message);
 				});
 			},
+
+			/*
+			|--------------------------------------------------------------------------
+			| Searchfilter method
+			|--------------------------------------------------------------------------
+			|
+			| Method responsible for filtering searches this receives 2 arguments
+			| The array of items to filter and the value to filter through.
+			|
+			*/
+		
+			searchFilter: function(itemsToFilter, filterValue) { 
+				setFilter = false;
+
+				for (var i = 0, len = this.queryDSL.body.filter.bool.must.length; i < len; i++) {
+					// if the value is in the must query update it, otherwise create it
+					if (filterValue in this.queryDSL.body.filter.bool.must[i].terms) {
+						this.queryDSL.body.filter.bool.must[i].terms[filterValue] = itemsToFilter;
+						
+						setFilter = true;
+					}
+				}
+
+				// if the filter has not been set yet, set it one time only
+				if(!setFilter) {
+					this.queryDSL.body.filter.bool.must.push({ "terms": { [filterValue]: itemsToFilter } });
+				}
+			},
+
 
 			/*
 			|--------------------------------------------------------------------------
@@ -447,14 +442,14 @@
 			|
 			*/
 		
-			searchUniqueAccomodations: function() {
+			searchUniqueBoards: function() {
 				this.client.search({
 					index: 'node',
 					type: 'vakantie',
   					body: {
 						"size" : 0,
 					    "aggs" : { 
-					        "accomodations" : { 
+					        "boards" : { 
 					            "terms" : { 
 					              "field" : "board_type.value.raw"
 					            }
@@ -463,11 +458,20 @@
 					}
 				}).then(function (resp) {
 					// dispatch this data to the entry.js file
-					this.$dispatch('unique-accomodations', resp.aggregations.accomodations.buckets);
+					this.$dispatch('unique-boards', resp.aggregations.boards.buckets);
 				}.bind(this), function (err) {
 					console.trace(err.message);
 				});
 			},
+
+			/*
+			|--------------------------------------------------------------------------
+			| Helper method to fetch the Top Level Domain
+			|--------------------------------------------------------------------------
+			|
+			| Grab the TLD of .dev or .local and change settings depending on the env
+			|
+			*/
 
 			getTLD: function() {  
 			      var hostName = window.location.hostname;  

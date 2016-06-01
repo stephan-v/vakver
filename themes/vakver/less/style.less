@@ -530,10 +530,24 @@ aside {
 		    padding: 2px 12px;
     	}
     	ul {
-    		padding-left: 16px;
+    		list-style-position: inside;
+    		padding: 0;
 
     		li {
-    			margin-bottom: 10px;
+				padding: 3px 10px;
+				margin-bottom: 5px;
+
+    			&.active {
+				    background: #4E8EC3;
+				    border-radius: 35px;
+				    color: white;
+			    }
+		    	&:hover {
+		    		cursor: pointer;
+		    	}
+		    	&:last-child {
+		    		margin: 0;
+		    	}
     		}
     	}
     	.show-more {
@@ -542,18 +556,6 @@ aside {
 		    font-weight: bold;
 		    color: #7F6232;
 		    margin-top: 15px;
-    	}
-    	.countries li {
-    		&.active {
-			    background: #4E8EC3;
-			    border-radius: 35px;
-			    padding: 3px 20px;
-			    color: white;
-			    margin-bottom: 7px;
-		    }
-	    	&:hover {
-	    		cursor: pointer;
-	    	}
     	}
     }
     .star-rating {

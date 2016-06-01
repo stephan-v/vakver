@@ -43,11 +43,11 @@ window.onload = function () {
 			// array of countries to filter(sent to the child component)
 			countriesToFilter: [],
 
-			// array of unique accomodations to build a sidebar list
-			accomodations: [],
+			// array of unique boards to build a sidebar list
+			boards: [],
 
 			// array of accomodations to filter(sent to the child component)
-			accomodationsToFilter: [],
+			boardsToFilter: [],
 		},
 		watch: {
 			'ratings': function() {
@@ -69,8 +69,8 @@ window.onload = function () {
 			'unique-countries': function(countries) {
 				this.countries = countries;
 			},
-			'unique-accomodations': function(accomodations) {
-				this.accomodations = accomodations;
+			'unique-boards': function(boards) {
+				this.boards = boards;
 			}
 		},
 		methods: {
@@ -130,18 +130,18 @@ window.onload = function () {
 				this.$broadcast('countryListener', this.countriesToFilter);
 			},
 
-			accomodationFilter: function(accomodation) {
-				index = this.accomodationsToFilter.indexOf(accomodation)
+			boardFilter: function(board) {
+				index = this.boardsToFilter.indexOf(board)
 
 				// if object is inteh array already then removeit , otherwise add it
 				if(index > -1) {
-					this.accomodationsToFilter.splice(index, 1);
+					this.boardsToFilter.splice(index, 1);
 				} else {
-					this.accomodationsToFilter.push(accomodation);
+					this.boardsToFilter.push(board);
 				}
 
 				// broadcast the event to the child component listener
-				this.$broadcast('accomodationListener', this.accomodationsToFilter);
+				this.$broadcast('boardListener', this.boardsToFilter);
 			}
 		}
 	})

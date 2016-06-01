@@ -477,10 +477,23 @@ aside .filter .filter-count {
   padding: 2px 12px;
 }
 aside .filter ul {
-  padding-left: 16px;
+  list-style-position: inside;
+  padding: 0;
 }
 aside .filter ul li {
-  margin-bottom: 10px;
+  padding: 3px 10px;
+  margin-bottom: 5px;
+}
+aside .filter ul li.active {
+  background: #4E8EC3;
+  border-radius: 35px;
+  color: white;
+}
+aside .filter ul li:hover {
+  cursor: pointer;
+}
+aside .filter ul li:last-child {
+  margin: 0;
 }
 aside .filter .show-more {
   text-align: center;
@@ -488,16 +501,6 @@ aside .filter .show-more {
   font-weight: bold;
   color: #7F6232;
   margin-top: 15px;
-}
-aside .filter .countries li.active {
-  background: #4E8EC3;
-  border-radius: 35px;
-  padding: 3px 20px;
-  color: white;
-  margin-bottom: 7px;
-}
-aside .filter .countries li:hover {
-  cursor: pointer;
 }
 aside .star-rating label {
   display: block;
