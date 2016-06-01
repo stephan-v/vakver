@@ -28,6 +28,9 @@ exports.default = {
 		// perform a search for a list of all unique countries
 		this.searchUniqueCountries();
 
+		// perform a search for a list of all unique accomodations
+		this.searchUniqueAccomodations();
+
 		// switch pages with left and right keypresses - bind the window scope to this object
 		window.onkeydown = function (e) {
 			var code = e.keyCode ? e.keyCode : e.which;
@@ -69,8 +72,11 @@ exports.default = {
 			sortRatingDesc: false,
 			sortPriceDesc: false,
 
-			// apply filter to these countries
-			countries: []
+			// apply filter with these countries
+			countries: [],
+
+			// apply filter with these accomdations
+			accomodations: []
 		};
 	},
 	events: {
@@ -87,6 +93,11 @@ exports.default = {
 		},
 		'countryListener': function countryListener(countries) {
 			this.countries = countries;
+
+			this.search();
+		},
+		'accomodationListener': function accomodationListener(accomodations) {
+			this.accomodations = accomodations;
 
 			this.search();
 		}
@@ -182,7 +193,7 @@ exports.default = {
 			}
 
 			// if a filter vaue has been set also set a filter for it, otherwise delete it to prevent elasticsearch errors
-			if (this.ratings.length > 0 || this.countries.length > 0) {
+			if (this.ratings.length > 0 || this.countries.length > 0 || this.accomodations.length > 0) {
 				// iterative approach is needed to build up to the nested property(lol javacript)
 				this.queryDSL.body.filter = {};
 				this.queryDSL.body.filter.bool = {};
@@ -210,14 +221,14 @@ exports.default = {
 				}
 			}
 
-			// if a rating has been set
+			// if a country has been set
 			if (this.countries.length > 0) {
 				filterRating = false;
 
 				for (var i = 0, len = this.queryDSL.body.filter.bool.must.length; i < len; i++) {
 					// if the value is in the must query update it, otherwise create it
 					if ("country.value" in this.queryDSL.body.filter.bool.must[i].terms) {
-						this.queryDSL.body.filter.bool.must[i].terms["country.value"] = this.countries;
+						this.queryDSL.body.filter.bool.must[i].terms["country.value.raw"] = this.countries;
 
 						filterRating = true;
 					}
@@ -225,7 +236,26 @@ exports.default = {
 
 				// if the filter has not been set yet set it one time only
 				if (!filterRating) {
-					this.queryDSL.body.filter.bool.must.push({ "terms": { "country.value": this.countries } });
+					this.queryDSL.body.filter.bool.must.push({ "terms": { "country.value.raw": this.countries } });
+				}
+			}
+
+			// if an accomodation has been set
+			if (this.accomodations.length > 0) {
+				filterRating = false;
+
+				for (var i = 0, len = this.queryDSL.body.filter.bool.must.length; i < len; i++) {
+					// if the value is in the must query update it, otherwise create it
+					if ("accomodation.value" in this.queryDSL.body.filter.bool.must[i].terms) {
+						this.queryDSL.body.filter.bool.must[i].terms["board_type.value.raw"] = this.accomodations;
+
+						filterRating = true;
+					}
+				}
+
+				// if the filter has not been set yet set it one time only
+				if (!filterRating) {
+					this.queryDSL.body.filter.bool.must.push({ "terms": { "board_type.value.raw": this.accomodations } });
 				}
 			}
 
@@ -286,8 +316,8 @@ exports.default = {
   |--------------------------------------------------------------------------
   |
   | Size is set to zero so we don't get a full hit, this results in much
-  | faster searches. With this query we get a unique value and how many 
-  | hits per unique value.
+  | faster searches. With this query we get a unique value and the 
+  | amount of hits per unique value.
   |
   */
 
@@ -300,7 +330,7 @@ exports.default = {
 					"aggs": {
 						"countries": {
 							"terms": {
-								"field": "country.value"
+								"field": "country.value.raw"
 							}
 						}
 					}
@@ -308,6 +338,37 @@ exports.default = {
 			}).then(function (resp) {
 				// dispatch this data to the entry.js file
 				this.$dispatch('unique-countries', resp.aggregations.countries.buckets);
+			}.bind(this), function (err) {
+				console.trace(err.message);
+			});
+		},
+
+		/*
+  |--------------------------------------------------------------------------
+  | Aggregation query to get a list of all unique accomodations
+  |--------------------------------------------------------------------------
+  |
+  | Same as above
+  |
+  */
+
+		searchUniqueAccomodations: function searchUniqueAccomodations() {
+			this.client.search({
+				index: 'node',
+				type: 'vakantie',
+				body: {
+					"size": 0,
+					"aggs": {
+						"accomodations": {
+							"terms": {
+								"field": "board_type.value.raw"
+							}
+						}
+					}
+				}
+			}).then(function (resp) {
+				// dispatch this data to the entry.js file
+				this.$dispatch('unique-accomodations', resp.aggregations.accomodations.buckets);
 			}.bind(this), function (err) {
 				console.trace(err.message);
 			});
@@ -440,7 +501,13 @@ window.onload = function () {
 			countries: [],
 
 			// array of countries to filter(sent to the child component)
-			countriesToFilter: []
+			countriesToFilter: [],
+
+			// array of unique accomodations to build a sidebar list
+			accomodations: [],
+
+			// array of accomodations to filter(sent to the child component)
+			accomodationsToFilter: [],
 		},
 		watch: {
 			'ratings': function() {
@@ -461,6 +528,9 @@ window.onload = function () {
 			},
 			'unique-countries': function(countries) {
 				this.countries = countries;
+			},
+			'unique-accomodations': function(accomodations) {
+				this.accomodations = accomodations;
 			}
 		},
 		methods: {
@@ -496,10 +566,20 @@ window.onload = function () {
 			    return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase(); 
 			},
 
+			/*
+			|--------------------------------------------------------------------------
+			| Filter broadcast methods / array builders
+			|--------------------------------------------------------------------------
+			|
+			| These methods broadcast an array of filter items to the elasticsearch
+			| query builder.
+			|
+			*/
+
 			countryFilter: function(country) {
 				index = this.countriesToFilter.indexOf(country)
 
-				// if in array already remove, otherwise add
+				// if object is inteh array already then removeit , otherwise add it
 				if(index > -1) {
 					this.countriesToFilter.splice(index, 1);
 				} else {
@@ -508,6 +588,20 @@ window.onload = function () {
 
 				// broadcast the event to the child component listener
 				this.$broadcast('countryListener', this.countriesToFilter);
+			},
+
+			accomodationFilter: function(accomodation) {
+				index = this.accomodationsToFilter.indexOf(accomodation)
+
+				// if object is inteh array already then removeit , otherwise add it
+				if(index > -1) {
+					this.accomodationsToFilter.splice(index, 1);
+				} else {
+					this.accomodationsToFilter.push(accomodation);
+				}
+
+				// broadcast the event to the child component listener
+				this.$broadcast('accomodationListener', this.accomodationsToFilter);
 			}
 		}
 	})

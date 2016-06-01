@@ -121,6 +121,9 @@
 			// perform a search for a list of all unique countries
 			this.searchUniqueCountries();
 
+			// perform a search for a list of all unique accomodations
+			this.searchUniqueAccomodations();
+
 			// switch pages with left and right keypresses - bind the window scope to this object
 			window.onkeydown = function (e) {
 			    var code = e.keyCode ? e.keyCode : e.which;
@@ -160,8 +163,11 @@
 				sortRatingDesc: false,
 				sortPriceDesc: false,
 
-				// apply filter to these countries
-				countries: []
+				// apply filter with these countries
+				countries: [],
+
+				// apply filter with these accomdations
+				accomodations: []
 			};
 		},
 		events: {
@@ -178,6 +184,11 @@
 			},
 			'countryListener': function(countries) {
 				this.countries = countries;
+
+				this.search();
+			},
+			'accomodationListener': function(accomodations) {
+				this.accomodations = accomodations;
 
 				this.search();
 			}
@@ -275,7 +286,7 @@
 				}
 
 				// if a filter vaue has been set also set a filter for it, otherwise delete it to prevent elasticsearch errors
-				if(this.ratings.length > 0 || this.countries.length > 0) {
+				if(this.ratings.length > 0 || this.countries.length > 0 || this.accomodations.length > 0) {
 					// iterative approach is needed to build up to the nested property(lol javacript)
 					this.queryDSL.body.filter = {};
 					this.queryDSL.body.filter.bool = {};
@@ -301,17 +312,16 @@
 					if(!filterRating) {
 						this.queryDSL.body.filter.bool.must.push({ "terms": { "stars.value": this.ratings } });
 					}
-
 				}
 
-				// if a rating has been set
+				// if a country has been set
 				if(this.countries.length > 0) {
 					filterRating = false;
 
 					for (var i = 0, len = this.queryDSL.body.filter.bool.must.length; i < len; i++) {
 						// if the value is in the must query update it, otherwise create it
 						if ("country.value" in this.queryDSL.body.filter.bool.must[i].terms) {
-							this.queryDSL.body.filter.bool.must[i].terms["country.value"] = this.countries;
+							this.queryDSL.body.filter.bool.must[i].terms["country.value.raw"] = this.countries;
 							
 							filterRating = true;
 						}
@@ -319,9 +329,27 @@
 
 					// if the filter has not been set yet set it one time only
 					if(!filterRating) {
-						this.queryDSL.body.filter.bool.must.push({ "terms": { "country.value": this.countries } });
+						this.queryDSL.body.filter.bool.must.push({ "terms": { "country.value.raw": this.countries } });
+					}
+				}
+
+				// if an accomodation has been set
+				if(this.accomodations.length > 0) {
+					filterRating = false;
+
+					for (var i = 0, len = this.queryDSL.body.filter.bool.must.length; i < len; i++) {
+						// if the value is in the must query update it, otherwise create it
+						if ("accomodation.value" in this.queryDSL.body.filter.bool.must[i].terms) {
+							this.queryDSL.body.filter.bool.must[i].terms["board_type.value.raw"] = this.accomodations;
+							
+							filterRating = true;
+						}
 					}
 
+					// if the filter has not been set yet set it one time only
+					if(!filterRating) {
+						this.queryDSL.body.filter.bool.must.push({ "terms": { "board_type.value.raw": this.accomodations } });
+					}
 				}
 
 				this.client.search(
@@ -383,8 +411,8 @@
 			|--------------------------------------------------------------------------
 			|
 			| Size is set to zero so we don't get a full hit, this results in much
-			| faster searches. With this query we get a unique value and how many 
-			| hits per unique value.
+			| faster searches. With this query we get a unique value and the 
+			| amount of hits per unique value.
 			|
 			*/
 		
@@ -397,7 +425,7 @@
 					    "aggs" : { 
 					        "countries" : { 
 					            "terms" : { 
-					              "field" : "country.value"
+					              "field" : "country.value.raw"
 					            }
 					        }
 					    }
@@ -405,6 +433,37 @@
 				}).then(function (resp) {
 					// dispatch this data to the entry.js file
 					this.$dispatch('unique-countries', resp.aggregations.countries.buckets);
+				}.bind(this), function (err) {
+					console.trace(err.message);
+				});
+			},
+
+			/*
+			|--------------------------------------------------------------------------
+			| Aggregation query to get a list of all unique accomodations
+			|--------------------------------------------------------------------------
+			|
+			| Same as above
+			|
+			*/
+		
+			searchUniqueAccomodations: function() {
+				this.client.search({
+					index: 'node',
+					type: 'vakantie',
+  					body: {
+						"size" : 0,
+					    "aggs" : { 
+					        "accomodations" : { 
+					            "terms" : { 
+					              "field" : "board_type.value.raw"
+					            }
+					        }
+					    }
+					}
+				}).then(function (resp) {
+					// dispatch this data to the entry.js file
+					this.$dispatch('unique-accomodations', resp.aggregations.accomodations.buckets);
 				}.bind(this), function (err) {
 					console.trace(err.message);
 				});

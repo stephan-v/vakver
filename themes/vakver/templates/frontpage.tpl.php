@@ -80,6 +80,20 @@
 
             <div class="filter">
                 <div class="filter-header">
+                    <h3>Accomodatietypes</h3>
+                    <div class="filter-count">{{ accomodations.length }}</div>
+                    <div class="clearfix"></div>
+                </div><!-- /.filter-header -->
+
+                <div class="readmore">
+                    <ul class="countries">
+                        <li v-for="accomodation in accomodations | orderBy 'key'" v-on:click="accomodationFilter(accomodation.key)" v-bind:class="{ 'active': accomodationsToFilter.indexOf(accomodation.key) > -1 }">{{ ucfirst(accomodation.key) }}</li>
+                    </ul>
+                </div><!-- /.readmore -->
+            </div><!-- /.filer -->
+
+            <div class="filter">
+                <div class="filter-header">
                     <h3>Rating</h3>
                     <div class="clearfix"></div>
                 </div><!-- /.filter-header -->

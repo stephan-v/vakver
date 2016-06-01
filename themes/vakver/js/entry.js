@@ -41,7 +41,13 @@ window.onload = function () {
 			countries: [],
 
 			// array of countries to filter(sent to the child component)
-			countriesToFilter: []
+			countriesToFilter: [],
+
+			// array of unique accomodations to build a sidebar list
+			accomodations: [],
+
+			// array of accomodations to filter(sent to the child component)
+			accomodationsToFilter: [],
 		},
 		watch: {
 			'ratings': function() {
@@ -62,6 +68,9 @@ window.onload = function () {
 			},
 			'unique-countries': function(countries) {
 				this.countries = countries;
+			},
+			'unique-accomodations': function(accomodations) {
+				this.accomodations = accomodations;
 			}
 		},
 		methods: {
@@ -97,10 +106,20 @@ window.onload = function () {
 			    return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase(); 
 			},
 
+			/*
+			|--------------------------------------------------------------------------
+			| Filter broadcast methods / array builders
+			|--------------------------------------------------------------------------
+			|
+			| These methods broadcast an array of filter items to the elasticsearch
+			| query builder.
+			|
+			*/
+
 			countryFilter: function(country) {
 				index = this.countriesToFilter.indexOf(country)
 
-				// if in array already remove, otherwise add
+				// if object is inteh array already then removeit , otherwise add it
 				if(index > -1) {
 					this.countriesToFilter.splice(index, 1);
 				} else {
@@ -109,6 +128,20 @@ window.onload = function () {
 
 				// broadcast the event to the child component listener
 				this.$broadcast('countryListener', this.countriesToFilter);
+			},
+
+			accomodationFilter: function(accomodation) {
+				index = this.accomodationsToFilter.indexOf(accomodation)
+
+				// if object is inteh array already then removeit , otherwise add it
+				if(index > -1) {
+					this.accomodationsToFilter.splice(index, 1);
+				} else {
+					this.accomodationsToFilter.push(accomodation);
+				}
+
+				// broadcast the event to the child component listener
+				this.$broadcast('accomodationListener', this.accomodationsToFilter);
 			}
 		}
 	})
