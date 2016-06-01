@@ -35,10 +35,10 @@
 			$('.filter .readmore').readmore({
 				moreLink: '<a href="#" class="show-more">Toon alles</a>',
 				lessLink: '<a href="#" class="show-more">Toon minder</a>',
-				collapsedHeight: 85,
+				collapsedHeight: 90,
 				speed: 1000
 			});
-		}, 1000);
+		}, 1200);
 
 		// without timeout
 		$('.agency-content .readmore').readmore({

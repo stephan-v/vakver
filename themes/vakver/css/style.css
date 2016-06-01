@@ -304,6 +304,9 @@ Index page
   margin-bottom: 30px;
   background: white;
 }
+.vacation-item a {
+  text-decoration: none;
+}
 .vacation-item .placeholder-img {
   width: 100%;
   height: 175px;
@@ -558,6 +561,20 @@ Vakantie pagina(single)
 }
 .node-type-vakantie .vacation .social-media .fa-google-plus {
   color: #d34836;
+}
+.node-type-vakantie .vacation .extra-info-header {
+  font-weight: bold;
+  margin: 15px 0 5px 0;
+}
+.node-type-vakantie .vacation .extra-info {
+  background: #FFE8B9;
+  padding: 15px;
+  border-radius: 5px;
+  border: 1px solid #FFCA5C;
+}
+.node-type-vakantie .vacation .extra-info ul {
+  margin: 0;
+  padding-left: 15px;
 }
 .node-type-vakantie a.call-to-action {
   display: block;
