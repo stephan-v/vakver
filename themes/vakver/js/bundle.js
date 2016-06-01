@@ -81,7 +81,9 @@ exports.default = {
 			countries: [],
 
 			// apply filter with these board types
-			boards: []
+			boards: [],
+
+			priceRange: []
 		};
 	},
 	events: {
@@ -103,6 +105,11 @@ exports.default = {
 		},
 		'boardListener': function boardListener(boards) {
 			this.boards = boards;
+
+			this.search();
+		},
+		'priceListener': function priceListener(range) {
+			this.priceRange = range;
 
 			this.search();
 		}
@@ -208,7 +215,7 @@ exports.default = {
    */
 
 			// if a filter vaue has been set also set a filter for it, otherwise delete it to prevent elasticsearch errors
-			if (this.ratings.length > 0 || this.countries.length > 0 || this.boards.length > 0) {
+			if (this.ratings.length > 0 || this.countries.length > 0 || this.boards.length > 0 || this.priceRange.length > 0) {
 				this.queryDSL.body.filter = {};
 				this.queryDSL.body.filter.bool = {};
 				this.queryDSL.body.filter.bool.must = [];
@@ -226,6 +233,10 @@ exports.default = {
 
 			if (this.boards.length > 0) {
 				this.searchFilter(this.boards, "board_type.value.raw");
+			}
+
+			if (this.priceRange.length > 0) {
+				this.priceFilter();
 			}
 
 			/* The main search function */
@@ -268,6 +279,10 @@ exports.default = {
 			if (!setFilter) {
 				this.queryDSL.body.filter.bool.must.push({ "terms": (0, _defineProperty3.default)({}, filterValue, itemsToFilter) });
 			}
+		},
+
+		priceFilter: function priceFilter() {
+			this.queryDSL.body.filter.bool.must.push({ "range": { "price.value": { "gte": this.priceRange[0], "lte": this.priceRange[1] } } });
 		},
 
 		/*

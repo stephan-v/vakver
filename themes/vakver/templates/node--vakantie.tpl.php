@@ -89,7 +89,7 @@
                                 <li><strong>Verzorgingstype:</strong> <?php print isset($field_board_type[0]['value']) ? $field_board_type[0]['value'] : ""; ?></li>
                                 <li><strong>Reisduur:</strong> <?php print isset($field_duration[0]['value']) ? $field_duration[0]['value'] : ""; ?> dagen</li>
                             </ul>
-                        </div>
+                        </div><!-- /.extra-info -->
                     </div><!-- /.vacation -->
                 </div><!-- /.col-md-9 -->
 

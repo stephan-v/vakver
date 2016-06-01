@@ -55,5 +55,43 @@
 		$(".fa-filter").click(function() {
 			$("aside").toggleClass("active");
 		});
+
+		/* ==========================================================================
+		noui Slider
+		========================================================================== */
+
+		var slider = document.getElementById('slider-handles');
+
+		noUiSlider.create(slider, {
+			start: [ 0, 5000 ],
+			step: 50,
+			range: {
+				'min': [  0 ],
+				'max': [ 5000 ]
+			}
+		});
+
+		var marginMin = document.getElementById('slider-margin-value-min'),
+			marginMax = document.getElementById('slider-margin-value-max');
+
+		slider.noUiSlider.on('update', function ( values, handle ) {
+			if ( handle ) {
+				var values = values.map(function (x) { 
+				    return parseInt(x, 10); 
+				});
+
+				Vue.$broadcast('priceListener', values);
+
+				marginMax.innerHTML = values[handle];
+			} else {
+				var values = values.map(function (x) { 
+				    return parseInt(x, 10); 
+				});
+				
+				Vue.$broadcast('priceListener', values);
+
+				marginMin.innerHTML = values[handle];
+			}
+		});
 	});
 }(jQuery));

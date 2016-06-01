@@ -64,6 +64,11 @@
         <aside>
             <div class="btn">Filter reizen</div>
 
+            <h3>Prijs</h3>
+            <div id="slider-handles"></div>
+            <div id="slider-margin-value-min"></div>
+            <div id="slider-margin-value-max"></div>
+
             <div class="filter">
                 <div class="filter-header">
                     <h3>Landen</h3>
