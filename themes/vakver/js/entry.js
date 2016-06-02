@@ -51,6 +51,12 @@ $(document).ready(function() {
 
 			// array of accomodations to filter(sent to the child component)
 			boardsToFilter: [],
+
+			// array of unique boards to build a sidebar list
+			durations: [],
+
+			// array of travel durations to filter(sent to the child component)
+			durationsToFilter: []
 		},
 		watch: {
 			'ratings': function() {
@@ -90,7 +96,10 @@ $(document).ready(function() {
 				}
 
 				this.boards = boards;
-			}
+			},
+			'unique-durations': function(durations) {
+				this.durations = durations;
+			},
 		},
 		methods: {
 			// enable a sort
@@ -156,6 +165,20 @@ $(document).ready(function() {
 
 				// broadcast the event to the child component listener
 				this.$broadcast('boardListener', this.boardsToFilter);
+			},
+
+			durationFilter: function(duration) {
+				index = this.durationsToFilter.indexOf(duration)
+
+				// if object is inteh array already then removeit , otherwise add it
+				if(index > -1) {
+					this.durationsToFilter.splice(index, 1);
+				} else {
+					this.durationsToFilter.push(duration);
+				}
+
+				// broadcast the event to the child component listener
+				this.$broadcast('durationListener', this.durationsToFilter);
 			}
 		}
 	})

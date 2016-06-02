@@ -103,6 +103,20 @@
 
             <div class="filter">
                 <div class="filter-header">
+                    <h3>Reisduur</h3>
+                    <div class="filter-count">{{ durations.length }}</div>
+                    <div class="clearfix"></div>
+                </div><!-- /.filter-header -->
+
+                <div class="readmore">
+                    <ul class="countries">
+                        <li v-for="duration in durations | orderBy 'key'" v-on:click="durationFilter(duration.key)" v-bind:class="{ 'active': durationsToFilter.indexOf(duration.key) > -1 }">{{ duration.key | capitalize }} dagen</li>
+                    </ul>
+                </div><!-- /.readmore -->
+            </div><!-- /.filer -->
+
+            <div class="filter">
+                <div class="filter-header">
                     <h3>Rating</h3>
                     <div class="clearfix"></div>
                 </div><!-- /.filter-header -->

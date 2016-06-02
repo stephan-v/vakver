@@ -41,6 +41,9 @@ exports.default = {
 		// perform a search for the lowest and highest vacation price
 		this.searchMinMax();
 
+		// perform a search for a list of all unique board types
+		this.searchUniqueDurations();
+
 		// switch pages with left and right keypresses - bind the window scope to this object
 		window.onkeydown = function (e) {
 			var code = e.keyCode ? e.keyCode : e.which;
@@ -80,18 +83,14 @@ exports.default = {
 			sortRatingDesc: false,
 			sortPriceDesc: false,
 
-			// apply filter with these countries
+			// apply filters with these arrays
 			countries: [],
-
-			// apply filter with these board types
 			boards: [],
-
-			// the pricerange to look in between
+			durations: [],
 			priceRange: [],
-
-			// the lowest and highest vacation price
 			priceMinMax: [],
 
+			// debounce timer
 			timer: 0
 		};
 	},
@@ -114,6 +113,11 @@ exports.default = {
 		},
 		'boardListener': function boardListener(boards) {
 			this.boards = boards;
+
+			this.search();
+		},
+		'durationListener': function durationListener(durations) {
+			this.durations = durations;
 
 			this.search();
 		},
@@ -232,7 +236,7 @@ exports.default = {
    */
 
 			// if a filter vaue has been set also set a filter for it, otherwise delete it to prevent elasticsearch errors
-			if (this.ratings.length > 0 || this.countries.length > 0 || this.boards.length > 0 || this.priceRange.length > 0) {
+			if (this.ratings.length > 0 || this.countries.length > 0 || this.boards.length > 0 || this.priceRange.length > 0 || this.durations.length > 0) {
 				this.queryDSL.body.filter = {};
 				this.queryDSL.body.filter.bool = {};
 				this.queryDSL.body.filter.bool.must = [];
@@ -250,6 +254,10 @@ exports.default = {
 
 			if (this.boards.length > 0) {
 				this.searchFilter(this.boards, "board_type.value.raw");
+			}
+
+			if (this.durations.length > 0) {
+				this.searchFilter(this.durations, "duration.value");
 			}
 
 			if (this.priceRange.length > 0) {
@@ -436,6 +444,38 @@ exports.default = {
 
 		/*
   |--------------------------------------------------------------------------
+  | Aggregation query to get a list of all unique accomodations
+  |--------------------------------------------------------------------------
+  |
+  | Same as above
+  |
+  */
+
+		searchUniqueDurations: function searchUniqueDurations() {
+			this.client.search({
+				index: 'node',
+				type: 'vakantie',
+				body: {
+					"size": 0,
+					"aggs": {
+						"durations": {
+							"terms": {
+								"size": 100,
+								"field": "duration.value"
+							}
+						}
+					}
+				}
+			}).then(function (resp) {
+				// dispatch this data to the entry.js file
+				this.$dispatch('unique-durations', resp.aggregations.durations.buckets);
+			}.bind(this), function (err) {
+				console.trace(err.message);
+			});
+		},
+
+		/*
+  |--------------------------------------------------------------------------
   | Helper method to fetch the Top Level Domain
   |--------------------------------------------------------------------------
   |
@@ -449,31 +489,6 @@ exports.default = {
 			var posOfTld = hostNameArray.length - 1;
 			var tld = hostNameArray[posOfTld];
 			return tld;
-		},
-
-		/*
-  |--------------------------------------------------------------------------
-  | Debounce method helper
-  |--------------------------------------------------------------------------
-  |
-  | Debounces a call so it only fires every x seconds to prevent db overload
-  |
-  */
-
-		debounce: function debounce(func, wait, immediate) {
-			var timeout;
-			return function () {
-				var context = this,
-				    args = arguments;
-				var later = function later() {
-					timeout = null;
-					if (!immediate) func.apply(context, args);
-				};
-				var callNow = immediate && !timeout;
-				clearTimeout(timeout);
-				timeout = setTimeout(later, wait);
-				if (callNow) func.apply(context, args);
-			};
 		}
 	}
 };
@@ -605,6 +620,12 @@ $(document).ready(function() {
 
 			// array of accomodations to filter(sent to the child component)
 			boardsToFilter: [],
+
+			// array of unique boards to build a sidebar list
+			durations: [],
+
+			// array of travel durations to filter(sent to the child component)
+			durationsToFilter: []
 		},
 		watch: {
 			'ratings': function() {
@@ -644,7 +665,10 @@ $(document).ready(function() {
 				}
 
 				this.boards = boards;
-			}
+			},
+			'unique-durations': function(durations) {
+				this.durations = durations;
+			},
 		},
 		methods: {
 			// enable a sort
@@ -710,6 +734,20 @@ $(document).ready(function() {
 
 				// broadcast the event to the child component listener
 				this.$broadcast('boardListener', this.boardsToFilter);
+			},
+
+			durationFilter: function(duration) {
+				index = this.durationsToFilter.indexOf(duration)
+
+				// if object is inteh array already then removeit , otherwise add it
+				if(index > -1) {
+					this.durationsToFilter.splice(index, 1);
+				} else {
+					this.durationsToFilter.push(duration);
+				}
+
+				// broadcast the event to the child component listener
+				this.$broadcast('durationListener', this.durationsToFilter);
 			}
 		}
 	})

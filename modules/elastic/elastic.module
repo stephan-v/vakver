@@ -77,6 +77,12 @@ function _elastic_prepare_node($node) {
     $params['body']['board_type'] = $board_type_field;
   }
 
+  // Add the duration field if exists
+  $duration_field = isset($node->field_duration) ? field_get_items('node', $node, 'field_duration') : false;
+  if ($duration_field) {
+    $params['body']['duration'] = $duration_field;
+  }
+
   // Add the image field if exists
   $image_field = isset($node->field_image) ? field_get_items('node', $node, 'field_image') : false;
   if ($image_field) {
