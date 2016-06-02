@@ -90,7 +90,9 @@ exports.default = {
 			priceRange: [],
 
 			// the lowest and highest vacation price
-			priceMinMax: []
+			priceMinMax: [],
+
+			timer: 0
 		};
 	},
 	events: {
@@ -118,7 +120,15 @@ exports.default = {
 		'priceListener': function priceListener(range) {
 			this.priceRange = range;
 
-			this.search();
+			/* custom made debouncer */
+
+			// clears the timer so there is always x seconds in between calls
+			clearTimeout(this.timer);
+
+			// setTimeout calls a function after x seconds
+			this.timer = setTimeout(function () {
+				this.search();
+			}.bind(this), 200);
 		}
 	},
 	methods: {
@@ -439,6 +449,31 @@ exports.default = {
 			var posOfTld = hostNameArray.length - 1;
 			var tld = hostNameArray[posOfTld];
 			return tld;
+		},
+
+		/*
+  |--------------------------------------------------------------------------
+  | Debounce method helper
+  |--------------------------------------------------------------------------
+  |
+  | Debounces a call so it only fires every x seconds to prevent db overload
+  |
+  */
+
+		debounce: function debounce(func, wait, immediate) {
+			var timeout;
+			return function () {
+				var context = this,
+				    args = arguments;
+				var later = function later() {
+					timeout = null;
+					if (!immediate) func.apply(context, args);
+				};
+				var callNow = immediate && !timeout;
+				clearTimeout(timeout);
+				timeout = setTimeout(later, wait);
+				if (callNow) func.apply(context, args);
+			};
 		}
 	}
 };
@@ -592,6 +627,14 @@ $(document).ready(function() {
 				this.countries = countries;
 			},
 			'unique-boards': function(boards) {
+				// remove these elements from the array and filter sidebar
+				for (var i = 0, len = boards.length; i < len; i++) {
+					if(boards[i].key == "volgens beschrijving" || boards[i].key == "lookup_verzorging_t_1") {
+				        boards.splice(i, 1);
+				        break;
+				    }
+				}
+
 				this.boards = boards;
 			}
 		},
@@ -621,11 +664,6 @@ $(document).ready(function() {
 
 				// broadcast the event to the child component listener
 				this.$broadcast('removeSortListener', [this.sortPopularity, this.sortPrice, this.sortRating]);
-			},
-
-			// helper function to capatilize the first letter of a string
-			ucfirst: function(string) { 
-			    return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase(); 
 			},
 
 			/*

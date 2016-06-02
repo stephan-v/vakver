@@ -63,9 +63,7 @@
 		setTimeout(function() {
 			// round down and up to the nearest 100 for the slider range to look a little more neat
 			var min_price = Math.floor(Vue.$children[0].priceMinMax.min_price.value/100)*100;
-			var max_price = Math.ceil(Vue.$children[0].priceMinMax.max_price.value/100)*100;;
-
-			console.log(max_price);
+			var max_price = Math.ceil(Vue.$children[0].priceMinMax.max_price.value/100)*100;
 
 			var slider = document.getElementById('slider-handles');
 

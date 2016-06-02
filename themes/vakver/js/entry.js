@@ -73,6 +73,14 @@ $(document).ready(function() {
 				this.countries = countries;
 			},
 			'unique-boards': function(boards) {
+				// remove these elements from the array and filter sidebar
+				for (var i = 0, len = boards.length; i < len; i++) {
+					if(boards[i].key == "volgens beschrijving" || boards[i].key == "lookup_verzorging_t_1") {
+				        boards.splice(i, 1);
+				        break;
+				    }
+				}
+
 				this.boards = boards;
 			}
 		},
@@ -102,11 +110,6 @@ $(document).ready(function() {
 
 				// broadcast the event to the child component listener
 				this.$broadcast('removeSortListener', [this.sortPopularity, this.sortPrice, this.sortRating]);
-			},
-
-			// helper function to capatilize the first letter of a string
-			ucfirst: function(string) { 
-			    return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase(); 
 			},
 
 			/*

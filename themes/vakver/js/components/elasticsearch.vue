@@ -176,7 +176,9 @@
 				priceRange: [],
 
 				// the lowest and highest vacation price
-				priceMinMax: []
+				priceMinMax: [],
+
+				timer: 0
 			};
 		},
 		events: {
@@ -204,7 +206,15 @@
 			'priceListener': function(range) {
 				this.priceRange = range;
 
-				this.search();
+				/* custom made debouncer */
+				 
+				// clears the timer so there is always x seconds in between calls
+				clearTimeout(this.timer);
+
+				// setTimeout calls a function after x seconds
+            	this.timer = setTimeout(function(){
+					this.search()
+				}.bind(this), 200);
 			}
 		},
 		methods: {
@@ -531,7 +541,31 @@
 			      var posOfTld = hostNameArray.length - 1;  
 			      var tld = hostNameArray[posOfTld];  
 			      return tld;  
-			 }  
+			 },
+
+			 /*
+			|--------------------------------------------------------------------------
+			| Debounce method helper
+			|--------------------------------------------------------------------------
+			|
+			| Debounces a call so it only fires every x seconds to prevent db overload
+			|
+			*/
+
+			 debounce: function(func, wait, immediate) {
+				var timeout;
+				return function() {
+					var context = this, args = arguments;
+					var later = function() {
+						timeout = null;
+						if (!immediate) func.apply(context, args);
+					};
+					var callNow = immediate && !timeout;
+					clearTimeout(timeout);
+					timeout = setTimeout(later, wait);
+					if (callNow) func.apply(context, args);
+				}
+			} 
 		}
 	}
 </script>

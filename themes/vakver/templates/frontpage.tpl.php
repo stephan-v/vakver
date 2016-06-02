@@ -82,7 +82,7 @@
 
                 <div class="readmore">
                     <ul class="countries">
-                        <li v-for="country in countries | orderBy 'key'" v-on:click="countryFilter(country.key)" v-bind:class="{ 'active': countriesToFilter.indexOf(country.key) > -1 }">{{ ucfirst(country.key) }}</li>
+                        <li v-for="country in countries | orderBy 'key'" v-on:click="countryFilter(country.key)" v-bind:class="{ 'active': countriesToFilter.indexOf(country.key) > -1 }">{{ country.key | capitalize }}</li>
                     </ul>
                 </div><!-- /.readmore -->
             </div><!-- /.filer -->
@@ -96,7 +96,7 @@
 
                 <div class="readmore">
                     <ul class="countries">
-                        <li v-for="board in boards | orderBy 'key'" v-on:click="boardFilter(board.key)" v-bind:class="{ 'active': boardsToFilter.indexOf(board.key) > -1 }">{{ ucfirst(board.key) }}</li>
+                        <li v-for="board in boards | orderBy 'key'" v-on:click="boardFilter(board.key)" v-bind:class="{ 'active': boardsToFilter.indexOf(board.key) > -1 }">{{ board.key | capitalize }}</li>
                     </ul>
                 </div><!-- /.readmore -->
             </div><!-- /.filer -->

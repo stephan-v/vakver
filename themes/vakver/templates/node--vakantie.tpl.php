@@ -148,7 +148,7 @@
             <!-- vakantie view -->
             <div class="row">
                 <div class="col-md-12 related-vacations-header">
-                    <h3>vergelijkbare vakanties</h3>
+                    <h3>Anderen bekeken ook</h3>
                 </div><!-- /.col-md-12 -->
                 <?php print views_embed_view('vakantie', $display_id = 'block_1', $field_country[0]['value']); ?>
             </div>
