@@ -440,6 +440,9 @@ aside {
   text-align: center;
   transition: all 250ms linear;
 }
+aside .filter.slider {
+  padding: 15px 30px 40px 30px;
+}
 aside .filter.slider h3 {
   float: none;
 }
@@ -479,7 +482,7 @@ aside .filter {
   text-align: left;
   font-family: 'Oxygen', sans-serif;
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-  padding: 20px 30px 30px 30px;
+  padding: 15px 30px;
 }
 aside .filter:last-child {
   border: none;
@@ -487,12 +490,12 @@ aside .filter:last-child {
 aside .filter h3 {
   font-weight: normal;
   font-size: 16px;
-  margin-bottom: 1em;
+  margin: 0.5em 0 1em 0;
   float: left;
 }
 aside .filter .filter-count {
   float: right;
-  margin: 1em 0;
+  margin: 0.5em 0 1em 0;
   background: #4E8EC3;
   color: white;
   border-radius: 35px;
@@ -522,7 +525,7 @@ aside .filter .show-more {
   font-size: 12px;
   font-weight: bold;
   color: #7F6232;
-  margin-top: 15px;
+  margin-top: 10px;
 }
 aside .star-rating label {
   display: block;
