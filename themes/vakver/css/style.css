@@ -440,8 +440,24 @@ aside {
   text-align: center;
   transition: all 250ms linear;
 }
-aside #slider-handles {
-  margin: 30px 30px 0 30px;
+aside .filter.slider h3 {
+  float: none;
+}
+aside .filter.slider #slider-handles {
+  margin: 15px;
+}
+aside .filter.slider #slider-handles .noUi-handle {
+  background: #4E8EC3;
+  box-shadow: none;
+  border: 1px solid #467BA7;
+}
+aside .filter.slider #slider-margin-value-min {
+  float: left;
+  font-weight: bold;
+}
+aside .filter.slider #slider-margin-value-max {
+  float: right;
+  font-weight: bold;
 }
 aside.active {
   left: 0;

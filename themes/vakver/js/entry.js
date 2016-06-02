@@ -16,10 +16,13 @@ Vue.config.debug = true;
 Vue.component('elasticsearch', Elasticsearch);
 Vue.component('weatherapi', WeatherAPI);
 
+// give Vue access to jQuery that is tied to the window
+var $ = window.jQuery = require('jquery');
+
 // give window access to the vue module, this is needed for the Vue resource to work with it in child components aswell
 window.Vue = Vue;
 
-window.onload = function () {
+$(document).ready(function() {
 	// create a root instance
 	global.Vue = new Vue({
 		el: 'body',
@@ -145,4 +148,4 @@ window.onload = function () {
 			}
 		}
 	})
-}
+});

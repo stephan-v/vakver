@@ -64,10 +64,14 @@
         <aside>
             <div class="btn">Filter reizen</div>
 
-            <h3>Prijs</h3>
-            <div id="slider-handles"></div>
-            <div id="slider-margin-value-min"></div>
-            <div id="slider-margin-value-max"></div>
+            <div class="filter slider">
+                <h3>Prijs</h3>
+                <div id="slider-handles"></div>
+                <div class="range">
+                    <div id="slider-margin-value-min"></div>
+                    <div id="slider-margin-value-max"></div>
+                </div><!-- /.range -->
+            </div><!-- /.slider -->
 
             <div class="filter">
                 <div class="filter-header">

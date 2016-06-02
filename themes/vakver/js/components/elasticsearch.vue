@@ -124,6 +124,9 @@
 			// perform a search for a list of all unique board types
 			this.searchUniqueBoards();
 
+			// perform a search for the lowest and highest vacation price
+			this.searchMinMax();
+
 			// switch pages with left and right keypresses - bind the window scope to this object
 			window.onkeydown = function (e) {
 			    var code = e.keyCode ? e.keyCode : e.which;
@@ -169,7 +172,11 @@
 				// apply filter with these board types
 				boards: [],
 
-				priceRange: []
+				// the pricerange to look in between
+				priceRange: [],
+
+				// the lowest and highest vacation price
+				priceMinMax: []
 			};
 		},
 		events: {
@@ -476,6 +483,34 @@
 				}).then(function (resp) {
 					// dispatch this data to the entry.js file
 					this.$dispatch('unique-boards', resp.aggregations.boards.buckets);
+				}.bind(this), function (err) {
+					console.trace(err.message);
+				});
+			},
+
+			/*
+			|--------------------------------------------------------------------------
+			| Aggregation query to the min and max price for vacations
+			|--------------------------------------------------------------------------
+			|
+			| Same as above - values are meant for the price sliders max and min values
+			|
+			*/
+		
+			searchMinMax: function() {
+				this.client.search({
+					index: 'node',
+					type: 'vakantie',
+  					body: {
+						"size" : 0,
+					    "aggs" : { 
+					        "min_price" : { "min" : { "field" : "price.value" } },
+					        "max_price" : { "max" : { "field" : "price.value" } }
+					    }
+					}
+				}).then(function (resp) {
+					// dispatch this data to the entry.js file
+					this.priceMinMax = resp.aggregations;
 				}.bind(this), function (err) {
 					console.trace(err.message);
 				});

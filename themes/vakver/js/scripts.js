@@ -38,7 +38,7 @@
 				collapsedHeight: 90,
 				speed: 1000
 			});
-		}, 1200);
+		}, 500);
 
 		// without timeout
 		$('.agency-content .readmore').readmore({
@@ -60,38 +60,46 @@
 		noui Slider
 		========================================================================== */
 
-		var slider = document.getElementById('slider-handles');
+		setTimeout(function() {
+			// round down and up to the nearest 100 for the slider range to look a little more neat
+			var min_price = Math.floor(Vue.$children[0].priceMinMax.min_price.value/100)*100;
+			var max_price = Math.ceil(Vue.$children[0].priceMinMax.max_price.value/100)*100;;
 
-		noUiSlider.create(slider, {
-			start: [ 0, 5000 ],
-			step: 50,
-			range: {
-				'min': [  0 ],
-				'max': [ 5000 ]
-			}
-		});
+			console.log(max_price);
 
-		var marginMin = document.getElementById('slider-margin-value-min'),
-			marginMax = document.getElementById('slider-margin-value-max');
+			var slider = document.getElementById('slider-handles');
 
-		slider.noUiSlider.on('update', function ( values, handle ) {
-			if ( handle ) {
-				var values = values.map(function (x) { 
-				    return parseInt(x, 10); 
-				});
+			noUiSlider.create(slider, {
+				start: [min_price, max_price],
+				step: 50,
+				range: {
+					'min': [min_price],
+					'max': [max_price]
+				}
+			});
 
-				Vue.$broadcast('priceListener', values);
+			var marginMin = document.getElementById('slider-margin-value-min'),
+				marginMax = document.getElementById('slider-margin-value-max');
 
-				marginMax.innerHTML = values[handle];
-			} else {
-				var values = values.map(function (x) { 
-				    return parseInt(x, 10); 
-				});
-				
-				Vue.$broadcast('priceListener', values);
+			slider.noUiSlider.on('update', function ( values, handle ) {
+				if ( handle ) {
+					var values = values.map(function (x) { 
+					    return parseInt(x, 10); 
+					});
 
-				marginMin.innerHTML = values[handle];
-			}
-		});
+					Vue.$broadcast('priceListener', values);
+
+					marginMax.innerHTML = values[handle];
+				} else {
+					var values = values.map(function (x) { 
+					    return parseInt(x, 10); 
+					});
+					
+					Vue.$broadcast('priceListener', values);
+
+					marginMin.innerHTML = values[handle];
+				}
+			});
+		}, 500);
 	});
 }(jQuery));
