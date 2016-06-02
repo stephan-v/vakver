@@ -81,7 +81,7 @@
 
                         <h3><?php print $title; ?></h3>
 
-                        <?php print $body[0]['value']; ?>
+                        <?php print text_summary($body[0]['value'], NULL, 180); ?>
 
                         <div class="extra-info-header">Aanvullende informatie</div>
                         <div class="extra-info">

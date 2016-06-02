@@ -214,7 +214,7 @@
 				// setTimeout calls a function after x seconds
             	this.timer = setTimeout(function(){
 					this.search()
-				}.bind(this), 200);
+				}.bind(this), 150);
 			}
 		},
 		methods: {

@@ -62,11 +62,21 @@
 
 		setTimeout(function() {
 		    $(window).resize(function() {
+		    	$("aside").css('min-height', "auto");	 
+		    	
 		        var bodyheight = $(".main-content").height();
 
 		        $("aside").css('min-height', bodyheight + 50);
 		    }).resize();
 	    }, 500);
+
+	    $(".fa-bars, .fa-th-large").click(function() {
+			$("aside").css('min-height', "auto");	    	
+
+	    	var bodyheight = $(".main-content").height();
+
+	        $("aside").css('min-height', bodyheight + 50);
+	    })
 
 		/* ==========================================================================
 		noui Slider
