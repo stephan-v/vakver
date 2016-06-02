@@ -70,6 +70,9 @@ a.logo {
 .bold {
   font-weight: bold;
 }
+.always-float {
+  float: left !important;
+}
 /* ==========================================================================
 Lazy image loading
 ========================================================================== */
@@ -223,6 +226,7 @@ Header
   height: 500px;
   width: 100%;
   background-position: center;
+  position: relative;
 }
 .sort-bar {
   background: white;
@@ -430,15 +434,17 @@ Index page
 Index Sidebar
 ========================================================================== */
 aside {
-  position: absolute;
-  z-index: 1;
-  top: 0;
-  left: -300px;
+  float: left;
+  margin-left: -300px;
+  margin-bottom: -50px;
   width: 300px;
-  min-height: 120%;
+  min-height: 100%;
   background: #FFC54A;
   text-align: center;
   transition: all 250ms linear;
+  left: 0;
+  position: absolute;
+  z-index: 10;
 }
 aside .filter.slider {
   padding: 15px 30px 40px 30px;
@@ -463,7 +469,7 @@ aside .filter.slider #slider-margin-value-max {
   font-weight: bold;
 }
 aside.active {
-  left: 0;
+  left: 300px;
 }
 aside .btn {
   margin: 60px auto 0px auto;
@@ -538,9 +544,10 @@ aside .star-rating .fa-star {
 aside .star-rating .checkbox input[type="checkbox"] {
   margin-left: 0;
 }
-@media (min-width: 800px) {
+@media (min-width: 992px) {
   aside {
-    left: 0;
+    margin-left: 0;
+    position: relative;
   }
   .main-content .wrapper {
     padding-left: 300px;

@@ -81,6 +81,9 @@ a.logo {
 .bold {
 	font-weight: bold;
 }
+.always-float {
+	float: left !important;
+}
 
 /* ==========================================================================
 Lazy image loading
@@ -255,6 +258,16 @@ Header
 	height: 500px;
 	width: 100%;
 	background-position: center;
+	position: relative;
+
+	&:after {
+		// content: "";
+		// background: linear-gradient(135deg, #FBFF73, #5C9FCA);
+		// opacity: 0.9;
+		// position: absolute;
+		// height: 100%;
+		// width: 100%;
+	}
 }
 .sort-bar {
 	background: white;
@@ -483,15 +496,17 @@ Index Sidebar
 ========================================================================== */
 	
 aside {
-    position: absolute;
-    z-index: 1;
-    top: 0;
-    left: -300px;
+    float: left;
+    margin-left: -300px;
+    margin-bottom: -50px;
     width: 300px;
-    min-height: 120%;
+    min-height: 100%;
     background: #FFC54A;
     text-align: center;
     transition: all 250ms linear;
+    left: 0;
+    position: absolute;
+    z-index: 10;
 
 	.filter.slider {
 		padding: 15px 30px 40px 30px;
@@ -518,7 +533,7 @@ aside {
 	    }
 	}
 	&.active {
-		left: 0;
+	    left: 300px;
 	}
     .btn {
 	    margin: 60px auto 0px auto;
@@ -600,9 +615,10 @@ aside {
     }
 }
 // custom breakpoint to move the sibebar
-@media (min-width: 800px) { 
+@media (min-width: 992px) { 
 	aside {
-		left: 0;
+		margin-left: 0;
+		position: relative;
 	}
 	.main-content .wrapper {
 		padding-left: 300px;

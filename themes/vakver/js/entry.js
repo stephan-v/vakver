@@ -73,9 +73,17 @@ $(document).ready(function() {
 				this.countries = countries;
 			},
 			'unique-boards': function(boards) {
-				// remove these elements from the array and filter sidebar
+				// remove these elements from the array and filter sidebar - needs to be extremely specific with caps
 				for (var i = 0, len = boards.length; i < len; i++) {
-					if(boards[i].key == "volgens beschrijving" || boards[i].key == "lookup_verzorging_t_1") {
+					if(boards[i].key == "volgens beschrijving") {
+				        boards.splice(i, 1);
+				        break;
+				    }
+				}
+
+				// remove these elements from the array and filter sidebar - needs to be extremely specific with caps
+				for (var i = 0, len = boards.length; i < len; i++) {
+					if(boards[i].key == "Lookup_VERZORGING_T_1") {
 				        boards.splice(i, 1);
 				        break;
 				    }

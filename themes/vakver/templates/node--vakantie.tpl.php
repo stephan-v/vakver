@@ -86,8 +86,13 @@
                         <div class="extra-info-header">Aanvullende informatie</div>
                         <div class="extra-info">
                             <ul>
-                                <li><strong>Verzorgingstype:</strong> <?php print isset($field_board_type[0]['value']) ? $field_board_type[0]['value'] : ""; ?></li>
-                                <li><strong>Reisduur:</strong> <?php print isset($field_duration[0]['value']) ? $field_duration[0]['value'] : ""; ?> dagen</li>
+                                <?php if(isset($field_board_type[0]['value'])): ?>
+                                    <li><strong>Verzorgingstype:</strong> <?php print $field_board_type[0]['value']; ?></li>
+                                <?php endif; ?>
+
+                                <?php if(isset($field_duration[0]['value'])): ?>
+                                    <li><strong>Reisduur:</strong> <?php print $field_duration[0]['value']; ?> dagen</li>
+                                <?php endif; ?>
                             </ul>
                         </div><!-- /.extra-info -->
                     </div><!-- /.vacation -->

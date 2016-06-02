@@ -120,8 +120,10 @@
 
         <div class="wrapper">
             <div class="container">
-                <!-- elasticsearch results(tag is located at: js/components/elasticsearch.vue) -->
-                <elasticsearch></elasticsearch>
+                <div class="col-md-12 always-float">
+                    <!-- elasticsearch results(tag is located at: js/components/elasticsearch.vue) -->
+                    <elasticsearch></elasticsearch>
+                </div>
             </div><!-- /.container -->
         </div><!-- /.wrapper -->
     </div><!-- /.main-content -->
