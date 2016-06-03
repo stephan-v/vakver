@@ -125,16 +125,44 @@ Navigation
 		color: white;
 		text-transform: uppercase;
 	    font-size: 13px;
-	    padding-bottom: 10px;
-	    padding-top: 20px;
+	    padding: 0 0 5px 0;
+        margin: 20px 15px 0 15px;
+	    font-family: Oxygen;
+	    font-weight: bold;
 
 	    &:hover {
-	    	color: #4E71B9;
+	    	color: #4A6FA0;
 	    	background: none;
 	    }
+	    &:after {
+    		position: absolute;
+			top: 100%;
+			left: 0;
+			width: 100%;
+			height: 2px;
+			background: #4A6FA0;
+			content: '';
+			opacity: 0;
+			-webkit-transition: opacity 0.3s, -webkit-transform 0.3s;
+			-moz-transition: opacity 0.3s, -moz-transform 0.3s;
+			transition: opacity 0.3s, transform 0.3s;
+			-webkit-transform: translateY(10px);
+			-moz-transform: translateY(10px);
+			transform: translateY(10px);
+	    }
+	    &:hover::after, &:focus::after {
+	    	opacity: 1;
+			-webkit-transform: translateY(0px);
+			-moz-transform: translateY(0px);
+			transform: translateY(0px);
+	    }
 	}
-	.navbar-nav > .active > a, .navbar-default .navbar-nav > .active > a:hover {
+	.navbar-nav > .active > a {
 		background: none !important;
+
+		&:hover {
+			color: #4A6FA0;
+		}
 	}
 	.navbar-toggle {
 		&:hover {
@@ -547,6 +575,7 @@ aside {
 	    text-align: center;
 	    text-spacing: 1px;
         letter-spacing: 0.08em;
+        cursor: auto;
     }
     .filter {
     	text-align: left;

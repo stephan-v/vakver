@@ -213,12 +213,12 @@ exports.default = {
 			if (this.query) {
 				// create the query value because we can't have an empty query field in the elasticsearch body
 				// this will result in an error
-				this.queryDSL.body.query = {}, this.queryDSL.body.query.match_phrase_prefix = {
-					"title": {
-						"query": this.query,
-						"slop": 10,
-						"max_expansions": 50
-					}
+				this.queryDSL.body.query = {}, this.queryDSL.body.query.multi_match = {
+					"fields": ["title", "country.value", "region.value"],
+					"query": "Spanje",
+					"type": "phrase_prefix",
+					"max_expansions": 50,
+					"slop": 10
 				};
 			} else {
 				// if no query, filter or sort has been set delete the query property from the object entirely to prevent elasticsearch errors

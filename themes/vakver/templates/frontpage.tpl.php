@@ -110,7 +110,7 @@
 
                 <div class="readmore">
                     <ul class="countries">
-                        <li v-for="duration in durations | orderBy 'key'" v-on:click="durationFilter(duration.key)" v-bind:class="{ 'active': durationsToFilter.indexOf(duration.key) > -1 }">{{ duration.key | capitalize }} dagen</li>
+                        <li v-for="duration in durations.slice().reverse()" v-on:click="durationFilter(duration.key)" v-bind:class="{ 'active': durationsToFilter.indexOf(duration.key) > -1 }">{{ duration.key | capitalize }} dagen</li>
                     </ul>
                 </div><!-- /.readmore -->
             </div><!-- /.filer -->
