@@ -639,6 +639,14 @@ $(document).ready(function() {
 				this.$broadcast('ratingsListener', this.ratings);
 			}
 		},
+		ready: function() {
+			// if we are on the homepage with a search query, set the query and perform a search for it straight away
+			if(window.location.pathname == "/" && location.search.split('search=')[1]) {
+				this.query = location.search.split('search=')[1];
+
+				this.search();
+			}
+		},
 		events: {
 			// capture the dispatch event from the child component
 			'travel-hits': function(hits) {
@@ -757,21 +765,26 @@ $(document).ready(function() {
 				this.$broadcast('durationListener', this.durationsToFilter);
 			},
 			search: function(event) {
-				window.location.href = '/?search=' + this.query;
+				// redirect if we get a query on this method call while we are not on the homepage
+				if(this.query && window.location.pathname != "/" ) {
+					window.location.href = '/?search=' + this.query;
+				} else {
+					// broadcast the event to the child component listener
+					this.$broadcast('searchListener', this.query);
 
-				// broadcast the event to the child component listener
-				this.$broadcast('searchListener', this.query);
+					window.scrollTo(0, $("#main-search").offset().top);
 
-				window.scrollTo(0, $("#main-search").offset().top);
+					if(!location.search.split('search=')[1]) {
+						// remove focus from element
+						$("input", event.target).blur();
 
-				// remove focus from element
-				$("input", event.target).blur();
+						// remove the query which in turn removes the text from the input
+						this.query = '';
+					}
 
-				// focus on the main search input
-				$(".elasticsearch-input").focus();
-				
-				// remove the query which in turn removes the text from the input
-				this.query = '';
+					// focus on the main search input
+					$(".elasticsearch-input").focus();
+				}
 			}
 		}
 	})
