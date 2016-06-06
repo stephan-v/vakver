@@ -11,7 +11,7 @@
         <div class="col-md-6 col-md-offset-3">
             <i class="fa fa-search fa-2x" aria-hidden="true"></i>
             <!-- add: debounce="500" for a 500ms delay -->
-            <input type="text" placeholder="Zoek op naam, land, stad of regio" v-on:keyup="search" v-model="query">
+            <input type="text" placeholder="Zoek op naam, land, stad of regio" v-on:keyup="search" v-model="query" class="elasticsearch-input">
         </div><!-- /.col-md-6 -->
 
         <div class="col-md-3 view-options">
@@ -181,6 +181,11 @@
 			};
 		},
 		events: {
+			'searchListener': function(query) {
+				this.query = query;
+
+				this.search()
+			},
 			'ratingsListener': function(ratings) {
 				this.ratings = ratings;
 
@@ -303,7 +308,7 @@
 
 					this.queryDSL.body.query.multi_match = {
 						"fields" : ["title", "country.value", "region.value"],
-			            "query" : "Spanje",
+			            "query" : this.query,
 			            "type" : "phrase_prefix",
 			            "max_expansions": 50,
 			            "slop": 10

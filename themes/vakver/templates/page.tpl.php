@@ -1,8 +1,8 @@
 <div id="page">	
 	<nav class="navbar navbar-default">
-		<form class="navbar-form" role="search">
+		<form class="navbar-form" role="search" v-on:submit.prevent="search($event)">
 			<div class="form-group">
-				<input type="text" class="form-control" placeholder="Vakantie zoeken">
+				<input type="text" class="form-control" placeholder="Vakantie zoeken" v-model="query">
 			</div><!-- /.form-group -->
 		</form>
 
@@ -57,11 +57,6 @@
 					</div><!-- /.col-md-6 -->
 
 					<div class="col-md-6">
-						<div class="input-group">
-							<input type="text" class="form-control" placeholder="E-mail invullen" aria-describedby="basic-addon2">
-							<span class="input-group-addon" id="basic-addon2">aanmelden</span>
-						</div><!-- /.input-group -->
-
 						<?php print render($page['subscription']); ?>
 					</div><!-- /.col-md-6 -->
 				</div><!-- /.row -->

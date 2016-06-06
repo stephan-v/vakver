@@ -577,7 +577,11 @@ aside {
 	    text-align: center;
 	    text-spacing: 1px;
         letter-spacing: 0.08em;
-        cursor: auto;
+        cursor: default;
+
+        &:hover {
+        	color: white;
+        }
     }
     .filter {
     	text-align: left;
@@ -1018,25 +1022,37 @@ Footer
 			margin: 0;
 			line-height: 40px;
 		}
-		.input-group {
-			.form-control {
+		.simplenews-subscribe {
+			position: relative;
+
+			.form-item {
+				margin: 0;
+			}
+			label {
+				display: none;
+			}
+			#edit-mail {
 				border-radius: 5px 0 0 5px;
 				background: rgba(0,0,0,0.1);
 				border: 0;
 				color: white;
-				padding: 20px 15px;
+				padding: 10px 15px;
+				width: 100%;
 
 				&::-webkit-input-placeholder {
 					color: white;
 				}
 			}
-			.input-group-addon {
-			    background: #9DD915;
+			#edit-submit {
+				background: #9DD915;
 			    color: white;
 			    text-transform: uppercase;
 			    border-radius: 0 5px 5px 0;
 			    border: 3px solid #4186E6;
-			    padding: 10px 30px;
+			    padding: 7px 30px;
+			    position: absolute;
+			    right: 0;
+			    top: 0;
 			}
 		}
 	}

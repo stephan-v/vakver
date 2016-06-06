@@ -511,7 +511,10 @@ aside .btn {
   text-align: center;
   text-spacing: 1px;
   letter-spacing: 0.08em;
-  cursor: auto;
+  cursor: default;
+}
+aside .btn:hover {
+  color: white;
 }
 aside .filter {
   text-align: left;
@@ -898,23 +901,36 @@ Footer
   margin: 0;
   line-height: 40px;
 }
-#footer .newsletter .input-group .form-control {
+#footer .newsletter .simplenews-subscribe {
+  position: relative;
+}
+#footer .newsletter .simplenews-subscribe .form-item {
+  margin: 0;
+}
+#footer .newsletter .simplenews-subscribe label {
+  display: none;
+}
+#footer .newsletter .simplenews-subscribe #edit-mail {
   border-radius: 5px 0 0 5px;
   background: rgba(0, 0, 0, 0.1);
   border: 0;
   color: white;
-  padding: 20px 15px;
+  padding: 10px 15px;
+  width: 100%;
 }
-#footer .newsletter .input-group .form-control::-webkit-input-placeholder {
+#footer .newsletter .simplenews-subscribe #edit-mail::-webkit-input-placeholder {
   color: white;
 }
-#footer .newsletter .input-group .input-group-addon {
+#footer .newsletter .simplenews-subscribe #edit-submit {
   background: #9DD915;
   color: white;
   text-transform: uppercase;
   border-radius: 0 5px 5px 0;
   border: 3px solid #4186E6;
-  padding: 10px 30px;
+  padding: 7px 30px;
+  position: absolute;
+  right: 0;
+  top: 0;
 }
 #footer .main-content {
   background: url(../img/footer-background.jpg);

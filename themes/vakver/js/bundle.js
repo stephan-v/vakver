@@ -95,6 +95,11 @@ exports.default = {
 		};
 	},
 	events: {
+		'searchListener': function searchListener(query) {
+			this.query = query;
+
+			this.search();
+		},
 		'ratingsListener': function ratingsListener(ratings) {
 			this.ratings = ratings;
 
@@ -215,7 +220,7 @@ exports.default = {
 				// this will result in an error
 				this.queryDSL.body.query = {}, this.queryDSL.body.query.multi_match = {
 					"fields": ["title", "country.value", "region.value"],
-					"query": "Spanje",
+					"query": this.query,
 					"type": "phrase_prefix",
 					"max_expansions": 50,
 					"slop": 10
@@ -493,7 +498,7 @@ exports.default = {
 	}
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n\t<div class=\"row main-search-wrapper\">\n        <div class=\"col-md-6 col-md-offset-3\">\n            <i class=\"fa fa-search fa-2x\" aria-hidden=\"true\"></i>\n            <!-- add: debounce=\"500\" for a 500ms delay -->\n            <input type=\"text\" placeholder=\"Zoek op naam, land, stad of regio\" v-on:keyup=\"search\" v-model=\"query\">\n        </div><!-- /.col-md-6 -->\n\n        <div class=\"col-md-3 view-options\">\n            <i class=\"fa fa-bars fa-2x\" aria-hidden=\"true\" v-bind:class=\"{ 'active': !toggleView}\" v-on:click=\"toggleView = false\"></i>\n            <i class=\"fa fa-th-large fa-2x\" aria-hidden=\"true\" v-bind:class=\"{ 'active': toggleView}\" v-on:click=\"toggleView = true\"></i>\n        </div><!-- /.col-md-3 -->\n    </div><!-- /.row -->\n\n\t<div v-if=\"toggleView\" class=\"row\" v-for=\"row in travels | chunk 4\">\n\t\t<div class=\"col-xs-6 col-lg-3\" v-for=\"travel in row\">\n\t\t\t<div class=\"vacation-item\">\n\t\t\t\t<a href=\"/node/{{ travel._source.nid }}\">\n\t\t\t\t\t<div class=\"placeholder-img\" v-if=\"travel._source.field_image\" v-bind:style=\"{ 'background-image': 'url(' + travel._source.field_image[0].url.replace('files', 'files/styles/medium/public') + ')' }\">\n\t\t\t\t\t\t<div class=\"star-rating\" v-if=\"travel._source.stars\">\n\t\t\t\t\t\t\t<i class=\"fa fa-star fa-lg\" aria-hidden=\"true\" v-for=\"star in travel._source.stars[0].value\"></i>\n\t\t\t\t\t\t</div><!-- /.star-rating -->\n\t\t\t\t\t\t<div class=\"pricing\">€ {{ Math.floor(travel._source.price[0].value) }}</div><!-- /.pricing -->\n\t\t\t\t\t</div><!-- /.placeholder-img -->\n\n\t\t\t\t\t<div class=\"content\">\n\t\t\t\t\t\t<h2 v-if=\"travel.highlight\">{{{ travel.highlight.title }}}</h2>\n\t\t\t\t\t\t<h2 v-else=\"\">{{{ travel._source.title }}}</h2>\n\t\t\t\t\t\t<p>{{ travel._source.body[0].value.substring(0, 85) }}...</p>\n\t\t\t\t\t</div><!-- /.content -->\n\t\t\t\t</a>\n\t\t\t</div><!-- /.vacation-item -->\n\t\t</div><!-- /.col-md-3 -->\n\t</div><!-- /.row -->\n\n\t<div v-if=\"!toggleView\" class=\"row list-view\" v-for=\"travel in travels\">\n\t\t<div class=\"col-md-10 col-md-offset-1\">\n\t\t\t<div class=\"vacation-item\">\n\t\t\t\t<a href=\"/node/{{ travel._source.nid }}\">\n\t\t\t\t\t<div class=\"col-md-3\">\n\t\t\t\t\t\t<div class=\"placeholder-img\" v-if=\"travel._source.field_image\" v-bind:style=\"{ 'background-image': 'url(' + travel._source.field_image[0].url.replace('files', 'files/styles/medium/public') + ')' }\">\n\t\t\t\t\t\t\t<div class=\"star-rating\" v-if=\"travel._source.stars\">\n\t\t\t\t\t\t\t\t<i class=\"fa fa-star fa-lg\" aria-hidden=\"true\" v-for=\"star in travel._source.stars[0].value\"></i>\n\t\t\t\t\t\t\t</div><!-- /.star-rating -->\n\t\t\t\t\t\t\t<div class=\"pricing\">€ {{ Math.floor(travel._source.price[0].value) }}</div><!-- /.pricing -->\n\t\t\t\t\t\t</div><!-- /.placeholder-img -->\n\t\t\t\t\t</div><!-- /.col-md-3 -->\n\n\t\t\t\t\t<div class=\"col-md-9\">\n\t\t\t\t\t\t<div class=\"content\">\n\t\t\t\t\t\t\t<h2 v-if=\"travel.highlight\">{{{ travel.highlight.title }}}</h2>\n\t\t\t\t\t\t\t<h2 v-else=\"\">{{{ travel._source.title }}}</h2>\n\t\t\t\t\t\t\t<p>{{ travel._source.body[0].value.substring(0, 85) }}...</p>\n\t\t\t\t\t\t</div><!-- /.content -->\n\t\t\t\t\t</div><!-- /.col-md-9 -->\n\t\t\t\t</a></div><!-- /.vacation-item --><a href=\"/node/{{ travel._source.nid }}\">\n\t\t\t</a>\n\t\t</div><!-- /.col-md-3 -->\n\t</div><!-- /.row -->\n\n\t<div class=\"row\" v-if=\"this.travels == 0\">\n\t\t<div class=\"col-md-6 col-md-offset-3 text-center no-results\">\n\t\t\t<h2>We hebben helaas geen resultaten kunnen vinden binnen deze zoekcriteria. Probeer het nog eens.</h2>\n\t\t</div><!-- /.col-md-6 -->\n\t</div><!-- /.row -->\n\n\t<div class=\"row\">\n\t\t<nav class=\"text-center\">\n\t\t\t<ul class=\"pagination\">\n\t\t\t\t<li>\n\t\t\t\t\t<a href=\"#\" aria-label=\"Previous\" v-on:click.prevent=\"prevPage()\">\n\t\t\t\t\t\t<span aria-hidden=\"true\">«</span>\n\t\t\t\t\t</a>\n\t\t\t\t</li>\n\n\t\t\t\t<!-- crucial v-if logic to render the pagination -->\n\t\t\t\t<li v-for=\"pageNumber in totalPages\" v-bind:class=\"{'active' : pageNumber == this.currentPage }\" v-if=\"Math.abs(pageNumber - currentPage) < 4 || pageNumber == totalPages - 1 || pageNumber == 0\">\n\t\t\t\t\t<a href=\"#\" v-on:click.prevent=\"paginate(pageNumber)\">{{ pageNumber+1 }}</a>\n\t\t\t\t</li>\n\n\t\t\t\t<li>\n\t\t\t\t\t<a href=\"#\" aria-label=\"Next\" v-on:click.prevent=\"nextPage()\">\n\t\t\t\t\t\t<span aria-hidden=\"true\">»</span>\n\t\t\t\t\t</a>\n\t\t\t\t</li>\n\t\t\t</ul><!-- /.pagination -->\n\t\t</nav>\n\t</div><!-- /.row -->\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n\t<div class=\"row main-search-wrapper\">\n        <div class=\"col-md-6 col-md-offset-3\">\n            <i class=\"fa fa-search fa-2x\" aria-hidden=\"true\"></i>\n            <!-- add: debounce=\"500\" for a 500ms delay -->\n            <input type=\"text\" placeholder=\"Zoek op naam, land, stad of regio\" v-on:keyup=\"search\" v-model=\"query\" class=\"elasticsearch-input\">\n        </div><!-- /.col-md-6 -->\n\n        <div class=\"col-md-3 view-options\">\n            <i class=\"fa fa-bars fa-2x\" aria-hidden=\"true\" v-bind:class=\"{ 'active': !toggleView}\" v-on:click=\"toggleView = false\"></i>\n            <i class=\"fa fa-th-large fa-2x\" aria-hidden=\"true\" v-bind:class=\"{ 'active': toggleView}\" v-on:click=\"toggleView = true\"></i>\n        </div><!-- /.col-md-3 -->\n    </div><!-- /.row -->\n\n\t<div v-if=\"toggleView\" class=\"row\" v-for=\"row in travels | chunk 4\">\n\t\t<div class=\"col-xs-6 col-lg-3\" v-for=\"travel in row\">\n\t\t\t<div class=\"vacation-item\">\n\t\t\t\t<a href=\"/node/{{ travel._source.nid }}\">\n\t\t\t\t\t<div class=\"placeholder-img\" v-if=\"travel._source.field_image\" v-bind:style=\"{ 'background-image': 'url(' + travel._source.field_image[0].url.replace('files', 'files/styles/medium/public') + ')' }\">\n\t\t\t\t\t\t<div class=\"star-rating\" v-if=\"travel._source.stars\">\n\t\t\t\t\t\t\t<i class=\"fa fa-star fa-lg\" aria-hidden=\"true\" v-for=\"star in travel._source.stars[0].value\"></i>\n\t\t\t\t\t\t</div><!-- /.star-rating -->\n\t\t\t\t\t\t<div class=\"pricing\">€ {{ Math.floor(travel._source.price[0].value) }}</div><!-- /.pricing -->\n\t\t\t\t\t</div><!-- /.placeholder-img -->\n\n\t\t\t\t\t<div class=\"content\">\n\t\t\t\t\t\t<h2 v-if=\"travel.highlight\">{{{ travel.highlight.title }}}</h2>\n\t\t\t\t\t\t<h2 v-else=\"\">{{{ travel._source.title }}}</h2>\n\t\t\t\t\t\t<p>{{ travel._source.body[0].value.substring(0, 85) }}...</p>\n\t\t\t\t\t</div><!-- /.content -->\n\t\t\t\t</a>\n\t\t\t</div><!-- /.vacation-item -->\n\t\t</div><!-- /.col-md-3 -->\n\t</div><!-- /.row -->\n\n\t<div v-if=\"!toggleView\" class=\"row list-view\" v-for=\"travel in travels\">\n\t\t<div class=\"col-md-10 col-md-offset-1\">\n\t\t\t<div class=\"vacation-item\">\n\t\t\t\t<a href=\"/node/{{ travel._source.nid }}\">\n\t\t\t\t\t<div class=\"col-md-3\">\n\t\t\t\t\t\t<div class=\"placeholder-img\" v-if=\"travel._source.field_image\" v-bind:style=\"{ 'background-image': 'url(' + travel._source.field_image[0].url.replace('files', 'files/styles/medium/public') + ')' }\">\n\t\t\t\t\t\t\t<div class=\"star-rating\" v-if=\"travel._source.stars\">\n\t\t\t\t\t\t\t\t<i class=\"fa fa-star fa-lg\" aria-hidden=\"true\" v-for=\"star in travel._source.stars[0].value\"></i>\n\t\t\t\t\t\t\t</div><!-- /.star-rating -->\n\t\t\t\t\t\t\t<div class=\"pricing\">€ {{ Math.floor(travel._source.price[0].value) }}</div><!-- /.pricing -->\n\t\t\t\t\t\t</div><!-- /.placeholder-img -->\n\t\t\t\t\t</div><!-- /.col-md-3 -->\n\n\t\t\t\t\t<div class=\"col-md-9\">\n\t\t\t\t\t\t<div class=\"content\">\n\t\t\t\t\t\t\t<h2 v-if=\"travel.highlight\">{{{ travel.highlight.title }}}</h2>\n\t\t\t\t\t\t\t<h2 v-else=\"\">{{{ travel._source.title }}}</h2>\n\t\t\t\t\t\t\t<p>{{ travel._source.body[0].value.substring(0, 85) }}...</p>\n\t\t\t\t\t\t</div><!-- /.content -->\n\t\t\t\t\t</div><!-- /.col-md-9 -->\n\t\t\t\t</a></div><!-- /.vacation-item --><a href=\"/node/{{ travel._source.nid }}\">\n\t\t\t</a>\n\t\t</div><!-- /.col-md-3 -->\n\t</div><!-- /.row -->\n\n\t<div class=\"row\" v-if=\"this.travels == 0\">\n\t\t<div class=\"col-md-6 col-md-offset-3 text-center no-results\">\n\t\t\t<h2>We hebben helaas geen resultaten kunnen vinden binnen deze zoekcriteria. Probeer het nog eens.</h2>\n\t\t</div><!-- /.col-md-6 -->\n\t</div><!-- /.row -->\n\n\t<div class=\"row\">\n\t\t<nav class=\"text-center\">\n\t\t\t<ul class=\"pagination\">\n\t\t\t\t<li>\n\t\t\t\t\t<a href=\"#\" aria-label=\"Previous\" v-on:click.prevent=\"prevPage()\">\n\t\t\t\t\t\t<span aria-hidden=\"true\">«</span>\n\t\t\t\t\t</a>\n\t\t\t\t</li>\n\n\t\t\t\t<!-- crucial v-if logic to render the pagination -->\n\t\t\t\t<li v-for=\"pageNumber in totalPages\" v-bind:class=\"{'active' : pageNumber == this.currentPage }\" v-if=\"Math.abs(pageNumber - currentPage) < 4 || pageNumber == totalPages - 1 || pageNumber == 0\">\n\t\t\t\t\t<a href=\"#\" v-on:click.prevent=\"paginate(pageNumber)\">{{ pageNumber+1 }}</a>\n\t\t\t\t</li>\n\n\t\t\t\t<li>\n\t\t\t\t\t<a href=\"#\" aria-label=\"Next\" v-on:click.prevent=\"nextPage()\">\n\t\t\t\t\t\t<span aria-hidden=\"true\">»</span>\n\t\t\t\t\t</a>\n\t\t\t\t</li>\n\t\t\t</ul><!-- /.pagination -->\n\t\t</nav>\n\t</div><!-- /.row -->\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -625,7 +630,9 @@ $(document).ready(function() {
 			durations: [],
 
 			// array of travel durations to filter(sent to the child component)
-			durationsToFilter: []
+			durationsToFilter: [],
+
+			query: ''
 		},
 		watch: {
 			'ratings': function() {
@@ -668,7 +675,7 @@ $(document).ready(function() {
 			},
 			'unique-durations': function(durations) {
 				this.durations = durations;
-			},
+			}
 		},
 		methods: {
 			// enable a sort
@@ -748,6 +755,23 @@ $(document).ready(function() {
 
 				// broadcast the event to the child component listener
 				this.$broadcast('durationListener', this.durationsToFilter);
+			},
+			search: function(event) {
+				window.location.href = '/?search=' + this.query;
+
+				// broadcast the event to the child component listener
+				this.$broadcast('searchListener', this.query);
+
+				window.scrollTo(0, $("#main-search").offset().top);
+
+				// remove focus from element
+				$("input", event.target).blur();
+
+				// focus on the main search input
+				$(".elasticsearch-input").focus();
+				
+				// remove the query which in turn removes the text from the input
+				this.query = '';
 			}
 		}
 	})

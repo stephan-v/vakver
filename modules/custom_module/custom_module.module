@@ -1,0 +1,11 @@
+<?php
+
+ /**
+ * Implements hook_form_alter().
+ */
+function custom_module_form_alter(&$form, &$form_state, $form_id) {
+	 if (substr($form_id, 0, 22) == 'simplenews_block_form_') {
+  	 	$form['mail']['#attributes'] = array('placeholder' => 'Uw e-mail');
+  	 	$form['submit']['#value'] = 'aanmelden';
+	 }	
+}

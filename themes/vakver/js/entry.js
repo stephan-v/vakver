@@ -56,7 +56,9 @@ $(document).ready(function() {
 			durations: [],
 
 			// array of travel durations to filter(sent to the child component)
-			durationsToFilter: []
+			durationsToFilter: [],
+
+			query: ''
 		},
 		watch: {
 			'ratings': function() {
@@ -99,7 +101,7 @@ $(document).ready(function() {
 			},
 			'unique-durations': function(durations) {
 				this.durations = durations;
-			},
+			}
 		},
 		methods: {
 			// enable a sort
@@ -179,6 +181,23 @@ $(document).ready(function() {
 
 				// broadcast the event to the child component listener
 				this.$broadcast('durationListener', this.durationsToFilter);
+			},
+			search: function(event) {
+				window.location.href = '/?search=' + this.query;
+
+				// broadcast the event to the child component listener
+				this.$broadcast('searchListener', this.query);
+
+				window.scrollTo(0, $("#main-search").offset().top);
+
+				// remove focus from element
+				$("input", event.target).blur();
+
+				// focus on the main search input
+				$(".elasticsearch-input").focus();
+				
+				// remove the query which in turn removes the text from the input
+				this.query = '';
 			}
 		}
 	})

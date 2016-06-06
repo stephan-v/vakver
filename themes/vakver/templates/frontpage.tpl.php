@@ -1,7 +1,7 @@
 <div id="node-<?php print $node->nid; ?>" class="<?php print $classes; ?> clearfix"<?php print $attributes; ?>>
     <div class="header index-header" style="background-image: url(<?php print file_create_url($node->field_image['und'][0]['uri']); ?>)"></div><!-- /.header -->
 
-    <div class="sort-bar">
+    <div class="sort-bar" id="main-search">
         <div class="container">
             <div class="row">
             <div class="col-sm-8">
