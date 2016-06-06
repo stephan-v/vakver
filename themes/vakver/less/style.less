@@ -392,6 +392,8 @@ Index page
     	height: 175px;
     	background-size: cover;
     	position: relative;
+    	// setting a background-color helps reduce flickering when the image is still loading
+	    background-color: #83C8E4;
 
     	.star-rating {
     		color: #F7CE45;
@@ -678,23 +680,17 @@ Vakantie pagina(single)
 	    }
 	    .social-media {
     	    position: absolute;
-		    left: -31px;
+		    left: -37px;
 		    background: white;
-		    padding: 15px 10px;
+		    padding: 15px 8px;
 
-		    .fa {
+		    a {
 		    	display: block;
-		    }
-		    .fa-facebook-square {
-		    	color: #3b5998;
-		    	margin-bottom: 10px;
-		    }
-		    .fa-twitter {
-		    	color: #55acee;
-		    	margin-bottom: 15px;
-		    }
-		    .fa-google-plus {
-		    	color: #d34836;
+		    	margin-bottom: 8px;
+
+		    	&:last-child {
+		    		margin-bottom: 0;
+		    	}
 		    }
 	    }
 

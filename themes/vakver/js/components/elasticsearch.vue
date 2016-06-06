@@ -24,7 +24,7 @@
 		<div class="col-xs-6 col-lg-3" v-for="travel in row">
 			<div class="vacation-item">
 				<a href="/node/{{ travel._source.nid }}">
-					<div class="placeholder-img" v-if="travel._source.field_image" v-bind:style="{ 'background-image': 'url(' + travel._source.field_image[0].url + ')' }">
+					<div class="placeholder-img" v-if="travel._source.field_image" v-bind:style="{ 'background-image': 'url(' + travel._source.field_image[0].url.replace('files', 'files/styles/medium/public') + ')' }">
 						<div class="star-rating" v-if="travel._source.stars">
 							<i class="fa fa-star fa-lg" aria-hidden="true" v-for="star in travel._source.stars[0].value"></i>
 						</div><!-- /.star-rating -->
@@ -46,7 +46,7 @@
 			<div class="vacation-item">
 				<a href="/node/{{ travel._source.nid }}">
 					<div class="col-md-3">
-						<div class="placeholder-img" v-if="travel._source.field_image" v-bind:style="{ 'background-image': 'url(' + travel._source.field_image[0].url + ')' }">
+						<div class="placeholder-img" v-if="travel._source.field_image" v-bind:style="{ 'background-image': 'url(' + travel._source.field_image[0].url.replace('files', 'files/styles/medium/public') + ')' }">
 							<div class="star-rating" v-if="travel._source.stars">
 								<i class="fa fa-star fa-lg" aria-hidden="true" v-for="star in travel._source.stars[0].value"></i>
 							</div><!-- /.star-rating -->

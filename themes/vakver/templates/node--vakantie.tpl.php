@@ -72,9 +72,7 @@
 
                     <div class="vacation">
                         <div class="social-media">
-                            <i class="fa fa-facebook-square fa-2x" aria-hidden="true"></i>
-                            <i class="fa fa-twitter fa-2x" aria-hidden="true"></i>
-                            <i class="fa fa-google-plus fa-lg" aria-hidden="true"></i>
+                            <?php print render($content['addtoany']); ?>
                         </div><!-- /.social-media -->
 
                         <?php print render($content['field_image']); ?>

@@ -61,6 +61,8 @@
 							<input type="text" class="form-control" placeholder="E-mail invullen" aria-describedby="basic-addon2">
 							<span class="input-group-addon" id="basic-addon2">aanmelden</span>
 						</div><!-- /.input-group -->
+
+						<?php print render($page['subscription']); ?>
 					</div><!-- /.col-md-6 -->
 				</div><!-- /.row -->
 			</div><!-- /.container -->
