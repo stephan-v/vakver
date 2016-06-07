@@ -15,7 +15,8 @@
 	var fs 			= require("fs");
 	var browserify 	= require('browserify');
 	var vueify 		= require('vueify');
-	var uglify 		= require('gulp-uglify');
+	var babelify 	= require('babelify');
+	var plumber 	= require('gulp-plumber');
 
 
 /*
@@ -30,6 +31,7 @@
 	// Less compiler
 	gulp.task('less', function () {
 	  return gulp.src('./less/**/*.less')
+	  	.pipe(plumber())
 	    .pipe(less({
 	      paths: [ path.join(__dirname, 'less', 'includes') ]
 	    }))
@@ -61,9 +63,12 @@
         });
     });
 
+
+    // Added babelify transform as well because our entry file contains ES2015
     gulp.task('browserify', function() {
     	browserify('./js/entry.js')
 	  	.transform(vueify)
+	  	
 	  	.bundle()
 	  	.pipe(fs.createWriteStream('./js/bundle.js'))
     });

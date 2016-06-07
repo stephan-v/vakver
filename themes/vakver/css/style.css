@@ -670,12 +670,12 @@ Vakantie pagina(single)
   margin: 11px 0 0 3px;
 }
 .node-type-vakantie .travel-information {
-  margin: -123px 0 0 0;
+  margin: -111px 0 0 0;
   background: white;
   border-bottom: 1px solid lightgrey;
 }
 .node-type-vakantie .travel-information .col-md-3 {
-  padding: 40px 0;
+  padding: 20px;
   border-right: 1px solid lightgrey;
 }
 .node-type-vakantie .travel-information .col-md-3:nth-child(1),
@@ -687,11 +687,11 @@ Vakantie pagina(single)
 }
 .node-type-vakantie .travel-information .col-md-3 .fa {
   color: #5B9DF4;
-  margin-right: 10px;
+  display: block;
+  margin-bottom: 5px;
 }
 .node-type-vakantie .travel-information .col-md-3 .travel-metadata {
   display: inline-block;
-  text-align: left;
   font-family: Oxygen;
 }
 .node-type-vakantie .travel-information .col-md-3 .travel-metadata .title {
@@ -699,6 +699,7 @@ Vakantie pagina(single)
 }
 .node-type-vakantie .travel-information .col-md-3 .travel-metadata .attribute {
   font-weight: bold;
+  font-size: 0.85em;
 }
 .node-type-vakantie .pricing {
   text-align: center;

@@ -38,6 +38,9 @@ exports.default = {
 		// perform a search for a list of all unique board types
 		this.searchUniqueBoards();
 
+		// perform a search for a list of all unique accommodation types
+		this.searchUniqueAccommodations();
+
 		// perform a search for the lowest and highest vacation price
 		this.searchMinMax();
 
@@ -86,6 +89,7 @@ exports.default = {
 			// apply filters with these arrays
 			countries: [],
 			boards: [],
+			accommodations: [],
 			durations: [],
 			priceRange: [],
 			priceMinMax: [],
@@ -118,6 +122,11 @@ exports.default = {
 		},
 		'boardListener': function boardListener(boards) {
 			this.boards = boards;
+
+			this.search();
+		},
+		'accommodationListener': function accommodationListener(accommodations) {
+			this.accommodations = accommodations;
 
 			this.search();
 		},
@@ -261,6 +270,10 @@ exports.default = {
 				this.searchFilter(this.boards, "board_type.value.raw");
 			}
 
+			if (this.accommodations.length > 0) {
+				this.searchFilter(this.accommodations, "accommodation.value.raw");
+			}
+
 			if (this.durations.length > 0) {
 				this.searchFilter(this.durations, "duration.value");
 			}
@@ -389,7 +402,7 @@ exports.default = {
 
 		/*
   |--------------------------------------------------------------------------
-  | Aggregation query to get a list of all unique accomodations
+  | Aggregation query to get a list of all unique accommodations
   |--------------------------------------------------------------------------
   |
   | Same as above
@@ -414,6 +427,38 @@ exports.default = {
 			}).then(function (resp) {
 				// dispatch this data to the entry.js file
 				this.$dispatch('unique-boards', resp.aggregations.boards.buckets);
+			}.bind(this), function (err) {
+				console.trace(err.message);
+			});
+		},
+
+		/*
+  |--------------------------------------------------------------------------
+  | Aggregation query to get a list of all unique accommodations
+  |--------------------------------------------------------------------------
+  |
+  | Same as above
+  |
+  */
+
+		searchUniqueAccommodations: function searchUniqueAccommodations() {
+			this.client.search({
+				index: 'node',
+				type: 'vakantie',
+				body: {
+					"size": 0,
+					"aggs": {
+						"accommodations": {
+							"terms": {
+								"size": 100,
+								"field": "accommodation.value.raw"
+							}
+						}
+					}
+				}
+			}).then(function (resp) {
+				// dispatch this data to the entry.js file
+				this.$dispatch('unique-accommodations', resp.aggregations.accommodations.buckets);
 			}.bind(this), function (err) {
 				console.trace(err.message);
 			});
@@ -449,7 +494,7 @@ exports.default = {
 
 		/*
   |--------------------------------------------------------------------------
-  | Aggregation query to get a list of all unique accomodations
+  | Aggregation query to get a list of all unique accommodations
   |--------------------------------------------------------------------------
   |
   | Same as above
@@ -573,6 +618,7 @@ if (module.hot) {(function () {  module.hot.accept()
 },{"vue":92,"vue-hot-reload-api":67}],3:[function(require,module,exports){
 (function (global){
 var Vue 			= require('vue');
+var Vuex 			= require('vuex');
 var Elasticsearch 	= require('./components/elasticsearch.vue')
 var WeatherAPI 		= require('./components/weatherapi.vue')
 
@@ -581,8 +627,10 @@ var moment 			= require('moment');
 require('moment/locale/nl');
 global.moment 		= moment;
 
+// make Vue aware of these additional modules
 Vue.use(require('vue-resource'));
 Vue.use(require('vue-chunk'));
+Vue.use(Vuex);
 
 Vue.config.debug = true;
 
@@ -593,8 +641,9 @@ Vue.component('weatherapi', WeatherAPI);
 // give Vue access to jQuery that is tied to the window
 var $ = window.jQuery = require('jquery');
 
-// give window access to the vue module, this is needed for the Vue resource to work with it in child components aswell
+// Give Vue and Vuex variable window access, this this not happen by default with webpack and browserify because they wrap our code in an anonymous function
 window.Vue = Vue;
+window.Vuex = Vue;
 
 $(document).ready(function() {
 	// create a root instance
@@ -632,6 +681,12 @@ $(document).ready(function() {
 			// array of travel durations to filter(sent to the child component)
 			durationsToFilter: [],
 
+			// array of unique accommodations to build a sidebar list
+			accommodations: [],
+
+			// array of accommodations to filter(sent to the child component)
+			accommodationsToFilter: [],
+
 			query: ''
 		},
 		watch: {
@@ -661,6 +716,9 @@ $(document).ready(function() {
 			},
 			'unique-countries': function(countries) {
 				this.countries = countries;
+			},
+			'unique-accommodations': function(accommodations) {
+				this.accommodations = accommodations;
 			},
 			'unique-boards': function(boards) {
 				// remove these elements from the array and filter sidebar - needs to be extremely specific with caps
@@ -726,7 +784,7 @@ $(document).ready(function() {
 			countryFilter: function(country) {
 				index = this.countriesToFilter.indexOf(country)
 
-				// if object is inteh array already then removeit , otherwise add it
+				// if object is in the array already then removeit , otherwise add it
 				if(index > -1) {
 					this.countriesToFilter.splice(index, 1);
 				} else {
@@ -740,7 +798,7 @@ $(document).ready(function() {
 			boardFilter: function(board) {
 				index = this.boardsToFilter.indexOf(board)
 
-				// if object is inteh array already then removeit , otherwise add it
+				// if object is in the array already then removeit , otherwise add it
 				if(index > -1) {
 					this.boardsToFilter.splice(index, 1);
 				} else {
@@ -749,6 +807,20 @@ $(document).ready(function() {
 
 				// broadcast the event to the child component listener
 				this.$broadcast('boardListener', this.boardsToFilter);
+			},
+
+			accommodationFilter: function(accommodation) {
+				index = this.accommodationsToFilter.indexOf(accommodation)
+
+				// if object is in the array already then removeit , otherwise add it
+				if(index > -1) {
+					this.accommodationsToFilter.splice(index, 1);
+				} else {
+					this.accommodationsToFilter.push(accommodation);
+				}
+
+				// broadcast the event to the child component listener
+				this.$broadcast('accommodationListener', this.accommodationsToFilter);
 			},
 
 			durationFilter: function(duration) {
@@ -774,13 +846,7 @@ $(document).ready(function() {
 
 					window.scrollTo(0, $("#main-search").offset().top);
 
-					if(!location.search.split('search=')[1]) {
-						// remove focus from element
-						$("input", event.target).blur();
-
-						// remove the query which in turn removes the text from the input
-						this.query = '';
-					}
+					this.query = '';
 
 					// focus on the main search input
 					$(".elasticsearch-input").focus();
@@ -791,7 +857,7 @@ $(document).ready(function() {
 });
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./components/elasticsearch.vue":1,"./components/weatherapi.vue":2,"jquery":50,"moment":53,"moment/locale/nl":52,"vue":92,"vue-chunk":66,"vue-resource":81}],4:[function(require,module,exports){
+},{"./components/elasticsearch.vue":1,"./components/weatherapi.vue":2,"jquery":50,"moment":53,"moment/locale/nl":52,"vue":92,"vue-chunk":66,"vue-resource":81,"vuex":94}],4:[function(require,module,exports){
 (function (global){
 "use strict";
 
@@ -1017,7 +1083,7 @@ rawAsap.makeRequestCallFromTimer = makeRequestCallFromTimer;
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{}],5:[function(require,module,exports){
 module.exports = { "default": require("core-js/library/fn/object/define-property"), __esModule: true };
-},{"core-js/library/fn/object/define-property":10}],6:[function(require,module,exports){
+},{"core-js/library/fn/object/define-property":7}],6:[function(require,module,exports){
 "use strict";
 
 exports.__esModule = true;
@@ -1043,6 +1109,25 @@ exports.default = function (obj, key, value) {
   return obj;
 };
 },{"../core-js/object/define-property":5}],7:[function(require,module,exports){
+var $ = require('../../modules/$');
+module.exports = function defineProperty(it, key, desc){
+  return $.setDesc(it, key, desc);
+};
+},{"../../modules/$":8}],8:[function(require,module,exports){
+var $Object = Object;
+module.exports = {
+  create:     $Object.create,
+  getProto:   $Object.getPrototypeOf,
+  isEnum:     {}.propertyIsEnumerable,
+  getDesc:    $Object.getOwnPropertyDescriptor,
+  setDesc:    $Object.defineProperty,
+  setDescs:   $Object.defineProperties,
+  getKeys:    $Object.keys,
+  getNames:   $Object.getOwnPropertyNames,
+  getSymbols: $Object.getOwnPropertySymbols,
+  each:       [].forEach
+};
+},{}],9:[function(require,module,exports){
 'use strict'
 
 exports.toByteArray = toByteArray
@@ -1153,7 +1238,7 @@ function fromByteArray (uint8) {
   return parts.join('')
 }
 
-},{}],8:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 (function (global){
 /*!
  * The buffer module from node.js, for the browser.
@@ -2868,32 +2953,13 @@ function isnan (val) {
 }
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"base64-js":7,"ieee754":47,"isarray":9}],9:[function(require,module,exports){
+},{"base64-js":9,"ieee754":47,"isarray":11}],11:[function(require,module,exports){
 var toString = {}.toString;
 
 module.exports = Array.isArray || function (arr) {
   return toString.call(arr) == '[object Array]';
 };
 
-},{}],10:[function(require,module,exports){
-var $ = require('../../modules/$');
-module.exports = function defineProperty(it, key, desc){
-  return $.setDesc(it, key, desc);
-};
-},{"../../modules/$":11}],11:[function(require,module,exports){
-var $Object = Object;
-module.exports = {
-  create:     $Object.create,
-  getProto:   $Object.getPrototypeOf,
-  isEnum:     {}.propertyIsEnumerable,
-  getDesc:    $Object.getOwnPropertyDescriptor,
-  setDesc:    $Object.defineProperty,
-  setDescs:   $Object.defineProperties,
-  getKeys:    $Object.keys,
-  getNames:   $Object.getOwnPropertyNames,
-  getSymbols: $Object.getOwnPropertySymbols,
-  each:       [].forEach
-};
 },{}],12:[function(require,module,exports){
 // In order to help people who were accidentally upgraded to this ES client,
 // throw an error when they try to instanciate the exported function.
@@ -42979,7 +43045,7 @@ Host.prototype.toString = function () {
 };
 
 }).call(this,require("buffer").Buffer)
-},{"./utils":45,"buffer":8,"querystring":61,"url":62}],31:[function(require,module,exports){
+},{"./utils":45,"buffer":10,"querystring":61,"url":62}],31:[function(require,module,exports){
 (function (process){
 var _ = require('./utils');
 var url = require('url');
@@ -85576,4 +85642,639 @@ exports.insert = function (css) {
   return elem
 }
 
+},{}],94:[function(require,module,exports){
+/*!
+ * Vuex v0.6.3
+ * (c) 2016 Evan You
+ * Released under the MIT License.
+ */
+(function (global, factory) {
+  typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
+  typeof define === 'function' && define.amd ? define(factory) :
+  (global.Vuex = factory());
+}(this, function () { 'use strict';
+
+  var babelHelpers = {};
+  babelHelpers.typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {
+    return typeof obj;
+  } : function (obj) {
+    return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj;
+  };
+
+  babelHelpers.classCallCheck = function (instance, Constructor) {
+    if (!(instance instanceof Constructor)) {
+      throw new TypeError("Cannot call a class as a function");
+    }
+  };
+
+  babelHelpers.createClass = function () {
+    function defineProperties(target, props) {
+      for (var i = 0; i < props.length; i++) {
+        var descriptor = props[i];
+        descriptor.enumerable = descriptor.enumerable || false;
+        descriptor.configurable = true;
+        if ("value" in descriptor) descriptor.writable = true;
+        Object.defineProperty(target, descriptor.key, descriptor);
+      }
+    }
+
+    return function (Constructor, protoProps, staticProps) {
+      if (protoProps) defineProperties(Constructor.prototype, protoProps);
+      if (staticProps) defineProperties(Constructor, staticProps);
+      return Constructor;
+    };
+  }();
+
+  babelHelpers.toConsumableArray = function (arr) {
+    if (Array.isArray(arr)) {
+      for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) arr2[i] = arr[i];
+
+      return arr2;
+    } else {
+      return Array.from(arr);
+    }
+  };
+
+  babelHelpers;
+
+  /**
+   * Merge an array of objects into one.
+   *
+   * @param {Array<Object>} arr
+   * @return {Object}
+   */
+
+  function mergeObjects(arr) {
+    return arr.reduce(function (prev, obj) {
+      Object.keys(obj).forEach(function (key) {
+        var existing = prev[key];
+        if (existing) {
+          // allow multiple mutation objects to contain duplicate
+          // handlers for the same mutation type
+          if (Array.isArray(existing)) {
+            existing.push(obj[key]);
+          } else {
+            prev[key] = [prev[key], obj[key]];
+          }
+        } else {
+          prev[key] = obj[key];
+        }
+      });
+      return prev;
+    }, {});
+  }
+
+  /**
+   * Deep clone an object. Faster than JSON.parse(JSON.stringify()).
+   *
+   * @param {*} obj
+   * @return {*}
+   */
+
+  function deepClone(obj) {
+    if (Array.isArray(obj)) {
+      return obj.map(deepClone);
+    } else if (obj && (typeof obj === 'undefined' ? 'undefined' : babelHelpers.typeof(obj)) === 'object') {
+      var cloned = {};
+      var keys = Object.keys(obj);
+      for (var i = 0, l = keys.length; i < l; i++) {
+        var key = keys[i];
+        cloned[key] = deepClone(obj[key]);
+      }
+      return cloned;
+    } else {
+      return obj;
+    }
+  }
+
+  /**
+   * Hacks to get access to Vue internals.
+   * Maybe we should expose these...
+   */
+
+  var Watcher = void 0;
+  function getWatcher(vm) {
+    if (!Watcher) {
+      var unwatch = vm.$watch('__vuex__', function (a) {
+        return a;
+      });
+      Watcher = vm._watchers[0].constructor;
+      unwatch();
+    }
+    return Watcher;
+  }
+
+  var Dep = void 0;
+  function getDep(vm) {
+    if (!Dep) {
+      Dep = vm._data.__ob__.dep.constructor;
+    }
+    return Dep;
+  }
+
+  var hook = typeof window !== 'undefined' && window.__VUE_DEVTOOLS_GLOBAL_HOOK__;
+
+  var devtoolMiddleware = {
+    onInit: function onInit(state, store) {
+      if (!hook) return;
+      hook.emit('vuex:init', store);
+      hook.on('vuex:travel-to-state', function (targetState) {
+        var currentState = store._vm._data;
+        store._dispatching = true;
+        Object.keys(targetState).forEach(function (key) {
+          currentState[key] = targetState[key];
+        });
+        store._dispatching = false;
+      });
+    },
+    onMutation: function onMutation(mutation, state) {
+      if (!hook) return;
+      hook.emit('vuex:mutation', mutation, state);
+    }
+  };
+
+  function override (Vue) {
+    // override init and inject vuex init procedure
+    var _init = Vue.prototype._init;
+    Vue.prototype._init = function () {
+      var options = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+
+      options.init = options.init ? [vuexInit].concat(options.init) : vuexInit;
+      _init.call(this, options);
+    };
+
+    /**
+     * Vuex init hook, injected into each instances init hooks list.
+     */
+
+    function vuexInit() {
+      var options = this.$options;
+      var store = options.store;
+      var vuex = options.vuex;
+      // store injection
+
+      if (store) {
+        this.$store = store;
+      } else if (options.parent && options.parent.$store) {
+        this.$store = options.parent.$store;
+      }
+      // vuex option handling
+      if (vuex) {
+        if (!this.$store) {
+          console.warn('[vuex] store not injected. make sure to ' + 'provide the store option in your root component.');
+        }
+        var state = vuex.state;
+        var getters = vuex.getters;
+        var actions = vuex.actions;
+        // handle deprecated state option
+
+        if (state && !getters) {
+          console.warn('[vuex] vuex.state option will been deprecated in 1.0. ' + 'Use vuex.getters instead.');
+          getters = state;
+        }
+        // getters
+        if (getters) {
+          options.computed = options.computed || {};
+          for (var key in getters) {
+            defineVuexGetter(this, key, getters[key]);
+          }
+        }
+        // actions
+        if (actions) {
+          options.methods = options.methods || {};
+          for (var _key in actions) {
+            options.methods[_key] = makeBoundAction(this.$store, actions[_key], _key);
+          }
+        }
+      }
+    }
+
+    /**
+     * Setter for all getter properties.
+     */
+
+    function setter() {
+      throw new Error('vuex getter properties are read-only.');
+    }
+
+    /**
+     * Define a Vuex getter on an instance.
+     *
+     * @param {Vue} vm
+     * @param {String} key
+     * @param {Function} getter
+     */
+
+    function defineVuexGetter(vm, key, getter) {
+      if (typeof getter !== 'function') {
+        console.warn('[vuex] Getter bound to key \'vuex.getters.' + key + '\' is not a function.');
+      } else {
+        Object.defineProperty(vm, key, {
+          enumerable: true,
+          configurable: true,
+          get: makeComputedGetter(vm.$store, getter),
+          set: setter
+        });
+      }
+    }
+
+    /**
+     * Make a computed getter, using the same caching mechanism of computed
+     * properties. In addition, it is cached on the raw getter function using
+     * the store's unique cache id. This makes the same getter shared
+     * across all components use the same underlying watcher, and makes
+     * the getter evaluated only once during every flush.
+     *
+     * @param {Store} store
+     * @param {Function} getter
+     */
+
+    function makeComputedGetter(store, getter) {
+      var id = store._getterCacheId;
+
+      // cached
+      if (getter[id]) {
+        return getter[id];
+      }
+      var vm = store._vm;
+      var Watcher = getWatcher(vm);
+      var Dep = getDep(vm);
+      var watcher = new Watcher(vm, function (state) {
+        return getter(state);
+      }, null, { lazy: true });
+      var computedGetter = function computedGetter() {
+        if (watcher.dirty) {
+          watcher.evaluate();
+        }
+        if (Dep.target) {
+          watcher.depend();
+        }
+        return watcher.value;
+      };
+      getter[id] = computedGetter;
+      return computedGetter;
+    }
+
+    /**
+     * Make a bound-to-store version of a raw action function.
+     *
+     * @param {Store} store
+     * @param {Function} action
+     * @param {String} key
+     */
+
+    function makeBoundAction(store, action, key) {
+      if (typeof action !== 'function') {
+        console.warn('[vuex] Action bound to key \'vuex.actions.' + key + '\' is not a function.');
+      }
+      return function vuexBoundAction() {
+        for (var _len = arguments.length, args = Array(_len), _key2 = 0; _key2 < _len; _key2++) {
+          args[_key2] = arguments[_key2];
+        }
+
+        return action.call.apply(action, [this, store].concat(args));
+      };
+    }
+
+    // option merging
+    var merge = Vue.config.optionMergeStrategies.computed;
+    Vue.config.optionMergeStrategies.vuex = function (toVal, fromVal) {
+      if (!toVal) return fromVal;
+      if (!fromVal) return toVal;
+      return {
+        getters: merge(toVal.getters, fromVal.getters),
+        state: merge(toVal.state, fromVal.state),
+        actions: merge(toVal.actions, fromVal.actions)
+      };
+    };
+  }
+
+  var Vue = void 0;
+  var uid = 0;
+
+  var Store = function () {
+
+    /**
+     * @param {Object} options
+     *        - {Object} state
+     *        - {Object} actions
+     *        - {Object} mutations
+     *        - {Array} middlewares
+     *        - {Boolean} strict
+     */
+
+    function Store() {
+      var _this = this;
+
+      var _ref = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+
+      var _ref$state = _ref.state;
+      var state = _ref$state === undefined ? {} : _ref$state;
+      var _ref$mutations = _ref.mutations;
+      var mutations = _ref$mutations === undefined ? {} : _ref$mutations;
+      var _ref$modules = _ref.modules;
+      var modules = _ref$modules === undefined ? {} : _ref$modules;
+      var _ref$middlewares = _ref.middlewares;
+      var middlewares = _ref$middlewares === undefined ? [] : _ref$middlewares;
+      var _ref$strict = _ref.strict;
+      var strict = _ref$strict === undefined ? false : _ref$strict;
+      babelHelpers.classCallCheck(this, Store);
+
+      this._getterCacheId = 'vuex_store_' + uid++;
+      this._dispatching = false;
+      this._rootMutations = this._mutations = mutations;
+      this._modules = modules;
+      // bind dispatch to self
+      var dispatch = this.dispatch;
+      this.dispatch = function () {
+        for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+          args[_key] = arguments[_key];
+        }
+
+        dispatch.apply(_this, args);
+      };
+      // use a Vue instance to store the state tree
+      // suppress warnings just in case the user has added
+      // some funky global mixins
+      if (!Vue) {
+        throw new Error('[vuex] must call Vue.use(Vuex) before creating a store instance.');
+      }
+      var silent = Vue.config.silent;
+      Vue.config.silent = true;
+      this._vm = new Vue({
+        data: state
+      });
+      Vue.config.silent = silent;
+      this._setupModuleState(state, modules);
+      this._setupModuleMutations(modules);
+      this._setupMiddlewares(middlewares, state);
+      // add extra warnings in strict mode
+      if (strict) {
+        this._setupMutationCheck();
+      }
+    }
+
+    /**
+     * Getter for the entire state tree.
+     * Read only.
+     *
+     * @return {Object}
+     */
+
+    babelHelpers.createClass(Store, [{
+      key: 'dispatch',
+
+
+      /**
+       * Dispatch an action.
+       *
+       * @param {String} type
+       */
+
+      value: function dispatch(type) {
+        for (var _len2 = arguments.length, payload = Array(_len2 > 1 ? _len2 - 1 : 0), _key2 = 1; _key2 < _len2; _key2++) {
+          payload[_key2 - 1] = arguments[_key2];
+        }
+
+        var silent = false;
+        // compatibility for object actions, e.g. FSA
+        if ((typeof type === 'undefined' ? 'undefined' : babelHelpers.typeof(type)) === 'object' && type.type && arguments.length === 1) {
+          payload = [type.payload];
+          if (type.silent) silent = true;
+          type = type.type;
+        }
+        var mutation = this._mutations[type];
+        var state = this.state;
+        if (mutation) {
+          this._dispatching = true;
+          // apply the mutation
+          if (Array.isArray(mutation)) {
+            mutation.forEach(function (m) {
+              return m.apply(undefined, [state].concat(babelHelpers.toConsumableArray(payload)));
+            });
+          } else {
+            mutation.apply(undefined, [state].concat(babelHelpers.toConsumableArray(payload)));
+          }
+          this._dispatching = false;
+          if (!silent) this._applyMiddlewares(type, payload);
+        } else {
+          console.warn('[vuex] Unknown mutation: ' + type);
+        }
+      }
+
+      /**
+       * Watch state changes on the store.
+       * Same API as Vue's $watch, except when watching a function,
+       * the function gets the state as the first argument.
+       *
+       * @param {String|Function} expOrFn
+       * @param {Function} cb
+       * @param {Object} [options]
+       */
+
+    }, {
+      key: 'watch',
+      value: function watch(expOrFn, cb, options) {
+        var _this2 = this;
+
+        return this._vm.$watch(function () {
+          return typeof expOrFn === 'function' ? expOrFn(_this2.state) : _this2._vm.$get(expOrFn);
+        }, cb, options);
+      }
+
+      /**
+       * Hot update mutations & modules.
+       *
+       * @param {Object} options
+       *        - {Object} [mutations]
+       *        - {Object} [modules]
+       */
+
+    }, {
+      key: 'hotUpdate',
+      value: function hotUpdate() {
+        var _ref2 = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+
+        var mutations = _ref2.mutations;
+        var modules = _ref2.modules;
+
+        this._rootMutations = this._mutations = mutations || this._rootMutations;
+        this._setupModuleMutations(modules || this._modules);
+      }
+
+      /**
+       * Attach sub state tree of each module to the root tree.
+       *
+       * @param {Object} state
+       * @param {Object} modules
+       */
+
+    }, {
+      key: '_setupModuleState',
+      value: function _setupModuleState(state, modules) {
+        Object.keys(modules).forEach(function (key) {
+          Vue.set(state, key, modules[key].state || {});
+        });
+      }
+
+      /**
+       * Bind mutations for each module to its sub tree and
+       * merge them all into one final mutations map.
+       *
+       * @param {Object} updatedModules
+       */
+
+    }, {
+      key: '_setupModuleMutations',
+      value: function _setupModuleMutations(updatedModules) {
+        var modules = this._modules;
+        var allMutations = [this._rootMutations];
+        Object.keys(updatedModules).forEach(function (key) {
+          modules[key] = updatedModules[key];
+        });
+        Object.keys(modules).forEach(function (key) {
+          var module = modules[key];
+          if (!module || !module.mutations) return;
+          // bind mutations to sub state tree
+          var mutations = {};
+          Object.keys(module.mutations).forEach(function (name) {
+            var original = module.mutations[name];
+            mutations[name] = function (state) {
+              for (var _len3 = arguments.length, args = Array(_len3 > 1 ? _len3 - 1 : 0), _key3 = 1; _key3 < _len3; _key3++) {
+                args[_key3 - 1] = arguments[_key3];
+              }
+
+              original.apply(undefined, [state[key]].concat(args));
+            };
+          });
+          allMutations.push(mutations);
+        });
+        this._mutations = mergeObjects(allMutations);
+      }
+
+      /**
+       * Setup mutation check: if the vuex instance's state is mutated
+       * outside of a mutation handler, we throw en error. This effectively
+       * enforces all mutations to the state to be trackable and hot-reloadble.
+       * However, this comes at a run time cost since we are doing a deep
+       * watch on the entire state tree, so it is only enalbed with the
+       * strict option is set to true.
+       */
+
+    }, {
+      key: '_setupMutationCheck',
+      value: function _setupMutationCheck() {
+        var _this3 = this;
+
+        var Watcher = getWatcher(this._vm);
+        /* eslint-disable no-new */
+        new Watcher(this._vm, '$data', function () {
+          if (!_this3._dispatching) {
+            throw new Error('[vuex] Do not mutate vuex store state outside mutation handlers.');
+          }
+        }, { deep: true, sync: true });
+        /* eslint-enable no-new */
+      }
+
+      /**
+       * Setup the middlewares. The devtools middleware is always
+       * included, since it does nothing if no devtool is detected.
+       *
+       * A middleware can demand the state it receives to be
+       * "snapshots", i.e. deep clones of the actual state tree.
+       *
+       * @param {Array} middlewares
+       * @param {Object} state
+       */
+
+    }, {
+      key: '_setupMiddlewares',
+      value: function _setupMiddlewares(middlewares, state) {
+        var _this4 = this;
+
+        this._middlewares = [devtoolMiddleware].concat(middlewares);
+        this._needSnapshots = middlewares.some(function (m) {
+          return m.snapshot;
+        });
+        if (this._needSnapshots) {
+          console.log('[vuex] One or more of your middlewares are taking state snapshots ' + 'for each mutation. Make sure to use them only during development.');
+        }
+        var initialSnapshot = this._prevSnapshot = this._needSnapshots ? deepClone(state) : null;
+        // call init hooks
+        this._middlewares.forEach(function (m) {
+          if (m.onInit) {
+            m.onInit(m.snapshot ? initialSnapshot : state, _this4);
+          }
+        });
+      }
+
+      /**
+       * Apply the middlewares on a given mutation.
+       *
+       * @param {String} type
+       * @param {Array} payload
+       */
+
+    }, {
+      key: '_applyMiddlewares',
+      value: function _applyMiddlewares(type, payload) {
+        var _this5 = this;
+
+        var state = this.state;
+        var prevSnapshot = this._prevSnapshot;
+        var snapshot = void 0,
+            clonedPayload = void 0;
+        if (this._needSnapshots) {
+          snapshot = this._prevSnapshot = deepClone(state);
+          clonedPayload = deepClone(payload);
+        }
+        this._middlewares.forEach(function (m) {
+          if (m.onMutation) {
+            if (m.snapshot) {
+              m.onMutation({ type: type, payload: clonedPayload }, snapshot, prevSnapshot, _this5);
+            } else {
+              m.onMutation({ type: type, payload: payload }, state, _this5);
+            }
+          }
+        });
+      }
+    }, {
+      key: 'state',
+      get: function get() {
+        return this._vm._data;
+      },
+      set: function set(v) {
+        throw new Error('[vuex] Vuex root state is read only.');
+      }
+    }]);
+    return Store;
+  }();
+
+  function install(_Vue) {
+    if (Vue) {
+      console.warn('[vuex] already installed. Vue.use(Vuex) should be called only once.');
+      return;
+    }
+    Vue = _Vue;
+    override(Vue);
+  }
+
+  // auto install in dist mode
+  if (typeof window !== 'undefined' && window.Vue) {
+    install(window.Vue);
+  }
+
+  function createLogger() {
+    console.warn('[vuex] Vuex.createLogger has been deprecated.' + 'Use `import createLogger from \'vuex/logger\' instead.');
+  }
+
+  var index = {
+    Store: Store,
+    install: install,
+    createLogger: createLogger
+  };
+
+  return index;
+
+}));
 },{}]},{},[3]);

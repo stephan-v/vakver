@@ -124,6 +124,9 @@
 			// perform a search for a list of all unique board types
 			this.searchUniqueBoards();
 
+			// perform a search for a list of all unique accommodation types
+			this.searchUniqueAccommodations();
+
 			// perform a search for the lowest and highest vacation price
 			this.searchMinMax();
 
@@ -172,6 +175,7 @@
 				// apply filters with these arrays
 				countries: [],
 				boards: [],
+				accommodations: [],
 				durations: [],
 				priceRange: [],
 				priceMinMax: [],
@@ -204,6 +208,11 @@
 			},
 			'boardListener': function(boards) {
 				this.boards = boards;
+
+				this.search();
+			},
+			'accommodationListener': function(accommodations) {
+				this.accommodations = accommodations;
 
 				this.search();
 			},
@@ -349,6 +358,10 @@
 					this.searchFilter(this.boards, "board_type.value.raw");
 				}
 
+				if(this.accommodations.length > 0) {
+					this.searchFilter(this.accommodations, "accommodation.value.raw");
+				}
+
 				if(this.durations.length > 0) {
 					this.searchFilter(this.durations, "duration.value");
 				}
@@ -481,7 +494,7 @@
 
 			/*
 			|--------------------------------------------------------------------------
-			| Aggregation query to get a list of all unique accomodations
+			| Aggregation query to get a list of all unique accommodations
 			|--------------------------------------------------------------------------
 			|
 			| Same as above
@@ -506,6 +519,38 @@
 				}).then(function (resp) {
 					// dispatch this data to the entry.js file
 					this.$dispatch('unique-boards', resp.aggregations.boards.buckets);
+				}.bind(this), function (err) {
+					console.trace(err.message);
+				});
+			},
+
+			/*
+			|--------------------------------------------------------------------------
+			| Aggregation query to get a list of all unique accommodations
+			|--------------------------------------------------------------------------
+			|
+			| Same as above
+			|
+			*/
+		
+			searchUniqueAccommodations: function() {
+				this.client.search({
+					index: 'node',
+					type: 'vakantie',
+  					body: {
+						"size" : 0,
+					    "aggs" : { 
+					        "accommodations" : { 
+					            "terms" : { 
+					              "size" : 100,
+					              "field" : "accommodation.value.raw"
+					            }
+					        }
+					    }
+					}
+				}).then(function (resp) {
+					// dispatch this data to the entry.js file
+					this.$dispatch('unique-accommodations', resp.aggregations.accommodations.buckets);
 				}.bind(this), function (err) {
 					console.trace(err.message);
 				});
@@ -541,7 +586,7 @@
 
 			/*
 			|--------------------------------------------------------------------------
-			| Aggregation query to get a list of all unique accomodations
+			| Aggregation query to get a list of all unique accommodations
 			|--------------------------------------------------------------------------
 			|
 			| Same as above

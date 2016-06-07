@@ -103,6 +103,20 @@
 
             <div class="filter">
                 <div class="filter-header">
+                    <h3>Accommodaties</h3>
+                    <div class="filter-count">{{ accommodations.length }}</div>
+                    <div class="clearfix"></div>
+                </div><!-- /.filter-header -->
+
+                <div class="readmore">
+                    <ul class="countries">
+                        <li v-for="accommodation in accommodations | orderBy 'key'" v-on:click="accommodationFilter(accommodation.key)" v-bind:class="{ 'active': accommodationsToFilter.indexOf(accommodation.key) > -1 }">{{ accommodation.key | capitalize }}</li>
+                    </ul>
+                </div><!-- /.readmore -->
+            </div><!-- /.filer -->
+
+            <div class="filter">
+                <div class="filter-header">
                     <h3>Reisduur</h3>
                     <div class="filter-count">{{ durations.length }}</div>
                     <div class="clearfix"></div>

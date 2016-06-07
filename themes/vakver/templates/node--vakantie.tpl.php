@@ -15,7 +15,7 @@
                 <div class="col-md-9">
                     <div class="travel-information row text-center">
                         <div class="col-md-3 col-xs-6">
-                            <i class="fa fa-globe fa-3x" aria-hidden="true"></i>
+                            <i class="fa fa-globe fa-2x" aria-hidden="true"></i>
                             <span class="travel-metadata">
                                 <div class="title">Land</div>
                                 <div class="attribute">
@@ -31,7 +31,7 @@
                         </div><!-- /.col-md-3 -->
 
                         <div class="col-md-3 col-xs-6">
-                            <i class="fa fa-map-marker fa-3x" aria-hidden="true"></i>
+                            <i class="fa fa-map-marker fa-2x" aria-hidden="true"></i>
                             <span class="travel-metadata">
                                 <div class="title">Regio</div>
                                 <div class="attribute">
@@ -47,7 +47,7 @@
                         </div><!-- /.col-md-3 -->
 
                         <div class="col-md-3 col-xs-6">
-                            <i class="fa fa-map-signs fa-3x" aria-hidden="true"></i>
+                            <i class="fa fa-map-signs fa-2x" aria-hidden="true"></i>
                             <span class="travel-metadata">
                                 <div class="title">Stad</div>
                                 <div class="attribute">
@@ -63,9 +63,18 @@
                         </div><!-- /.col-md-3 -->
 
                         <div class="col-md-3 col-xs-6">
+                            <i class="fa fa-plane fa-2x" aria-hidden="true"></i>
                             <span class="travel-metadata">
                                 <div class="title">Vervoer</div>
-                                <div class="attribute">Niet bekend</div>
+                                <div class="attribute">
+                                    <?php 
+                                        if(isset($field_transportation[0]['value'])) {
+                                            print $field_transportation[0]['value'];
+                                        } else {
+                                            print "Niet bekend";
+                                        }
+                                    ?>
+                                </div>
                             </span>
                         </div><!-- /.col-md-3 -->
                     </div><!-- travel-information -->
@@ -90,6 +99,10 @@
 
                                 <?php if(isset($field_duration[0]['value'])): ?>
                                     <li><strong>Reisduur:</strong> <?php print $field_duration[0]['value']; ?> dagen</li>
+                                <?php endif; ?>
+
+                                <?php if(isset($field_accommodation[0]['value'])): ?>
+                                    <li><strong>Accommodatie:</strong> <?php print $field_accommodation[0]['value']; ?></li>
                                 <?php endif; ?>
                             </ul>
                         </div><!-- /.extra-info -->

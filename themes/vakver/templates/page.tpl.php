@@ -73,21 +73,18 @@
 
 					<div class="col-md-2 col-md-offset-1">
 						<h3>Menu</h3>
-						<ul class="menu-list">
-							<li><a href="#">Reizen</a></li>
-							<li><a href="#">Mijn bestemmingen</a></li>
-							<li><a href="#">Reisorganisaties</a></li>
-							<li><a href="#">Blog</a></li>
-							<li><a href="#">Inloggen</a></li>
-						</ul><!-- /.menu-list -->
+						<?php
+							$menu = menu_navigation_links('menu-footermenu');
+							print theme('links__menu_your_custom_menu_footermenu', array('links' => $menu, 'attributes' => array('class' => array('menu-list'))));
+						?>
 					</div><!-- /.col-md-2 -->
 
 					<div class="col-md-2">
 						<h3>Menu</h3>
-						<ul class="menu-list">
-							<li><a href="#">Privacy</a></li>
-							<li><a href="#">Disclaimer</a></li>
-						</ul><!-- /.menu-list -->
+						<?php
+							$menu = menu_navigation_links('menu-footermenu2');
+							print theme('links__menu_your_custom_menu_footermenu2', array('links' => $menu, 'attributes' => array('class' => array('menu-list'))));
+						?>
 					</div><!-- /.col-md-2 -->
 
 					<div class="col-md-4 contact">
@@ -103,8 +100,6 @@
 		<div class="lower-footer text-center">
 			<p>Wij verkopen zelf geen reizen, maar helpen u bij het vinden van de goedkoopste aanbieder voor uw zonvakantie.</p>
 		</div><!-- /.lower-footer -->
-
-		<?php print render($page['footer']); ?>
 	</div> <!-- /#footer -->
 
 </div> <!-- /#page-wrapper -->

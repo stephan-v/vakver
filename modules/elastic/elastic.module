@@ -89,6 +89,13 @@ function _elastic_prepare_node($node) {
     $params['body']['region'] = $region_field;
   }
 
+  // Add the accommodation field if exists
+  $accommodation_field = isset($node->field_accommodation) ? field_get_items('node', $node, 'field_accommodation') : false;
+  if ($accommodation_field) {
+    $params['body']['accommodation'] = $accommodation_field;
+  }
+
+
   // Add the image field if exists
   $image_field = isset($node->field_image) ? field_get_items('node', $node, 'field_image') : false;
   if ($image_field) {

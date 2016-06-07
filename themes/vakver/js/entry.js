@@ -1,4 +1,5 @@
 var Vue 			= require('vue');
+var Vuex 			= require('vuex');
 var Elasticsearch 	= require('./components/elasticsearch.vue')
 var WeatherAPI 		= require('./components/weatherapi.vue')
 
@@ -7,8 +8,10 @@ var moment 			= require('moment');
 require('moment/locale/nl');
 global.moment 		= moment;
 
+// make Vue aware of these additional modules
 Vue.use(require('vue-resource'));
 Vue.use(require('vue-chunk'));
+Vue.use(Vuex);
 
 Vue.config.debug = true;
 
@@ -19,8 +22,9 @@ Vue.component('weatherapi', WeatherAPI);
 // give Vue access to jQuery that is tied to the window
 var $ = window.jQuery = require('jquery');
 
-// give window access to the vue module, this is needed for the Vue resource to work with it in child components aswell
+// Give Vue and Vuex variable window access, this this not happen by default with webpack and browserify because they wrap our code in an anonymous function
 window.Vue = Vue;
+window.Vuex = Vue;
 
 $(document).ready(function() {
 	// create a root instance
@@ -58,6 +62,12 @@ $(document).ready(function() {
 			// array of travel durations to filter(sent to the child component)
 			durationsToFilter: [],
 
+			// array of unique accommodations to build a sidebar list
+			accommodations: [],
+
+			// array of accommodations to filter(sent to the child component)
+			accommodationsToFilter: [],
+
 			query: ''
 		},
 		watch: {
@@ -87,6 +97,9 @@ $(document).ready(function() {
 			},
 			'unique-countries': function(countries) {
 				this.countries = countries;
+			},
+			'unique-accommodations': function(accommodations) {
+				this.accommodations = accommodations;
 			},
 			'unique-boards': function(boards) {
 				// remove these elements from the array and filter sidebar - needs to be extremely specific with caps
@@ -152,7 +165,7 @@ $(document).ready(function() {
 			countryFilter: function(country) {
 				index = this.countriesToFilter.indexOf(country)
 
-				// if object is inteh array already then removeit , otherwise add it
+				// if object is in the array already then removeit , otherwise add it
 				if(index > -1) {
 					this.countriesToFilter.splice(index, 1);
 				} else {
@@ -166,7 +179,7 @@ $(document).ready(function() {
 			boardFilter: function(board) {
 				index = this.boardsToFilter.indexOf(board)
 
-				// if object is inteh array already then removeit , otherwise add it
+				// if object is in the array already then removeit , otherwise add it
 				if(index > -1) {
 					this.boardsToFilter.splice(index, 1);
 				} else {
@@ -175,6 +188,20 @@ $(document).ready(function() {
 
 				// broadcast the event to the child component listener
 				this.$broadcast('boardListener', this.boardsToFilter);
+			},
+
+			accommodationFilter: function(accommodation) {
+				index = this.accommodationsToFilter.indexOf(accommodation)
+
+				// if object is in the array already then removeit , otherwise add it
+				if(index > -1) {
+					this.accommodationsToFilter.splice(index, 1);
+				} else {
+					this.accommodationsToFilter.push(accommodation);
+				}
+
+				// broadcast the event to the child component listener
+				this.$broadcast('accommodationListener', this.accommodationsToFilter);
 			},
 
 			durationFilter: function(duration) {
@@ -200,13 +227,7 @@ $(document).ready(function() {
 
 					window.scrollTo(0, $("#main-search").offset().top);
 
-					if(!location.search.split('search=')[1]) {
-						// remove focus from element
-						$("input", event.target).blur();
-
-						// remove the query which in turn removes the text from the input
-						this.query = '';
-					}
+					this.query = '';
 
 					// focus on the main search input
 					$(".elasticsearch-input").focus();
