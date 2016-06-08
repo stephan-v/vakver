@@ -68,7 +68,7 @@
     gulp.task('browserify', function() {
     	browserify('./js/entry.js')
 	  	.transform(vueify)
-	  	
+	  	// optionally add babelify if vuex is implemented
 	  	.bundle()
 	  	.pipe(fs.createWriteStream('./js/bundle.js'))
     });
