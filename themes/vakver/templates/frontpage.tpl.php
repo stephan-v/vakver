@@ -82,7 +82,7 @@
 
                 <div class="readmore">
                     <ul class="countries">
-                        <li v-for="country in countries | orderBy 'key'" v-on:click="countryFilter(country.key)" v-bind:class="{ 'active': countriesToFilter.indexOf(country.key) > -1 }">{{ country.key | capitalize }}</li>
+                        <li v-for="country in countries | orderBy 'key'" v-on:click="filter(country.key, 'country', 'countries')" v-bind:class="{ 'active': countriesToFilter.indexOf(country.key) > -1 }">{{ country.key | capitalize }}</li>
                     </ul>
                 </div><!-- /.readmore -->
             </div><!-- /.filer -->
@@ -96,7 +96,7 @@
 
                 <div class="readmore">
                     <ul class="countries">
-                        <li v-for="board in boards | orderBy 'key'" v-on:click="boardFilter(board.key)" v-bind:class="{ 'active': boardsToFilter.indexOf(board.key) > -1 }">{{ board.key | capitalize }}</li>
+                        <li v-for="board in boards | orderBy 'key'" v-on:click="filter(board.key, 'board', 'boards')" v-bind:class="{ 'active': boardsToFilter.indexOf(board.key) > -1 }">{{ board.key | capitalize }}</li>
                     </ul>
                 </div><!-- /.readmore -->
             </div><!-- /.filer -->
@@ -110,7 +110,7 @@
 
                 <div class="readmore">
                     <ul class="countries">
-                        <li v-for="accommodation in accommodations | orderBy 'key'" v-on:click="accommodationFilter(accommodation.key)" v-bind:class="{ 'active': accommodationsToFilter.indexOf(accommodation.key) > -1 }">{{ accommodation.key | capitalize }}</li>
+                        <li v-for="accommodation in accommodations | orderBy 'key'" v-on:click="filter(accommodation.key, 'accommodation', 'accommodations')" v-bind:class="{ 'active': accommodationsToFilter.indexOf(accommodation.key) > -1 }">{{ accommodation.key | capitalize }}</li>
                     </ul>
                 </div><!-- /.readmore -->
             </div><!-- /.filer -->
@@ -124,7 +124,7 @@
 
                 <div class="readmore">
                     <ul class="countries">
-                        <li v-for="duration in durations.slice().reverse()" v-on:click="durationFilter(duration.key)" v-bind:class="{ 'active': durationsToFilter.indexOf(duration.key) > -1 }">{{ duration.key | capitalize }} dagen</li>
+                        <li v-for="duration in durations.slice().reverse()" v-on:click="filter(duration.key, 'duration', 'durations')" v-bind:class="{ 'active': durationsToFilter.indexOf(duration.key) > -1 }">{{ duration.key | capitalize }} dagen</li>
                     </ul>
                 </div><!-- /.readmore -->
             </div><!-- /.filer -->

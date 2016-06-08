@@ -185,6 +185,13 @@
 			};
 		},
 		events: {
+			// general filter functionality
+			'filterListener': function(itemsToFilter, plural) {
+				// dynamically assign the property to call
+				this[plural] = itemsToFilter;
+
+				this.search();
+			},
 			'searchListener': function(query) {
 				this.query = query;
 
@@ -198,29 +205,6 @@
 			'sortListener': function(sort) {
 				this.sort(sort);
 			},
-			'removeSortListener': function(sort) {
-				this.removeSort(sort);
-			},
-			'countryListener': function(countries) {
-				this.countries = countries;
-
-				this.search();
-			},
-			'boardListener': function(boards) {
-				this.boards = boards;
-
-				this.search();
-			},
-			'accommodationListener': function(accommodations) {
-				this.accommodations = accommodations;
-
-				this.search();
-			},
-			'durationListener': function(durations) {
-				this.durations = durations;
-
-				this.search();
-			},
 			'priceListener': function(range) {
 				this.priceRange = range;
 
@@ -233,7 +217,10 @@
             	this.timer = setTimeout(function(){
 					this.search()
 				}.bind(this), 150);
-			}
+			},
+			'removeSortListener': function(sort) {
+				this.removeSort(sort);
+			},
 		},
 		methods: {
 			/*

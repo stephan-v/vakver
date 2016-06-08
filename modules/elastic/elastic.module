@@ -44,6 +44,8 @@ function _elastic_prepare_node($node) {
     $params['body'][$field] = $node->{$field};
   }
 
+  /* REFACTOR FROM HERE TO A SINGULAR FUNCTION */
+
   // Add the body field if exists
   $body_field = isset($node->body) ? field_get_items('node', $node, 'body') : false;
   if ($body_field) {
@@ -95,6 +97,13 @@ function _elastic_prepare_node($node) {
     $params['body']['accommodation'] = $accommodation_field;
   }
 
+   // Add the transportation field if exists
+  $transportation_field = isset($node->field_transportation) ? field_get_items('node', $node, 'field_transportation') : false;
+  if ($transportation_field) {
+    $params['body']['transportation'] = $transportation_field;
+  }
+
+  /* END OPTIONAL REFACTOR TO A SINGLE FUNCTION */
 
   // Add the image field if exists
   $image_field = isset($node->field_image) ? field_get_items('node', $node, 'field_image') : false;

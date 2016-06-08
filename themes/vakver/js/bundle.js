@@ -99,6 +99,13 @@ exports.default = {
 		};
 	},
 	events: {
+		// general filter functionality
+		'filterListener': function filterListener(itemsToFilter, plural) {
+			// dynamically assign the property to call
+			this[plural] = itemsToFilter;
+
+			this.search();
+		},
 		'searchListener': function searchListener(query) {
 			this.query = query;
 
@@ -112,29 +119,6 @@ exports.default = {
 		'sortListener': function sortListener(sort) {
 			this.sort(sort);
 		},
-		'removeSortListener': function removeSortListener(sort) {
-			this.removeSort(sort);
-		},
-		'countryListener': function countryListener(countries) {
-			this.countries = countries;
-
-			this.search();
-		},
-		'boardListener': function boardListener(boards) {
-			this.boards = boards;
-
-			this.search();
-		},
-		'accommodationListener': function accommodationListener(accommodations) {
-			this.accommodations = accommodations;
-
-			this.search();
-		},
-		'durationListener': function durationListener(durations) {
-			this.durations = durations;
-
-			this.search();
-		},
 		'priceListener': function priceListener(range) {
 			this.priceRange = range;
 
@@ -147,6 +131,9 @@ exports.default = {
 			this.timer = setTimeout(function () {
 				this.search();
 			}.bind(this), 150);
+		},
+		'removeSortListener': function removeSortListener(sort) {
+			this.removeSort(sort);
 		}
 	},
 	methods: {
@@ -780,62 +767,24 @@ $(document).ready(function() {
 			| query builder.
 			|
 			*/
+		
+			filter: function(itemToFilter, singular, plural) {
+				// dynamically assign the property to call
+				var whatToFilter = plural + 'ToFilter';
 
-			countryFilter: function(country) {
-				index = this.countriesToFilter.indexOf(country)
+    			var index = this[whatToFilter].indexOf(itemToFilter);
 
-				// if object is in the array already then removeit , otherwise add it
+    			// if object is in the array already then removeit , otherwise add it
 				if(index > -1) {
-					this.countriesToFilter.splice(index, 1);
+					this[whatToFilter].splice(index, 1);
 				} else {
-					this.countriesToFilter.push(country);
+					this[whatToFilter].push(itemToFilter);
 				}
 
 				// broadcast the event to the child component listener
-				this.$broadcast('countryListener', this.countriesToFilter);
+				this.$broadcast('filterListener', this[whatToFilter], plural);
 			},
 
-			boardFilter: function(board) {
-				index = this.boardsToFilter.indexOf(board)
-
-				// if object is in the array already then removeit , otherwise add it
-				if(index > -1) {
-					this.boardsToFilter.splice(index, 1);
-				} else {
-					this.boardsToFilter.push(board);
-				}
-
-				// broadcast the event to the child component listener
-				this.$broadcast('boardListener', this.boardsToFilter);
-			},
-
-			accommodationFilter: function(accommodation) {
-				index = this.accommodationsToFilter.indexOf(accommodation)
-
-				// if object is in the array already then removeit , otherwise add it
-				if(index > -1) {
-					this.accommodationsToFilter.splice(index, 1);
-				} else {
-					this.accommodationsToFilter.push(accommodation);
-				}
-
-				// broadcast the event to the child component listener
-				this.$broadcast('accommodationListener', this.accommodationsToFilter);
-			},
-
-			durationFilter: function(duration) {
-				index = this.durationsToFilter.indexOf(duration)
-
-				// if object is inteh array already then removeit , otherwise add it
-				if(index > -1) {
-					this.durationsToFilter.splice(index, 1);
-				} else {
-					this.durationsToFilter.push(duration);
-				}
-
-				// broadcast the event to the child component listener
-				this.$broadcast('durationListener', this.durationsToFilter);
-			},
 			search: function(event) {
 				// redirect if we get a query on this method call while we are not on the homepage
 				if(this.query && window.location.pathname != "/" ) {
