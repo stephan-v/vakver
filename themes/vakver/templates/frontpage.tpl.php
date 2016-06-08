@@ -131,6 +131,20 @@
 
             <div class="filter">
                 <div class="filter-header">
+                    <h3>Vervoersmiddel</h3>
+                    <div class="filter-count">{{ transportations.length }}</div>
+                    <div class="clearfix"></div>
+                </div><!-- /.filter-header -->
+
+                <div class="readmore">
+                    <ul class="countries">
+                        <li v-for="transportation in transportations.slice().reverse()" v-on:click="filter(transportation.key, 'transportation', 'transportations')" v-bind:class="{ 'active': transportationsToFilter.indexOf(transportation.key) > -1 }">{{ transportation.key | capitalize }}</li>
+                    </ul>
+                </div><!-- /.readmore -->
+            </div><!-- /.filer -->
+
+            <div class="filter">
+                <div class="filter-header">
                     <h3>Rating</h3>
                     <div class="clearfix"></div>
                 </div><!-- /.filter-header -->

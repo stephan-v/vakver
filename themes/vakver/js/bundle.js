@@ -47,6 +47,9 @@ exports.default = {
 		// perform a search for a list of all unique board types
 		this.searchUniqueDurations();
 
+		// perform a search for a list of all unique transportation types
+		this.searchUniqueTransportations();
+
 		// switch pages with left and right keypresses - bind the window scope to this object
 		window.onkeydown = function (e) {
 			var code = e.keyCode ? e.keyCode : e.which;
@@ -93,6 +96,7 @@ exports.default = {
 			durations: [],
 			priceRange: [],
 			priceMinMax: [],
+			transportations: [],
 
 			// debounce timer
 			timer: 0
@@ -259,6 +263,10 @@ exports.default = {
 
 			if (this.accommodations.length > 0) {
 				this.searchFilter(this.accommodations, "accommodation.value.raw");
+			}
+
+			if (this.transportations.length > 0) {
+				this.searchFilter(this.transportations, "transportation.value.raw");
 			}
 
 			if (this.durations.length > 0) {
@@ -513,6 +521,38 @@ exports.default = {
 
 		/*
   |--------------------------------------------------------------------------
+  | Aggregation query to get a list of all unique transportation types
+  |--------------------------------------------------------------------------
+  |
+  | Same as above
+  |
+  */
+
+		searchUniqueTransportations: function searchUniqueTransportations() {
+			this.client.search({
+				index: 'node',
+				type: 'vakantie',
+				body: {
+					"size": 0,
+					"aggs": {
+						"transportations": {
+							"terms": {
+								"size": 10,
+								"field": "transportation.value.raw"
+							}
+						}
+					}
+				}
+			}).then(function (resp) {
+				// dispatch this data to the entry.js file
+				this.$dispatch('unique-transportations', resp.aggregations.transportations.buckets);
+			}.bind(this), function (err) {
+				console.trace(err.message);
+			});
+		},
+
+		/*
+  |--------------------------------------------------------------------------
   | Helper method to fetch the Top Level Domain
   |--------------------------------------------------------------------------
   |
@@ -674,6 +714,12 @@ $(document).ready(function() {
 			// array of accommodations to filter(sent to the child component)
 			accommodationsToFilter: [],
 
+			// array of unique accommodations to build a sidebar list
+			transportations: [],
+
+			// array of accommodations to filter(sent to the child component)
+			transportationsToFilter: [],
+
 			query: ''
 		},
 		watch: {
@@ -706,6 +752,9 @@ $(document).ready(function() {
 			},
 			'unique-accommodations': function(accommodations) {
 				this.accommodations = accommodations;
+			},
+			'unique-transportations': function(transportations) {
+				this.transportations = transportations;
 			},
 			'unique-boards': function(boards) {
 				// remove these elements from the array and filter sidebar - needs to be extremely specific with caps

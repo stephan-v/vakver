@@ -68,6 +68,12 @@ $(document).ready(function() {
 			// array of accommodations to filter(sent to the child component)
 			accommodationsToFilter: [],
 
+			// array of unique accommodations to build a sidebar list
+			transportations: [],
+
+			// array of accommodations to filter(sent to the child component)
+			transportationsToFilter: [],
+
 			query: ''
 		},
 		watch: {
@@ -100,6 +106,9 @@ $(document).ready(function() {
 			},
 			'unique-accommodations': function(accommodations) {
 				this.accommodations = accommodations;
+			},
+			'unique-transportations': function(transportations) {
+				this.transportations = transportations;
 			},
 			'unique-boards': function(boards) {
 				// remove these elements from the array and filter sidebar - needs to be extremely specific with caps
