@@ -289,6 +289,45 @@ function vakver_field_default_field_instances() {
     ),
   );
 
+  // Exported field_instance: 'node-vakantie-field_accommodation'
+  $field_instances['node-vakantie-field_accommodation'] = array(
+    'bundle' => 'vakantie',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'text',
+        'settings' => array(),
+        'type' => 'text_default',
+        'weight' => 13,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_accommodation',
+    'label' => 'Accommodation',
+    'required' => FALSE,
+    'settings' => array(
+      'text_processing' => 0,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'module' => 'text',
+      'settings' => array(
+        'size' => 60,
+      ),
+      'type' => 'text_textfield',
+      'weight' => 17,
+    ),
+  );
+
   // Exported field_instance: 'node-vakantie-field_board_type'
   $field_instances['node-vakantie-field_board_type'] = array(
     'bundle' => 'vakantie',
@@ -714,6 +753,46 @@ function vakver_field_default_field_instances() {
     ),
   );
 
+  // Exported field_instance: 'node-vakantie-field_transportation'
+  $field_instances['node-vakantie-field_transportation'] = array(
+    'bundle' => 'vakantie',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'text',
+        'settings' => array(),
+        'type' => 'text_default',
+        'weight' => 14,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_transportation',
+    'label' => 'Transportation',
+    'required' => 0,
+    'settings' => array(
+      'text_processing' => 0,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'text',
+      'settings' => array(
+        'size' => 60,
+      ),
+      'type' => 'text_textfield',
+      'weight' => 18,
+    ),
+  );
+
   // Exported field_instance: 'node-vakantie-field_travel_agency'
   $field_instances['node-vakantie-field_travel_agency'] = array(
     'bundle' => 'vakantie',
@@ -905,6 +984,7 @@ function vakver_field_default_field_instances() {
 
   // Translatables
   // Included for use with string extractors like potx.
+  t('Accommodation');
   t('Afbeelding');
   t('Board Type');
   t('Body');
@@ -919,6 +999,7 @@ function vakver_field_default_field_instances() {
   t('Price');
   t('Region');
   t('Stars');
+  t('Transportation');
   t('Travel agency');
   t('url');
 

@@ -119,6 +119,18 @@ function vakver_feeds_importer_default() {
             'source' => 'duration',
             'target' => 'field_duration',
             'unique' => FALSE,
+            'language' => 'und',
+          ),
+          13 => array(
+            'source' => 'accommodation_type',
+            'target' => 'field_accommodation',
+            'unique' => FALSE,
+            'language' => 'und',
+          ),
+          14 => array(
+            'source' => 'transportation_type',
+            'target' => 'field_transportation',
+            'unique' => FALSE,
           ),
         ),
         'insert_new' => '1',
@@ -132,7 +144,7 @@ function vakver_feeds_importer_default() {
     ),
     'content_type' => '',
     'update' => 0,
-    'import_period' => '-1',
+    'import_period' => '0',
     'expire_period' => 3600,
     'import_on_create' => 1,
     'process_in_background' => 0,
@@ -247,6 +259,18 @@ function vakver_feeds_importer_default() {
           12 => array(
             'source' => 'duration',
             'target' => 'field_duration',
+            'unique' => FALSE,
+            'language' => 'und',
+          ),
+          13 => array(
+            'source' => 'accommodation_type',
+            'target' => 'field_accommodation',
+            'unique' => FALSE,
+            'language' => 'und',
+          ),
+          14 => array(
+            'source' => 'transportation_type',
+            'target' => 'field_transportation',
             'unique' => FALSE,
           ),
         ),
@@ -370,6 +394,12 @@ function vakver_feeds_importer_default() {
           11 => array(
             'source' => 'lodgement',
             'target' => 'field_board_type',
+            'unique' => FALSE,
+            'language' => 'und',
+          ),
+          12 => array(
+            'source' => 'transportation_type',
+            'target' => 'field_transportation',
             'unique' => FALSE,
           ),
         ),
@@ -499,6 +529,12 @@ function vakver_feeds_importer_default() {
           12 => array(
             'source' => 'duration',
             'target' => 'field_duration',
+            'unique' => FALSE,
+            'language' => 'und',
+          ),
+          13 => array(
+            'source' => 'accommodation_type',
+            'target' => 'field_accommodation',
             'unique' => FALSE,
           ),
         ),

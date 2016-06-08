@@ -13,6 +13,26 @@ function vakver_feeds_tamper_default() {
   $feeds_tamper = new stdClass();
   $feeds_tamper->disabled = FALSE; /* Edit this to true to make a default feeds_tamper disabled initially */
   $feeds_tamper->api_version = 2;
+  $feeds_tamper->id = 'd_reizen-accommodation_type-find_replace';
+  $feeds_tamper->importer = 'd_reizen';
+  $feeds_tamper->source = 'accommodation_type';
+  $feeds_tamper->plugin_id = 'find_replace';
+  $feeds_tamper->settings = array(
+    'find' => '(Sta)Caravan',
+    'replace' => 'Stacaravan',
+    'case_sensitive' => 0,
+    'word_boundaries' => 0,
+    'whole' => 0,
+    'regex' => FALSE,
+    'func' => 'str_ireplace',
+  );
+  $feeds_tamper->weight = 0;
+  $feeds_tamper->description = 'Find replace';
+  $export['d_reizen-accommodation_type-find_replace'] = $feeds_tamper;
+
+  $feeds_tamper = new stdClass();
+  $feeds_tamper->disabled = FALSE; /* Edit this to true to make a default feeds_tamper disabled initially */
+  $feeds_tamper->api_version = 2;
   $feeds_tamper->id = 'd_reizen-blank_country_of_destination_1-code_to_country';
   $feeds_tamper->importer = 'd_reizen';
   $feeds_tamper->source = 'Blank country_of_destination 1';
@@ -143,6 +163,66 @@ function vakver_feeds_tamper_default() {
   $feeds_tamper->weight = 0;
   $feeds_tamper->description = 'Find replace REGEX';
   $export['d_reizen-img_medium-find_replace_regex'] = $feeds_tamper;
+
+  $feeds_tamper = new stdClass();
+  $feeds_tamper->disabled = FALSE; /* Edit this to true to make a default feeds_tamper disabled initially */
+  $feeds_tamper->api_version = 2;
+  $feeds_tamper->id = 'd_reizen-transportation_type-find_replace';
+  $feeds_tamper->importer = 'd_reizen';
+  $feeds_tamper->source = 'transportation_type';
+  $feeds_tamper->plugin_id = 'find_replace';
+  $feeds_tamper->settings = array(
+    'find' => 'EV',
+    'replace' => 'eigen vervoer',
+    'case_sensitive' => 0,
+    'word_boundaries' => 0,
+    'whole' => 0,
+    'regex' => FALSE,
+    'func' => 'str_ireplace',
+  );
+  $feeds_tamper->weight = 0;
+  $feeds_tamper->description = 'Find replace';
+  $export['d_reizen-transportation_type-find_replace'] = $feeds_tamper;
+
+  $feeds_tamper = new stdClass();
+  $feeds_tamper->disabled = FALSE; /* Edit this to true to make a default feeds_tamper disabled initially */
+  $feeds_tamper->api_version = 2;
+  $feeds_tamper->id = 'd_reizen-transportation_type-find_replace2';
+  $feeds_tamper->importer = 'd_reizen';
+  $feeds_tamper->source = 'transportation_type';
+  $feeds_tamper->plugin_id = 'find_replace';
+  $feeds_tamper->settings = array(
+    'find' => 'VL',
+    'replace' => 'vliegtuig',
+    'case_sensitive' => 0,
+    'word_boundaries' => 0,
+    'whole' => 0,
+    'regex' => FALSE,
+    'func' => 'str_ireplace',
+  );
+  $feeds_tamper->weight = 1;
+  $feeds_tamper->description = 'Find replace';
+  $export['d_reizen-transportation_type-find_replace2'] = $feeds_tamper;
+
+  $feeds_tamper = new stdClass();
+  $feeds_tamper->disabled = FALSE; /* Edit this to true to make a default feeds_tamper disabled initially */
+  $feeds_tamper->api_version = 2;
+  $feeds_tamper->id = 'd_reizen2-accommodation_type-find_replace';
+  $feeds_tamper->importer = 'd_reizen2';
+  $feeds_tamper->source = 'accommodation_type';
+  $feeds_tamper->plugin_id = 'find_replace';
+  $feeds_tamper->settings = array(
+    'find' => '(Sta)Caravan',
+    'replace' => 'Stacaravan',
+    'case_sensitive' => 0,
+    'word_boundaries' => 0,
+    'whole' => 0,
+    'regex' => FALSE,
+    'func' => 'str_ireplace',
+  );
+  $feeds_tamper->weight = 0;
+  $feeds_tamper->description = 'Find replace';
+  $export['d_reizen2-accommodation_type-find_replace'] = $feeds_tamper;
 
   $feeds_tamper = new stdClass();
   $feeds_tamper->disabled = FALSE; /* Edit this to true to make a default feeds_tamper disabled initially */
@@ -281,6 +361,46 @@ function vakver_feeds_tamper_default() {
   $feeds_tamper = new stdClass();
   $feeds_tamper->disabled = FALSE; /* Edit this to true to make a default feeds_tamper disabled initially */
   $feeds_tamper->api_version = 2;
+  $feeds_tamper->id = 'd_reizen2-transportation_type-find_replace';
+  $feeds_tamper->importer = 'd_reizen2';
+  $feeds_tamper->source = 'transportation_type';
+  $feeds_tamper->plugin_id = 'find_replace';
+  $feeds_tamper->settings = array(
+    'find' => 'EV',
+    'replace' => 'eigen vervoer',
+    'case_sensitive' => 0,
+    'word_boundaries' => 0,
+    'whole' => 0,
+    'regex' => FALSE,
+    'func' => 'str_ireplace',
+  );
+  $feeds_tamper->weight = 0;
+  $feeds_tamper->description = 'Find replace';
+  $export['d_reizen2-transportation_type-find_replace'] = $feeds_tamper;
+
+  $feeds_tamper = new stdClass();
+  $feeds_tamper->disabled = FALSE; /* Edit this to true to make a default feeds_tamper disabled initially */
+  $feeds_tamper->api_version = 2;
+  $feeds_tamper->id = 'd_reizen2-transportation_type-find_replace2';
+  $feeds_tamper->importer = 'd_reizen2';
+  $feeds_tamper->source = 'transportation_type';
+  $feeds_tamper->plugin_id = 'find_replace';
+  $feeds_tamper->settings = array(
+    'find' => 'VL',
+    'replace' => 'vliegtuig',
+    'case_sensitive' => 0,
+    'word_boundaries' => 0,
+    'whole' => 0,
+    'regex' => FALSE,
+    'func' => 'str_ireplace',
+  );
+  $feeds_tamper->weight = 1;
+  $feeds_tamper->description = 'Find replace';
+  $export['d_reizen2-transportation_type-find_replace2'] = $feeds_tamper;
+
+  $feeds_tamper = new stdClass();
+  $feeds_tamper->disabled = FALSE; /* Edit this to true to make a default feeds_tamper disabled initially */
+  $feeds_tamper->api_version = 2;
   $feeds_tamper->id = 'elizawashere-blank_country-copy';
   $feeds_tamper->importer = 'elizawashere';
   $feeds_tamper->source = 'Blank country';
@@ -353,6 +473,21 @@ function vakver_feeds_tamper_default() {
   $feeds_tamper->weight = 0;
   $feeds_tamper->description = 'Convert case';
   $export['elizawashere-lodgement-convert_case'] = $feeds_tamper;
+
+  $feeds_tamper = new stdClass();
+  $feeds_tamper->disabled = FALSE; /* Edit this to true to make a default feeds_tamper disabled initially */
+  $feeds_tamper->api_version = 2;
+  $feeds_tamper->id = 'elizawashere-transportation_type-default_value';
+  $feeds_tamper->importer = 'elizawashere';
+  $feeds_tamper->source = 'transportation_type';
+  $feeds_tamper->plugin_id = 'default_value';
+  $feeds_tamper->settings = array(
+    'default_value' => 'vliegtuig',
+    'only_if_empty' => 0,
+  );
+  $feeds_tamper->weight = 0;
+  $feeds_tamper->description = 'Set value or default value';
+  $export['elizawashere-transportation_type-default_value'] = $feeds_tamper;
 
   $feeds_tamper = new stdClass();
   $feeds_tamper->disabled = FALSE; /* Edit this to true to make a default feeds_tamper disabled initially */
