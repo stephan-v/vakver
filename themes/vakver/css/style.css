@@ -90,7 +90,7 @@ Navigation
 ========================================================================== */
 .navbar-default {
   background: #5B9DF4;
-  padding: 15px 0;
+  padding: 10px 0;
   margin: 0;
   border: none;
   border-radius: 0;
@@ -220,7 +220,7 @@ Navigation
 .responsive-menus.responsified .responsive-menus-simple {
   background: none;
   box-shadow: none;
-  margin-top: 16px !important;
+  margin-top: 11px !important;
   border-radius: 0 !important;
 }
 .responsive-menus.responsified .responsive-menus-simple ul {
