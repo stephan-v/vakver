@@ -25,7 +25,7 @@ exports.default = {
 		} else {
 			this.client = new elasticsearch.Client({
 				/* production */
-				host: '46.182.217.108:9200'
+				host: 'vakver.wemagine.nl:9200'
 			});
 		}
 
