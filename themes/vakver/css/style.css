@@ -250,7 +250,7 @@ Header
 ========================================================================== */
 .header {
   background-size: cover;
-  height: 500px;
+  height: 400px;
   width: 100%;
   background-position: center;
   position: relative;
@@ -499,23 +499,6 @@ aside .filter.slider #slider-margin-value-max {
 aside.active {
   left: 300px;
 }
-aside .btn {
-  margin: 60px auto 0px auto;
-  background: #d2af3b;
-  color: white;
-  font-family: Oxygen;
-  border-radius: 25px;
-  font-weight: 300;
-  padding: 6px 20px;
-  display: inline-block;
-  text-align: center;
-  text-spacing: 1px;
-  letter-spacing: 0.08em;
-  cursor: default;
-}
-aside .btn:hover {
-  color: white;
-}
 aside .filter {
   text-align: left;
   font-family: 'Oxygen', sans-serif;
@@ -603,6 +586,9 @@ Vakantie pagina(single)
 .node-type-vakantie .vacation h3 {
   margin-top: 30px;
 }
+.node-type-vakantie .vacation img {
+  width: 100%;
+}
 .node-type-vakantie .vacation .social-media {
   position: absolute;
   left: -37px;
@@ -668,6 +654,13 @@ Vakantie pagina(single)
 }
 .node-type-vakantie a.call-to-action .circle .fa-arrow-right {
   margin: 11px 0 0 3px;
+}
+.node-type-vakantie a.book-now {
+  padding: 10px 0;
+  text-decoration: none;
+}
+.node-type-vakantie a.book-now:hover {
+  background: #528EDE;
 }
 .node-type-vakantie .travel-information {
   margin: -111px 0 0 0;

@@ -106,6 +106,8 @@
                                 <?php endif; ?>
                             </ul>
                         </div><!-- /.extra-info -->
+
+                        <a href="<?php print $field_url[0]['url']; ?>" class="call-to-action book-now" target="_blank">Boek nu</a><!-- /.call-to-action -->
                     </div><!-- /.vacation -->
                 </div><!-- /.col-md-9 -->
 

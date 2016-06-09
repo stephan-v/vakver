@@ -62,8 +62,6 @@
 
     <div class="main-content">
         <aside>
-            <div class="btn">Filter reizen</div>
-
             <div class="filter slider">
                 <h3>Prijs</h3>
                 <div id="slider-handles"></div>

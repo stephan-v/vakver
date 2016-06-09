@@ -47,7 +47,8 @@
 
 		methods: {
 			getDay: function(index) {
-				return this.capitalizeFirstLetter(moment().add(index, 'days').format('dddd'));
+				// +1 to the index to start at the day of tomorrow instead of today
+				return this.capitalizeFirstLetter(moment().add(index + 1, 'days').format('dddd'));
 			},
 
 			capitalizeFirstLetter: function(string) {
