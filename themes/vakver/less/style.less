@@ -288,20 +288,29 @@ Header
 	background-position: center;
 	position: relative;
 
-	&:after {
-		// content: "";
-		// background: linear-gradient(135deg, #517FBB, #45DEF7);
-		// opacity: 0.9;
-		// position: absolute;
-		// height: 100%;
-		// width: 100%;
-	}
+	// .frontpage-header {
+ //        z-index: 10;
+	//     color: white;
+	//     font-family: Oxygen;
+	//     text-align: center;
+	//     max-width: 500px;
+	//     font-size: 32px;
+	//     line-height: 1.6;
+	// }
+
+	// &:after {
+	// 	content: "";
+	// 	background: linear-gradient(135deg, #517FBB, #45DEF7);
+	// 	opacity: 0.85;
+	// 	position: absolute;
+	// 	height: 100%;
+	// 	width: 100%;
+	// }
 }
 .sort-bar {
 	background: white;
-	border-top: 1px solid #CBCBCB;
-	border-bottom: 1px solid #CBCBCB;
-	padding: 20px 0;
+	margin-bottom: 2em;
+	padding: 20px;
 
 	ul {
 		margin: 0;
@@ -325,8 +334,9 @@ Header
 	.fa-times-circle {
 	    background: #4E8EC3;
 	    color: white;
-	    padding: 5px 7px 4px 4px;
+	    padding: 7px 10px 7px 5px;
 	    border-radius: 35px 0 0 35px;
+        line-height: 9px;
 	}
 	.fa-filter {
 		cursor: pointer;
@@ -342,11 +352,14 @@ Header
 	    border: 5px solid #F3F1E4;
 	    color: white;
 	}
+	.toggle-sort {
+	    padding: 2px 0 1px 0;
+	}
 	.active.toggle-sort {
 	    background: #4E8EC3;
 	    color: white;
 	    border-radius: 0 35px 35px 0;
-        padding: 2px 9px 1px 4px;
+        padding: 2px 10px 1px 0;
         float: right;
 
 	    .fa-sort-desc, .fa-sort-asc {
@@ -451,9 +464,9 @@ Index page
 	}
 	.main-search-wrapper {
 		position: relative;
-		margin-top: 50px;
+		margin-top: 40px;
 		margin-right: -15px;
-		margin-bottom: 50px;
+		margin-bottom: 40px;
 		margin-left: -15px;
 
 		.fa-search {
@@ -665,7 +678,10 @@ Vakantie pagina(single)
         min-height: 0;
 
 	    h3 {
-	    	margin-top: 30px;
+	    	margin-top: 0;
+	    }
+	    img {
+	    	margin-top: 15px;
 	    }
 	    .social-media {
     	    position: absolute;
@@ -853,7 +869,7 @@ Vakantie pagina(single)
 	}
 }
 .related-vacations-header h3 {
-    margin: 2em 0 1em 0;
+    margin: 0 0 1em 0;
     font-family: Oxygen;
     font-weight: lighter;
     color: #84816D;
@@ -864,13 +880,13 @@ Vakantie pagina(single)
 @media (min-width: @screen-md-min) { 
 	.node-type-vakantie {
 		.vacation {
-			min-height: 622px;
+			// min-height: 622px;
 		}
 		a.call-to-action {
 			margin-right: 0;
 		}
 		.pricing {
-		    margin: -124px 0 37px 0;
+		    margin: -110px 0 37px 0;
 		}
 		.travel-information .col-md-3 {
 			&:nth-child(1), &:nth-child(2) {

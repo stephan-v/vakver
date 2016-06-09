@@ -61,7 +61,9 @@ exports.default = {
 		}.bind(this);
 	},
 	data: function data() {
-		return {
+		var _ref;
+
+		return _ref = {
 			client: '',
 			travels: '',
 			query: '',
@@ -99,8 +101,16 @@ exports.default = {
 			transportations: [],
 
 			// debounce timer
-			timer: 0
-		};
+			timer: 0,
+
+			// enabled / disabled filters
+			sortPopularity: false,
+			sortPrice: false,
+			sortRating: false,
+
+			// sortorder for filters
+			sortPopularityDesc: false
+		}, (0, _defineProperty3.default)(_ref, "sortRatingDesc", false), (0, _defineProperty3.default)(_ref, "sortPriceDesc", false), (0, _defineProperty3.default)(_ref, "hits", ''), _ref;
 	},
 	events: {
 		// general filter functionality
@@ -120,9 +130,6 @@ exports.default = {
 
 			this.search();
 		},
-		'sortListener': function sortListener(sort) {
-			this.sort(sort);
-		},
 		'priceListener': function priceListener(range) {
 			this.priceRange = range;
 
@@ -135,9 +142,6 @@ exports.default = {
 			this.timer = setTimeout(function () {
 				this.search();
 			}.bind(this), 150);
-		},
-		'removeSortListener': function removeSortListener(sort) {
-			this.removeSort(sort);
 		}
 	},
 	methods: {
@@ -151,36 +155,42 @@ exports.default = {
   */
 
 		sort: function sort(_sort) {
-			if (_sort == 'rating') {
-				this.sortRatingDesc = !this.sortRatingDesc;
+			this.sortRating = this.sortPrice = this.sortPopularity = false;
 
-				// dispatch this data to the entry.js file
-				this.$dispatch('sort-order', this.sortRatingDesc, 'rating');
+			// check which filter we just clicked on and set it to active
+			if (_sort == 'popularity') {
+				this.sortPopularity = true;
+			} else if (_sort == 'price') {
+				this.sortPrice = true;
 
-				if (this.sortRatingDesc) {
-					this.queryDSL.body.sort = {
-						"stars.value": { "order": "desc" }
-					};
-				} else {
-					this.queryDSL.body.sort = {
-						"stars.value": { "order": "asc" }
-					};
-				}
-			}
-
-			if (_sort == 'price') {
-				this.sortPriceDesc = !this.sortPriceDesc;
-
-				// dispatch this data to the entry.js file
-				this.$dispatch('sort-order', this.sortPriceDesc, 'price');
-
+				// if we are sort desc query the elastic db with desc else asc
 				if (this.sortPriceDesc) {
+					this.sortPriceDesc = false;
+
 					this.queryDSL.body.sort = {
 						"price.value": { "order": "desc" }
 					};
 				} else {
+					this.sortPriceDesc = true;
+
 					this.queryDSL.body.sort = {
 						"price.value": { "order": "asc" }
+					};
+				}
+			} else {
+				this.sortRating = true;
+
+				if (this.sortRatingDesc) {
+					this.sortRatingDesc = false;
+
+					this.queryDSL.body.sort = {
+						"stars.value": { "order": "desc" }
+					};
+				} else {
+					this.sortRatingDesc = true;
+
+					this.queryDSL.body.sort = {
+						"stars.value": { "order": "asc" }
 					};
 				}
 			}
@@ -198,6 +208,9 @@ exports.default = {
   */
 
 		removeSort: function removeSort(sort) {
+			// chain these to set all them to false
+			this.sortPopularity = this.sortPrice = this.sortRating = false;
+
 			delete this.queryDSL.body.sort;
 
 			this.search();
@@ -284,8 +297,8 @@ exports.default = {
 				// total number of pages rounded up so we also get a page with less than 12 results if need be
 				this.totalPages = Math.ceil(resp.hits.total / this.size);
 
-				// dispatch this data to the entry.js file
-				this.$dispatch('travel-hits', resp.hits.total);
+				// total hits for the search
+				this.hits = resp.hits.total;
 			}.bind(this), function (err) {
 				console.trace(err.message);
 			});
@@ -570,7 +583,7 @@ exports.default = {
 	}
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n\t<div class=\"row main-search-wrapper\">\n        <div class=\"col-md-6 col-md-offset-3\">\n            <i class=\"fa fa-search fa-2x\" aria-hidden=\"true\"></i>\n            <!-- add: debounce=\"500\" for a 500ms delay -->\n            <input type=\"text\" placeholder=\"Zoek op naam, land, stad of regio\" v-on:keyup=\"search\" v-model=\"query\" class=\"elasticsearch-input\">\n        </div><!-- /.col-md-6 -->\n\n        <div class=\"col-md-3 view-options\">\n            <i class=\"fa fa-bars fa-2x\" aria-hidden=\"true\" v-bind:class=\"{ 'active': !toggleView}\" v-on:click=\"toggleView = false\"></i>\n            <i class=\"fa fa-th-large fa-2x\" aria-hidden=\"true\" v-bind:class=\"{ 'active': toggleView}\" v-on:click=\"toggleView = true\"></i>\n        </div><!-- /.col-md-3 -->\n    </div><!-- /.row -->\n\n\t<div v-if=\"toggleView\" class=\"row\" v-for=\"row in travels | chunk 4\">\n\t\t<div class=\"col-xs-6 col-lg-3\" v-for=\"travel in row\">\n\t\t\t<div class=\"vacation-item\">\n\t\t\t\t<a href=\"/node/{{ travel._source.nid }}\">\n\t\t\t\t\t<div class=\"placeholder-img\" v-if=\"travel._source.field_image\" v-bind:style=\"{ 'background-image': 'url(' + travel._source.field_image[0].url.replace('files', 'files/styles/medium/public') + ')' }\">\n\t\t\t\t\t\t<div class=\"star-rating\" v-if=\"travel._source.stars\">\n\t\t\t\t\t\t\t<i class=\"fa fa-star fa-lg\" aria-hidden=\"true\" v-for=\"star in travel._source.stars[0].value\"></i>\n\t\t\t\t\t\t</div><!-- /.star-rating -->\n\t\t\t\t\t\t<div class=\"pricing\">€ {{ Math.floor(travel._source.price[0].value) }}</div><!-- /.pricing -->\n\t\t\t\t\t</div><!-- /.placeholder-img -->\n\n\t\t\t\t\t<div class=\"content\">\n\t\t\t\t\t\t<h2 v-if=\"travel.highlight\">{{{ travel.highlight.title }}}</h2>\n\t\t\t\t\t\t<h2 v-else=\"\">{{{ travel._source.title }}}</h2>\n\t\t\t\t\t\t<p>{{ travel._source.body[0].value.substring(0, 85) }}...</p>\n\t\t\t\t\t</div><!-- /.content -->\n\t\t\t\t</a>\n\t\t\t</div><!-- /.vacation-item -->\n\t\t</div><!-- /.col-md-3 -->\n\t</div><!-- /.row -->\n\n\t<div v-if=\"!toggleView\" class=\"row list-view\" v-for=\"travel in travels\">\n\t\t<div class=\"col-md-10 col-md-offset-1\">\n\t\t\t<div class=\"vacation-item\">\n\t\t\t\t<a href=\"/node/{{ travel._source.nid }}\">\n\t\t\t\t\t<div class=\"col-md-3\">\n\t\t\t\t\t\t<div class=\"placeholder-img\" v-if=\"travel._source.field_image\" v-bind:style=\"{ 'background-image': 'url(' + travel._source.field_image[0].url.replace('files', 'files/styles/medium/public') + ')' }\">\n\t\t\t\t\t\t\t<div class=\"star-rating\" v-if=\"travel._source.stars\">\n\t\t\t\t\t\t\t\t<i class=\"fa fa-star fa-lg\" aria-hidden=\"true\" v-for=\"star in travel._source.stars[0].value\"></i>\n\t\t\t\t\t\t\t</div><!-- /.star-rating -->\n\t\t\t\t\t\t\t<div class=\"pricing\">€ {{ Math.floor(travel._source.price[0].value) }}</div><!-- /.pricing -->\n\t\t\t\t\t\t</div><!-- /.placeholder-img -->\n\t\t\t\t\t</div><!-- /.col-md-3 -->\n\n\t\t\t\t\t<div class=\"col-md-9\">\n\t\t\t\t\t\t<div class=\"content\">\n\t\t\t\t\t\t\t<h2 v-if=\"travel.highlight\">{{{ travel.highlight.title }}}</h2>\n\t\t\t\t\t\t\t<h2 v-else=\"\">{{{ travel._source.title }}}</h2>\n\t\t\t\t\t\t\t<p>{{ travel._source.body[0].value.substring(0, 85) }}...</p>\n\t\t\t\t\t\t</div><!-- /.content -->\n\t\t\t\t\t</div><!-- /.col-md-9 -->\n\t\t\t\t</a></div><!-- /.vacation-item --><a href=\"/node/{{ travel._source.nid }}\">\n\t\t\t</a>\n\t\t</div><!-- /.col-md-3 -->\n\t</div><!-- /.row -->\n\n\t<div class=\"row\" v-if=\"this.travels == 0\">\n\t\t<div class=\"col-md-6 col-md-offset-3 text-center no-results\">\n\t\t\t<h2>We hebben helaas geen resultaten kunnen vinden binnen deze zoekcriteria. Probeer het nog eens.</h2>\n\t\t</div><!-- /.col-md-6 -->\n\t</div><!-- /.row -->\n\n\t<div class=\"row\">\n\t\t<nav class=\"text-center\">\n\t\t\t<ul class=\"pagination\">\n\t\t\t\t<li>\n\t\t\t\t\t<a href=\"#\" aria-label=\"Previous\" v-on:click.prevent=\"prevPage()\">\n\t\t\t\t\t\t<span aria-hidden=\"true\">«</span>\n\t\t\t\t\t</a>\n\t\t\t\t</li>\n\n\t\t\t\t<!-- crucial v-if logic to render the pagination -->\n\t\t\t\t<li v-for=\"pageNumber in totalPages\" v-bind:class=\"{'active' : pageNumber == this.currentPage }\" v-if=\"Math.abs(pageNumber - currentPage) < 4 || pageNumber == totalPages - 1 || pageNumber == 0\">\n\t\t\t\t\t<a href=\"#\" v-on:click.prevent=\"paginate(pageNumber)\">{{ pageNumber+1 }}</a>\n\t\t\t\t</li>\n\n\t\t\t\t<li>\n\t\t\t\t\t<a href=\"#\" aria-label=\"Next\" v-on:click.prevent=\"nextPage()\">\n\t\t\t\t\t\t<span aria-hidden=\"true\">»</span>\n\t\t\t\t\t</a>\n\t\t\t\t</li>\n\t\t\t</ul><!-- /.pagination -->\n\t\t</nav>\n\t</div><!-- /.row -->\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n\t<div class=\"row main-search-wrapper\">\n        <div class=\"col-md-6 col-md-offset-3\">\n            <i class=\"fa fa-search fa-2x\" aria-hidden=\"true\"></i>\n            <!-- add: debounce=\"500\" for a 500ms delay -->\n            <input type=\"text\" placeholder=\"Zoek op naam, land, stad of regio\" v-on:keyup=\"search\" v-model=\"query\" class=\"elasticsearch-input\">\n        </div><!-- /.col-md-6 -->\n\n        <div class=\"col-md-3 view-options\">\n            <i class=\"fa fa-bars fa-2x\" aria-hidden=\"true\" v-bind:class=\"{ 'active': !toggleView}\" v-on:click=\"toggleView = false\"></i>\n            <i class=\"fa fa-th-large fa-2x\" aria-hidden=\"true\" v-bind:class=\"{ 'active': toggleView}\" v-on:click=\"toggleView = true\"></i>\n        </div><!-- /.col-md-3 -->\n    </div><!-- /.row -->\n\n     <div class=\"sort-bar\" id=\"main-search\">\n        <div class=\"row\">\n        \t<div class=\"col-sm-4\">\n                <ul class=\"list-inline\">\n                    <li v-if=\"hits > 1 || hits == 0\">{{ hits }} vakanties gevonden</li>\n                    <li v-else=\"\">{{ hits }} vakantie gevonden</li>\n                    <i class=\"fa fa-filter\" aria-hidden=\"true\"></i>\n                </ul>\n            </div><!-- /.col-sm-4 -->\n\n            <div class=\"col-sm-8 text-right\">\n                <ul class=\"list-inline\">\n                    <li class=\"bold\">SORTEER OP</li>\n\n                    <li>\n                        <i class=\"fa fa-times-circle fa-lg\" aria-hidden=\"true\" v-if=\"sortPopularity\" v-on:click=\"removeSort('popularity')\"></i>\n\n                        <div class=\"toggle-sort\" v-on:click.prevent=\"sort('popularity')\" v-bind:class=\"{'active' : sortPopularity }\">\n                            <span>POPULARITEIT</span>\n                            <i class=\"fa fa-sort-desc fa-lg\" aria-hidden=\"true\" v-if=\"sortPopularity\"></i>\n                        </div><!-- /.toggle-sort -->\n                    </li>\n\n                    <li>\n                        <i class=\"fa fa-times-circle fa-lg\" aria-hidden=\"true\" v-if=\"sortPrice\" v-on:click=\"removeSort('price')\"></i>\n\n                        <div class=\"toggle-sort\" v-on:click.prevent=\"sort('price')\" v-bind:class=\"{'active' : sortPrice }\">\n                            <span>PRIJS</span>\n                            <span v-if=\"sortPrice\">\n                                <i class=\"fa fa-sort-desc fa-lg\" aria-hidden=\"true\" v-if=\"sortPriceDesc\"></i>\n                                <i class=\"fa fa-sort-asc fa-lg\" aria-hidden=\"true\" v-else=\"\"></i>\n                            </span>\n                        </div><!-- /.toggle-sort -->\n                    </li>\n\n                    <li>\n                        <i class=\"fa fa-times-circle fa-lg\" aria-hidden=\"true\" v-if=\"sortRating\" v-on:click=\"removeSort('rating')\"></i>\n\n                        <div class=\"toggle-sort\" v-on:click.prevent=\"sort('rating')\" v-bind:class=\"{'active' : sortRating }\">\n                            <span>STERREN</span>\n                            <span v-if=\"sortRating\">\n                                <i class=\"fa fa-sort-desc fa-lg\" aria-hidden=\"true\" v-if=\"sortRatingDesc\"></i>\n                                <i class=\"fa fa-sort-asc fa-lg\" aria-hidden=\"true\" v-else=\"\"></i>\n                            </span>\n                        </div><!-- /.toggle-sort -->\n                    </li>\n                </ul><!-- /.list-inline -->\n            </div><!-- /.col-sm-8 -->\n        </div><!-- /.row -->\n    </div><!-- /.sort-bar -->\n\n\t<div v-if=\"toggleView\" class=\"row\" v-for=\"row in travels | chunk 4\">\n\t\t<div class=\"col-xs-6 col-lg-3\" v-for=\"travel in row\">\n\t\t\t<div class=\"vacation-item\">\n\t\t\t\t<a href=\"/node/{{ travel._source.nid }}\">\n\t\t\t\t\t<div class=\"placeholder-img\" v-if=\"travel._source.field_image\" v-bind:style=\"{ 'background-image': 'url(' + travel._source.field_image[0].url.replace('files', 'files/styles/medium/public') + ')' }\">\n\t\t\t\t\t\t<div class=\"star-rating\" v-if=\"travel._source.stars\">\n\t\t\t\t\t\t\t<i class=\"fa fa-star fa-lg\" aria-hidden=\"true\" v-for=\"star in travel._source.stars[0].value\"></i>\n\t\t\t\t\t\t</div><!-- /.star-rating -->\n\t\t\t\t\t\t<div class=\"pricing\">€ {{ Math.floor(travel._source.price[0].value) }}</div><!-- /.pricing -->\n\t\t\t\t\t</div><!-- /.placeholder-img -->\n\n\t\t\t\t\t<div class=\"content\">\n\t\t\t\t\t\t<h2 v-if=\"travel.highlight\">{{{ travel.highlight.title }}}</h2>\n\t\t\t\t\t\t<h2 v-else=\"\">{{{ travel._source.title }}}</h2>\n\t\t\t\t\t\t<p>{{ travel._source.body[0].value.substring(0, 85) }}...</p>\n\t\t\t\t\t</div><!-- /.content -->\n\t\t\t\t</a>\n\t\t\t</div><!-- /.vacation-item -->\n\t\t</div><!-- /.col-md-3 -->\n\t</div><!-- /.row -->\n\n\t<div v-if=\"!toggleView\" class=\"row list-view\" v-for=\"travel in travels\">\n\t\t<div class=\"col-md-10 col-md-offset-1\">\n\t\t\t<div class=\"vacation-item\">\n\t\t\t\t<a href=\"/node/{{ travel._source.nid }}\">\n\t\t\t\t\t<div class=\"col-md-3\">\n\t\t\t\t\t\t<div class=\"placeholder-img\" v-if=\"travel._source.field_image\" v-bind:style=\"{ 'background-image': 'url(' + travel._source.field_image[0].url.replace('files', 'files/styles/medium/public') + ')' }\">\n\t\t\t\t\t\t\t<div class=\"star-rating\" v-if=\"travel._source.stars\">\n\t\t\t\t\t\t\t\t<i class=\"fa fa-star fa-lg\" aria-hidden=\"true\" v-for=\"star in travel._source.stars[0].value\"></i>\n\t\t\t\t\t\t\t</div><!-- /.star-rating -->\n\t\t\t\t\t\t\t<div class=\"pricing\">€ {{ Math.floor(travel._source.price[0].value) }}</div><!-- /.pricing -->\n\t\t\t\t\t\t</div><!-- /.placeholder-img -->\n\t\t\t\t\t</div><!-- /.col-md-3 -->\n\n\t\t\t\t\t<div class=\"col-md-9\">\n\t\t\t\t\t\t<div class=\"content\">\n\t\t\t\t\t\t\t<h2 v-if=\"travel.highlight\">{{{ travel.highlight.title }}}</h2>\n\t\t\t\t\t\t\t<h2 v-else=\"\">{{{ travel._source.title }}}</h2>\n\t\t\t\t\t\t\t<p>{{ travel._source.body[0].value.substring(0, 85) }}...</p>\n\t\t\t\t\t\t</div><!-- /.content -->\n\t\t\t\t\t</div><!-- /.col-md-9 -->\n\t\t\t\t</a></div><!-- /.vacation-item --><a href=\"/node/{{ travel._source.nid }}\">\n\t\t\t</a>\n\t\t</div><!-- /.col-md-3 -->\n\t</div><!-- /.row -->\n\n\t<div class=\"row\" v-if=\"this.travels == 0\">\n\t\t<div class=\"col-md-6 col-md-offset-3 text-center no-results\">\n\t\t\t<h2>We hebben helaas geen resultaten kunnen vinden binnen deze zoekcriteria. Probeer het nog eens.</h2>\n\t\t</div><!-- /.col-md-6 -->\n\t</div><!-- /.row -->\n\n\t<div class=\"row\">\n\t\t<nav class=\"text-center\">\n\t\t\t<ul class=\"pagination\">\n\t\t\t\t<li>\n\t\t\t\t\t<a href=\"#\" aria-label=\"Previous\" v-on:click.prevent=\"prevPage()\">\n\t\t\t\t\t\t<span aria-hidden=\"true\">«</span>\n\t\t\t\t\t</a>\n\t\t\t\t</li>\n\n\t\t\t\t<!-- crucial v-if logic to render the pagination -->\n\t\t\t\t<li v-for=\"pageNumber in totalPages\" v-bind:class=\"{'active' : pageNumber == this.currentPage }\" v-if=\"Math.abs(pageNumber - currentPage) < 4 || pageNumber == totalPages - 1 || pageNumber == 0\">\n\t\t\t\t\t<a href=\"#\" v-on:click.prevent=\"paginate(pageNumber)\">{{ pageNumber+1 }}</a>\n\t\t\t\t</li>\n\n\t\t\t\t<li>\n\t\t\t\t\t<a href=\"#\" aria-label=\"Next\" v-on:click.prevent=\"nextPage()\">\n\t\t\t\t\t\t<span aria-hidden=\"true\">»</span>\n\t\t\t\t\t</a>\n\t\t\t\t</li>\n\t\t\t</ul><!-- /.pagination -->\n\t\t</nav>\n\t</div><!-- /.row -->\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -678,18 +691,7 @@ $(document).ready(function() {
 	global.Vue = new Vue({
 		el: 'body',
 		data: {
-			hits: '',
 			ratings: [],
-
-			// enabled / disabled filters
-			sortPopularity: false,
-			sortPrice: false,
-			sortRating: false,
-
-			// sortorder for filters
-			sortPopularityDesc: false,
-			sortRatingDesc: false,
-			sortPriceDesc: false,
 
 			// array of unique countries to build a sidebar list
 			countries: [],
@@ -737,10 +739,6 @@ $(document).ready(function() {
 			}
 		},
 		events: {
-			// capture the dispatch event from the child component
-			'travel-hits': function(hits) {
-				this.hits = hits;
-			},
 			'sort-order': function(sortOrder, filterName) {
 				if(filterName == 'rating') {
 					this.sortRatingDesc = sortOrder;
@@ -781,33 +779,6 @@ $(document).ready(function() {
 			}
 		},
 		methods: {
-			// enable a sort
-			sort: function(sort) {
-				this.sortPopularity = false;
-				this.sortPrice = false;
-				this.sortRating = false;
-
-				if(sort == 'popularity') {
-					this.sortPopularity = true;
-				} else if(sort == 'price') {
-					this.sortPrice = true;
-				} else {
-					this.sortRating = true;
-				}
-
-				// broadcast the event to the child component listener
-				this.$broadcast('sortListener', sort);
-			},
-
-			// disable a sort
-			removeSort: function() {
-				// chain these to set all them to false
-				this.sortPopularity = this.sortPrice = this.sortRating = false;
-
-				// broadcast the event to the child component listener
-				this.$broadcast('removeSortListener', [this.sortPopularity, this.sortPrice, this.sortRating]);
-			},
-
 			/*
 			|--------------------------------------------------------------------------
 			| Filter broadcast methods / array builders

@@ -1,58 +1,7 @@
 <div id="node-<?php print $node->nid; ?>" class="<?php print $classes; ?> clearfix"<?php print $attributes; ?>>
-    <div class="header index-header" style="background-image: url(<?php print file_create_url($node->field_image['und'][0]['uri']); ?>)"></div><!-- /.header -->
-
-    <div class="sort-bar" id="main-search">
-        <div class="container">
-            <div class="row">
-            <div class="col-sm-8">
-                <ul class="list-inline">
-                    <li class="bold">SORTEER OP</li>
-
-                    <li>
-                        <i class="fa fa-times-circle fa-lg" aria-hidden="true" v-if="sortPopularity" v-on:click="removeSort('popularity')"></i>
-
-                        <div class="toggle-sort" v-on:click.prevent="sort('popularity')" v-bind:class="{'active' : sortPopularity }">
-                            <span>POPULARITEIT</span>
-                            <i class="fa fa-sort-desc fa-lg" aria-hidden="true" v-if="sortPopularity"></i>
-                        </div><!-- /.toggle-sort -->
-                    </li>
-
-                    <li>
-                        <i class="fa fa-times-circle fa-lg" aria-hidden="true" v-if="sortPrice" v-on:click="removeSort('price')"></i>
-
-                        <div class="toggle-sort" v-on:click.prevent="sort('price')" v-bind:class="{'active' : sortPrice }">
-                            <span>PRIJS</span>
-                            <span v-if="sortPrice">
-                                <i class="fa fa-sort-desc fa-lg" aria-hidden="true" v-if="sortPriceDesc"></i>
-                                <i class="fa fa-sort-asc fa-lg" aria-hidden="true" v-else></i>
-                            </span>
-                        </div><!-- /.toggle-sort -->
-                    </li>
-
-                    <li>
-                        <i class="fa fa-times-circle fa-lg" aria-hidden="true" v-if="sortRating" v-on:click="removeSort('rating')"></i>
-
-                        <div class="toggle-sort" v-on:click.prevent="sort('rating')" v-bind:class="{'active' : sortRating }">
-                            <span>STERREN</span>
-                            <span v-if="sortRating">
-                                <i class="fa fa-sort-desc fa-lg" aria-hidden="true" v-if="sortRatingDesc"></i>
-                                <i class="fa fa-sort-asc fa-lg" aria-hidden="true" v-else></i>
-                            </span>
-                        </div><!-- /.toggle-sort -->
-                    </li>
-                </ul><!-- /.list-inline -->
-            </div><!-- /.col-sm-8 -->
-
-            <div class="col-sm-4">
-                <ul class="list-inline">
-                    <li v-if="hits > 1 || hits == 0">{{ hits }} vakanties gevonden</li>
-                    <li v-else="">{{ hits }} vakantie gevonden</li>
-                    <i class="fa fa-filter" aria-hidden="true"></i>
-                </ul>
-            </div><!-- /.col-sm-4 -->
-            </div>
-        </div><!-- /.container -->
-    </div>
+    <div class="header index-header" style="background-image: url(<?php print file_create_url($node->field_image['und'][0]['uri']); ?>)">
+        <h1 class="absolute-center skewed-label">Meer dan {{ Math.floor(this.$children[0].$data.hits / 100) * 100 }} vakanties</h1>
+    </div><!-- /.header -->
 
     <?php print render($title_prefix); ?>
     <?php if (!$page): ?>

@@ -84,11 +84,11 @@
                             <?php print render($content['addtoany']); ?>
                         </div><!-- /.social-media -->
 
-                        <?php print render($content['field_image']); ?>
-
                         <h3><?php print $title; ?></h3>
 
                         <?php print text_summary($body[0]['value'], NULL, 180); ?>
+
+                        <?php print render($content['field_image']); ?>
 
                         <div class="extra-info-header">Aanvullende informatie</div>
                         <div class="extra-info">

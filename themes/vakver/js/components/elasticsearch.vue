@@ -20,6 +20,57 @@
         </div><!-- /.col-md-3 -->
     </div><!-- /.row -->
 
+     <div class="sort-bar" id="main-search">
+        <div class="row">
+        	<div class="col-sm-4">
+                <ul class="list-inline">
+                    <li v-if="hits > 1 || hits == 0">{{ hits }} vakanties gevonden</li>
+                    <li v-else="">{{ hits }} vakantie gevonden</li>
+                    <i class="fa fa-filter" aria-hidden="true"></i>
+                </ul>
+            </div><!-- /.col-sm-4 -->
+
+            <div class="col-sm-8 text-right">
+                <ul class="list-inline">
+                    <li class="bold">SORTEER OP</li>
+
+                    <li>
+                        <i class="fa fa-times-circle fa-lg" aria-hidden="true" v-if="sortPopularity" v-on:click="removeSort('popularity')"></i>
+
+                        <div class="toggle-sort" v-on:click.prevent="sort('popularity')" v-bind:class="{'active' : sortPopularity }">
+                            <span>POPULARITEIT</span>
+                            <i class="fa fa-sort-desc fa-lg" aria-hidden="true" v-if="sortPopularity"></i>
+                        </div><!-- /.toggle-sort -->
+                    </li>
+
+                    <li>
+                        <i class="fa fa-times-circle fa-lg" aria-hidden="true" v-if="sortPrice" v-on:click="removeSort('price')"></i>
+
+                        <div class="toggle-sort" v-on:click.prevent="sort('price')" v-bind:class="{'active' : sortPrice }">
+                            <span>PRIJS</span>
+                            <span v-if="sortPrice">
+                                <i class="fa fa-sort-desc fa-lg" aria-hidden="true" v-if="sortPriceDesc"></i>
+                                <i class="fa fa-sort-asc fa-lg" aria-hidden="true" v-else></i>
+                            </span>
+                        </div><!-- /.toggle-sort -->
+                    </li>
+
+                    <li>
+                        <i class="fa fa-times-circle fa-lg" aria-hidden="true" v-if="sortRating" v-on:click="removeSort('rating')"></i>
+
+                        <div class="toggle-sort" v-on:click.prevent="sort('rating')" v-bind:class="{'active' : sortRating }">
+                            <span>STERREN</span>
+                            <span v-if="sortRating">
+                                <i class="fa fa-sort-desc fa-lg" aria-hidden="true" v-if="sortRatingDesc"></i>
+                                <i class="fa fa-sort-asc fa-lg" aria-hidden="true" v-else></i>
+                            </span>
+                        </div><!-- /.toggle-sort -->
+                    </li>
+                </ul><!-- /.list-inline -->
+            </div><!-- /.col-sm-8 -->
+        </div><!-- /.row -->
+    </div><!-- /.sort-bar -->
+
 	<div v-if="toggleView" class="row" v-for="row in travels | chunk 4">
 		<div class="col-xs-6 col-lg-3" v-for="travel in row">
 			<div class="vacation-item">
@@ -185,7 +236,20 @@
 				transportations: [],
 
 				// debounce timer
-				timer: 0
+				timer: 0,
+
+				// enabled / disabled filters
+				sortPopularity: false,
+				sortPrice: false,
+				sortRating: false,
+
+				// sortorder for filters
+				sortPopularityDesc: false,
+				sortRatingDesc: false,
+				sortPriceDesc: false,
+
+				// total number of search hits
+				hits: ''
 			};
 		},
 		events: {
@@ -206,9 +270,6 @@
 
 				this.search();
 			},
-			'sortListener': function(sort) {
-				this.sort(sort);
-			},
 			'priceListener': function(range) {
 				this.priceRange = range;
 
@@ -221,10 +282,7 @@
             	this.timer = setTimeout(function(){
 					this.search()
 				}.bind(this), 150);
-			},
-			'removeSortListener': function(sort) {
-				this.removeSort(sort);
-			},
+			}
 		},
 		methods: {
 			/*
@@ -237,36 +295,42 @@
 			*/
 		
 			sort: function(sort) {
-				if(sort == 'rating') {
-					this.sortRatingDesc = !this.sortRatingDesc;
+				this.sortRating = this.sortPrice = this.sortPopularity = false;
 
-					// dispatch this data to the entry.js file
-					this.$dispatch('sort-order', this.sortRatingDesc, 'rating');
+				// check which filter we just clicked on and set it to active
+				if(sort == 'popularity') {
+					this.sortPopularity = true;
+				} else if(sort == 'price') {
+					this.sortPrice = true;
 
-					if(this.sortRatingDesc) {
-						this.queryDSL.body.sort = {
-					        "stars.value": { "order": "desc" }
-						}
-					} else {
-						this.queryDSL.body.sort = {
-					        "stars.value": { "order": "asc" }
-						}
-					}
-				}
-
-				if(sort == 'price') {
-					this.sortPriceDesc = !this.sortPriceDesc;
-
-					// dispatch this data to the entry.js file
-					this.$dispatch('sort-order', this.sortPriceDesc, 'price');
-
+					// if we are sort desc query the elastic db with desc else asc
 					if(this.sortPriceDesc) {
+						this.sortPriceDesc = false;
+
 						this.queryDSL.body.sort = {
 					        "price.value": { "order": "desc" }
 						}
 					} else {
+						this.sortPriceDesc = true;
+
 						this.queryDSL.body.sort = {
 					        "price.value": { "order": "asc" }
+						}
+					}
+				} else {
+					this.sortRating = true;
+
+					if(this.sortRatingDesc) {
+						this.sortRatingDesc = false;
+
+						this.queryDSL.body.sort = {
+					        "stars.value": { "order": "desc" }
+						}
+					} else {
+						this.sortRatingDesc = true;
+
+						this.queryDSL.body.sort = {
+					        "stars.value": { "order": "asc" }
 						}
 					}
 				}
@@ -284,6 +348,9 @@
 			*/
 		
 			removeSort: function(sort) {
+				// chain these to set all them to false
+				this.sortPopularity = this.sortPrice = this.sortRating = false;
+
 				delete this.queryDSL.body.sort;
 
 				this.search();
@@ -375,8 +442,8 @@
 					// total number of pages rounded up so we also get a page with less than 12 results if need be
 					this.totalPages = Math.ceil(resp.hits.total / this.size);
 
-					// dispatch this data to the entry.js file
-					this.$dispatch('travel-hits', resp.hits.total);
+					// total hits for the search
+					this.hits = resp.hits.total;
 				}.bind(this), function (err) {
 					console.trace(err.message);
 				});

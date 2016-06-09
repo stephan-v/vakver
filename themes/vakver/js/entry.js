@@ -31,18 +31,7 @@ $(document).ready(function() {
 	global.Vue = new Vue({
 		el: 'body',
 		data: {
-			hits: '',
 			ratings: [],
-
-			// enabled / disabled filters
-			sortPopularity: false,
-			sortPrice: false,
-			sortRating: false,
-
-			// sortorder for filters
-			sortPopularityDesc: false,
-			sortRatingDesc: false,
-			sortPriceDesc: false,
 
 			// array of unique countries to build a sidebar list
 			countries: [],
@@ -90,10 +79,6 @@ $(document).ready(function() {
 			}
 		},
 		events: {
-			// capture the dispatch event from the child component
-			'travel-hits': function(hits) {
-				this.hits = hits;
-			},
 			'sort-order': function(sortOrder, filterName) {
 				if(filterName == 'rating') {
 					this.sortRatingDesc = sortOrder;
@@ -134,33 +119,6 @@ $(document).ready(function() {
 			}
 		},
 		methods: {
-			// enable a sort
-			sort: function(sort) {
-				this.sortPopularity = false;
-				this.sortPrice = false;
-				this.sortRating = false;
-
-				if(sort == 'popularity') {
-					this.sortPopularity = true;
-				} else if(sort == 'price') {
-					this.sortPrice = true;
-				} else {
-					this.sortRating = true;
-				}
-
-				// broadcast the event to the child component listener
-				this.$broadcast('sortListener', sort);
-			},
-
-			// disable a sort
-			removeSort: function() {
-				// chain these to set all them to false
-				this.sortPopularity = this.sortPrice = this.sortRating = false;
-
-				// broadcast the event to the child component listener
-				this.$broadcast('removeSortListener', [this.sortPopularity, this.sortPrice, this.sortRating]);
-			},
-
 			/*
 			|--------------------------------------------------------------------------
 			| Filter broadcast methods / array builders
