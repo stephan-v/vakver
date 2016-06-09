@@ -5,7 +5,7 @@
         <?php endif; ?>
     <?php print render($title_suffix); ?>
     
-    <div class="vacation-header">
+    <div class="vacation-header header-single" style="background-image: url(<?php print image_style_url('blur', $field_image[0]['uri']); ?>);">
         <h1 class="absolute-center skewed-label"><?php print $title; ?></h1>
     </div><!-- /.vacation-header -->
 

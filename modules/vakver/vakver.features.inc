@@ -30,6 +30,39 @@ function vakver_views_api($module = NULL, $api = NULL) {
 }
 
 /**
+ * Implements hook_image_default_styles().
+ */
+function vakver_image_default_styles() {
+  $styles = array();
+
+  // Exported image style: blur.
+  $styles['blur'] = array(
+    'label' => 'Blur',
+    'effects' => array(
+      1 => array(
+        'name' => 'canvasactions_blur',
+        'data' => array(
+          'intensity' => 10,
+          '#imageinfo_cache_effect_callback' => 'canvasactions_blur_effect',
+        ),
+        'weight' => 1,
+      ),
+      3 => array(
+        'name' => 'image_scale_and_crop',
+        'data' => array(
+          'width' => 1920,
+          'height' => 500,
+          '#imageinfo_cache_effect_callback' => 'image_scale_and_crop_effect',
+        ),
+        'weight' => 2,
+      ),
+    ),
+  );
+
+  return $styles;
+}
+
+/**
  * Implements hook_node_info().
  */
 function vakver_node_info() {

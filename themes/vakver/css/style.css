@@ -572,10 +572,13 @@ aside .star-rating .checkbox input[type="checkbox"] {
 Vakantie pagina(single)
 ========================================================================== */
 .node-type-vakantie .vacation-header {
-  height: 500px;
+  height: 250px;
   background: url(../img/vacation-header.jpg) center center;
   background-size: cover;
   position: relative;
+}
+.node-type-vakantie .header-single {
+  height: 450px;
 }
 .node-type-vakantie .vacation {
   background: white;
@@ -585,9 +588,6 @@ Vakantie pagina(single)
 }
 .node-type-vakantie .vacation h3 {
   margin-top: 30px;
-}
-.node-type-vakantie .vacation img {
-  width: 100%;
 }
 .node-type-vakantie .vacation .social-media {
   position: absolute;
