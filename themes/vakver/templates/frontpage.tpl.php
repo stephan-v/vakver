@@ -23,13 +23,20 @@
             <div class="filter">
                 <div class="filter-header">
                     <h3>Landen</h3>
-                    <div class="filter-count">{{ countries.length }}</div>
                     <div class="clearfix"></div>
                 </div><!-- /.filter-header -->
 
                 <div class="readmore">
-                    <ul class="countries">
-                        <li v-for="country in countries | orderBy 'key'" v-on:click="filter(country.key, 'country', 'countries')" v-bind:class="{ 'active': countriesToFilter.indexOf(country.key) > -1 }">{{ country.key | capitalize }}</li>
+                    <ul>
+                        <!-- custom block voor vakanties die bovenaan moeten komen te staan - landnaam moet met hoofdletter -->
+                        <li v-on:click="filter('Spanje', 'country', 'countries')" v-bind:class="{ 'active': countriesToFilter.indexOf('Spanje') > -1 }">Spanje</li>
+
+                        <div class="filter-item" v-for="country in countries | orderBy 'key'">
+                            <li v-on:click="filter(country.key, 'country', 'countries')" v-bind:class="{ 'active': countriesToFilter.indexOf(country.key) > -1 }">
+                                {{ country.key | capitalize }}
+                            </li>
+                            <span class="filter-count">{{ country.doc_count }}</span>
+                        </div><!-- /.filter-item -->
                     </ul>
                 </div><!-- /.readmore -->
             </div><!-- /.filer -->
@@ -37,13 +44,15 @@
             <div class="filter">
                 <div class="filter-header">
                     <h3>Verzorgingstype</h3>
-                    <div class="filter-count">{{ boards.length }}</div>
                     <div class="clearfix"></div>
                 </div><!-- /.filter-header -->
 
                 <div class="readmore">
-                    <ul class="countries">
-                        <li v-for="board in boards | orderBy 'key'" v-on:click="filter(board.key, 'board', 'boards')" v-bind:class="{ 'active': boardsToFilter.indexOf(board.key) > -1 }">{{ board.key | capitalize }}</li>
+                    <ul>
+                        <div class="filter-item" v-for="board in boards | orderBy 'key'">
+                            <li v-on:click="filter(board.key, 'board', 'boards')" v-bind:class="{ 'active': boardsToFilter.indexOf(board.key) > -1 }">{{ board.key | capitalize }}</li>
+                            <span class="filter-count">{{ board.doc_count }}</span>
+                        </div><!-- /.filter-item -->
                     </ul>
                 </div><!-- /.readmore -->
             </div><!-- /.filer -->
@@ -51,13 +60,15 @@
             <div class="filter">
                 <div class="filter-header">
                     <h3>Accommodaties</h3>
-                    <div class="filter-count">{{ accommodations.length }}</div>
                     <div class="clearfix"></div>
                 </div><!-- /.filter-header -->
 
                 <div class="readmore">
-                    <ul class="countries">
-                        <li v-for="accommodation in accommodations | orderBy 'key'" v-on:click="filter(accommodation.key, 'accommodation', 'accommodations')" v-bind:class="{ 'active': accommodationsToFilter.indexOf(accommodation.key) > -1 }">{{ accommodation.key | capitalize }}</li>
+                    <ul>
+                        <div class="filter-item" v-for="accommodation in accommodations | orderBy 'key'">
+                            <li v-on:click="filter(accommodation.key, 'accommodation', 'accommodations')" v-bind:class="{ 'active': accommodationsToFilter.indexOf(accommodation.key) > -1 }">{{ accommodation.key | capitalize }}</li>
+                            <span class="filter-count">{{ accommodation.doc_count }}</span>
+                        </div><!-- /.filter-item -->
                     </ul>
                 </div><!-- /.readmore -->
             </div><!-- /.filer -->
@@ -65,13 +76,15 @@
             <div class="filter">
                 <div class="filter-header">
                     <h3>Reisduur</h3>
-                    <div class="filter-count">{{ durations.length }}</div>
                     <div class="clearfix"></div>
                 </div><!-- /.filter-header -->
 
                 <div class="readmore">
-                    <ul class="countries">
-                        <li v-for="duration in durations.slice().reverse()" v-on:click="filter(duration.key, 'duration', 'durations')" v-bind:class="{ 'active': durationsToFilter.indexOf(duration.key) > -1 }">{{ duration.key | capitalize }} dagen</li>
+                    <ul>
+                        <div class="filter-item" v-for="duration in durations.slice().reverse()">
+                            <li v-on:click="filter(duration.key, 'duration', 'durations')" v-bind:class="{ 'active': durationsToFilter.indexOf(duration.key) > -1 }">{{ duration.key | capitalize }} dagen</li>
+                            <span class="filter-count">{{ duration.doc_count }}</span>
+                        </div><!-- /.filter-item -->
                     </ul>
                 </div><!-- /.readmore -->
             </div><!-- /.filer -->
@@ -79,13 +92,15 @@
             <div class="filter">
                 <div class="filter-header">
                     <h3>Vervoersmiddel</h3>
-                    <div class="filter-count">{{ transportations.length }}</div>
                     <div class="clearfix"></div>
                 </div><!-- /.filter-header -->
 
                 <div class="readmore">
-                    <ul class="countries">
-                        <li v-for="transportation in transportations.slice().reverse()" v-on:click="filter(transportation.key, 'transportation', 'transportations')" v-bind:class="{ 'active': transportationsToFilter.indexOf(transportation.key) > -1 }">{{ transportation.key | capitalize }}</li>
+                    <ul>
+                        <div class="filter-item" v-for="transportation in transportations.slice().reverse()">
+                            <li v-on:click="filter(transportation.key, 'transportation', 'transportations')" v-bind:class="{ 'active': transportationsToFilter.indexOf(transportation.key) > -1 }">{{ transportation.key | capitalize }}</li>
+                            <span class="filter-count">{{ transportation.doc_count }}</span>
+                        </div><!-- /.filter-item -->
                     </ul>
                 </div><!-- /.readmore -->
             </div><!-- /.filer -->

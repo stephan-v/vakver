@@ -593,13 +593,19 @@ aside {
 			margin: 0.5em 0 1em 0;
 			float: left;
     	}
-    	.filter-count {
-		    float: right;
-		    margin: 0.5em 0 1em 0;
-		    background: #4E8EC3;
-		    color: white;
-		    border-radius: 35px;
-		    padding: 2px 12px;
+    	.filter-item {
+    		position: relative;
+
+	    	.filter-count {
+			    box-shadow: inset 0px -1px rgba(255, 255, 255, 0.5);
+			    background: rgba(0, 0, 0, 0.1);
+			    border-radius: 10px;
+			    padding: 0 12px;
+			    color: white;
+			    position: absolute;
+	    		top: 3px;
+	    		right: 5px;
+	    	}
     	}
     	ul {
     		list-style-position: inside;

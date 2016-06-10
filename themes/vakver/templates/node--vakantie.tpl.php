@@ -63,7 +63,11 @@
                         </div><!-- /.col-md-3 -->
 
                         <div class="col-md-3 col-xs-6">
-                            <i class="fa fa-plane fa-2x" aria-hidden="true"></i>
+                            <?php if($field_transportation[0]['value'] === 'vliegtuig'): ?>
+                                <i class="fa fa-plane fa-2x" aria-hidden="true"></i>
+                            <?php else: ?>
+                                <i class="fa fa-map-o fa-2x" aria-hidden="true"></i>
+                            <?php endif; ?>
                             <span class="travel-metadata">
                                 <div class="title">Vervoer</div>
                                 <div class="attribute">
