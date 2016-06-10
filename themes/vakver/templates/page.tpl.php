@@ -89,7 +89,13 @@
 
 					<div class="col-md-4 contact">
 						<h3>Contact</h3>
-						<p>Heeft u vragen of opmerkingen? U kunt contact met ons opnemen <a href="#">via dit contactformulier.</a></p>
+						<p>Heeft u vragen of opmerkingen? U kunt contact met ons opnemen <a href="/contact">via dit contactformulier.</a></p>
+						<a href="#" class="social-link">
+							<i class="fa fa-twitter-square fa-2x" aria-hidden="true"></i>
+						</a>
+						<a href="#" class="social-link">
+							<i class="fa fa-facebook-square fa-2x" aria-hidden="true"></i>
+						</a>
 					</div><!-- /.col-md-4 -->
 				</div><!-- /.row -->
 			</div><!-- /.container -->

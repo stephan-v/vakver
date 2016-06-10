@@ -97,10 +97,16 @@ function _elastic_prepare_node($node) {
     $params['body']['accommodation'] = $accommodation_field;
   }
 
-   // Add the transportation field if exists
+  // Add the transportation field if exists
   $transportation_field = isset($node->field_transportation) ? field_get_items('node', $node, 'field_transportation') : false;
   if ($transportation_field) {
     $params['body']['transportation'] = $transportation_field;
+  }
+
+  // Add the city field if exists
+  $city_field = isset($node->field_city) ? field_get_items('node', $node, 'field_city') : false;
+  if ($city_field) {
+    $params['body']['city'] = $city_field;
   }
 
   /* END OPTIONAL REFACTOR TO A SINGLE FUNCTION */

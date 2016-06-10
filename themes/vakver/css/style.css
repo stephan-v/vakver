@@ -901,6 +901,36 @@ Filter overzichtspagina
   font-weight: bold;
 }
 /* ==========================================================================
+Blog pagina(single)
+========================================================================== */
+.blogpost {
+  margin-top: 50px;
+}
+.blogpost a {
+  text-decoration: none;
+}
+.blogpost .blog-content {
+  background: white;
+  padding: 30px;
+  line-height: 1.7;
+}
+.blogpost .blog-content h1 {
+  margin: 0 0 15px 0;
+  font-size: 28px;
+  color: #4E92DC;
+}
+.blogpost .blog-content h2 {
+  font-size: 16px;
+  color: #4E92DC;
+  margin-top: 0;
+}
+.blogpost .blog-content p {
+  margin-bottom: 15px;
+}
+.blogpost .blog-content p:last-child {
+  margin: 0;
+}
+/* ==========================================================================
 Footer
 ========================================================================== */
 #footer {
@@ -991,6 +1021,16 @@ Footer
   font-weight: bold;
   color: white;
   text-decoration: underline;
+}
+#footer .main-content .contact .social-link {
+  text-decoration: none;
+}
+#footer .main-content .contact .social-link:hover {
+  color: lightgrey;
+}
+#footer .main-content .contact .social-link .fa {
+  margin-right: 5px;
+  font-size: 2.5em;
 }
 #footer .lower-footer {
   background: #4E92DC;

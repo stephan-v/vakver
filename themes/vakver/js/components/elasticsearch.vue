@@ -220,7 +220,14 @@
 				            },
 				            "pre_tags": ["<span class='highlight'>"],
         					"post_tags": ["</span>"]
-				        }
+				        },
+						"sort": [
+							{
+								"_timestamp": {
+									"order": "desc"
+								}
+							}
+						]
   					}
 				},
 				sortRatingDesc: false,
@@ -351,7 +358,11 @@
 				// chain these to set all them to false
 				this.sortPopularity = this.sortPrice = this.sortRating = false;
 
-				delete this.queryDSL.body.sort;
+				this.queryDSL.body.sort = {
+					"_timestamp": {
+						"order": "desc"
+					}
+				}
 
 				this.search();
 			},
@@ -374,7 +385,7 @@
 					this.queryDSL.body.query = {},
 
 					this.queryDSL.body.query.multi_match = {
-						"fields" : ["title", "country.value", "region.value"],
+						"fields" : ["title", "country.value", "region.value", "city.value"],
 			            "query" : this.query,
 			            "type" : "phrase_prefix",
 			            "max_expansions": 50,
