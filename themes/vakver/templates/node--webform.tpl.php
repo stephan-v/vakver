@@ -1,6 +1,6 @@
 <div class="contact-header" style="background-image: url(<?php print file_create_url($field_image[0]['uri']); ?>);">
-    <div class="absolute-center">
-        <h2><?php print $node->title; ?></h2>
+    <div class="absolute-center skewed-label">
+        <h1><?php print $node->title; ?></h1>
     </div><!-- /.text-overlay -->
 </div><!-- /.contact-header -->
 

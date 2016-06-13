@@ -76,6 +76,10 @@
 			<div class="vacation-item">
 				<a href="/node/{{ travel._source.nid }}">
 					<div class="placeholder-img" v-if="travel._source.field_image" v-bind:style="{ 'background-image': 'url(' + travel._source.field_image[0].url.replace('files', 'files/styles/medium/public') + ')' }">
+
+						<!-- if more than 2 weeks old - 1209600 seconds -->
+						<div class="new-item" v-if="(Math.round((new Date()).getTime() / 1000) - travel._source.created) > 172800">NIEUW</div>
+
 						<div class="star-rating" v-if="travel._source.stars">
 							<i class="fa fa-star fa-lg" aria-hidden="true" v-for="star in travel._source.stars[0].value"></i>
 						</div><!-- /.star-rating -->
@@ -98,6 +102,10 @@
 				<a href="/node/{{ travel._source.nid }}">
 					<div class="col-md-3">
 						<div class="placeholder-img" v-if="travel._source.field_image" v-bind:style="{ 'background-image': 'url(' + travel._source.field_image[0].url.replace('files', 'files/styles/medium/public') + ')' }">
+
+							<!-- if more than 2 weeks old - 1209600 seconds -->
+							<div class="new-item" v-if="(Math.round((new Date()).getTime() / 1000) - travel._source.created) > 172800">NIEUW</div>
+
 							<div class="star-rating" v-if="travel._source.stars">
 								<i class="fa fa-star fa-lg" aria-hidden="true" v-for="star in travel._source.stars[0].value"></i>
 							</div><!-- /.star-rating -->
@@ -169,23 +177,21 @@
 			// perform the initial search
 			this.search();
 
-			// perform a search for a list of all unique countries
-			this.searchUniqueCountries();
+			// all filters with their singular and plural form
+			var filters = [
+				{ singular: 'country', plural: 'countries' },
+				{ singular: 'accommodation', plural: 'accommodations' },
+				{ singular: 'transportation', plural: 'transportations' },
+				{ singular: 'board', plural: 'boards' },
+				{ singular: 'duration', plural: 'durations' },
+			];
 
-			// perform a search for a list of all unique board types
-			this.searchUniqueBoards();
-
-			// perform a search for a list of all unique accommodation types
-			this.searchUniqueAccommodations();
+			filters.forEach(function(filter) {
+				this.searchUnique(filter.singular, filter.plural)
+			}.bind(this));
 
 			// perform a search for the lowest and highest vacation price
 			this.searchMinMax();
-
-			// perform a search for a list of all unique board types
-			this.searchUniqueDurations();
-
-			// perform a search for a list of all unique transportation types
-			this.searchUniqueTransportations();
 
 			// switch pages with left and right keypresses - bind the window scope to this object
 			window.onkeydown = function (e) {
@@ -533,97 +539,31 @@
 
 			/*
 			|--------------------------------------------------------------------------
-			| Aggregation query to get a list of all unique countries
+			| Aggregation query to get a list of all unique items per filter
 			|--------------------------------------------------------------------------
 			|
-			| Size is set to zero so we don't get a full hit, this results in much
-			| faster searches. With this query we get a unique value and the 
-			| amount of hits per unique value.
+			| Generalised function
 			|
 			*/
-		
-			searchUniqueCountries: function() {
-				this.client.search({
-					index: 'node',
-					type: 'vakantie',
-  					body: {
-						"size" : 0,
-					    "aggs" : { 
-					        "countries" : { 
-					            "terms" : { 
-					              "size" : 100,
-					              "field" : "country.value.raw"
-					            }
-					        }
-					    }
-					}
-				}).then(function (resp) {
-					// dispatch this data to the entry.js file
-					this.$dispatch('unique-countries', resp.aggregations.countries.buckets);
-				}.bind(this), function (err) {
-					console.trace(err.message);
-				});
-			},
 
-			/*
-			|--------------------------------------------------------------------------
-			| Aggregation query to get a list of all unique accommodations
-			|--------------------------------------------------------------------------
-			|
-			| Same as above
-			|
-			*/
-		
-			searchUniqueBoards: function() {
+			searchUnique: function(singular, plural) {
 				this.client.search({
 					index: 'node',
 					type: 'vakantie',
   					body: {
 						"size" : 0,
 					    "aggs" : { 
-					        "boards" : { 
+					        [plural] : { 
 					            "terms" : { 
 					              "size" : 100,
-					              "field" : "board_type.value.raw"
+					              "field" : singular + ".value.raw"
 					            }
 					        }
 					    }
 					}
 				}).then(function (resp) {
 					// dispatch this data to the entry.js file
-					this.$dispatch('unique-boards', resp.aggregations.boards.buckets);
-				}.bind(this), function (err) {
-					console.trace(err.message);
-				});
-			},
-
-			/*
-			|--------------------------------------------------------------------------
-			| Aggregation query to get a list of all unique accommodations
-			|--------------------------------------------------------------------------
-			|
-			| Same as above
-			|
-			*/
-		
-			searchUniqueAccommodations: function() {
-				this.client.search({
-					index: 'node',
-					type: 'vakantie',
-  					body: {
-						"size" : 0,
-					    "aggs" : { 
-					        "accommodations" : { 
-					            "terms" : { 
-					              "size" : 100,
-					              "field" : "accommodation.value.raw"
-					            }
-					        }
-					    }
-					}
-				}).then(function (resp) {
-					// dispatch this data to the entry.js file
-					this.$dispatch('unique-accommodations', resp.aggregations.accommodations.buckets);
+					this.$dispatch('unique-' + plural, resp.aggregations[plural].buckets);
 				}.bind(this), function (err) {
 					console.trace(err.message);
 				});
@@ -652,70 +592,6 @@
 				}).then(function (resp) {
 					// dispatch this data to the entry.js file
 					this.priceMinMax = resp.aggregations;
-				}.bind(this), function (err) {
-					console.trace(err.message);
-				});
-			},
-
-			/*
-			|--------------------------------------------------------------------------
-			| Aggregation query to get a list of all unique accommodations
-			|--------------------------------------------------------------------------
-			|
-			| Same as above
-			|
-			*/
-		
-			searchUniqueDurations: function() {
-				this.client.search({
-					index: 'node',
-					type: 'vakantie',
-  					body: {
-						"size" : 0,
-					    "aggs" : { 
-					        "durations" : { 
-					            "terms" : { 
-					              "size" : 100,
-					              "field" : "duration.value"
-					            }
-					        }
-					    }
-					}
-				}).then(function (resp) {
-					// dispatch this data to the entry.js file
-					this.$dispatch('unique-durations', resp.aggregations.durations.buckets);
-				}.bind(this), function (err) {
-					console.trace(err.message);
-				});
-			},
-
-			/*
-			|--------------------------------------------------------------------------
-			| Aggregation query to get a list of all unique transportation types
-			|--------------------------------------------------------------------------
-			|
-			| Same as above
-			|
-			*/
-		
-			searchUniqueTransportations: function() {
-				this.client.search({
-					index: 'node',
-					type: 'vakantie',
-  					body: {
-						"size" : 0,
-					    "aggs" : { 
-					        "transportations" : { 
-					            "terms" : { 
-					              "size" : 10,
-					              "field" : "transportation.value.raw"
-					            }
-					        }
-					    }
-					}
-				}).then(function (resp) {
-					// dispatch this data to the entry.js file
-					this.$dispatch('unique-transportations', resp.aggregations.transportations.buckets);
 				}.bind(this), function (err) {
 					console.trace(err.message);
 				});

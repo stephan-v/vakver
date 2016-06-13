@@ -347,6 +347,7 @@ Index page
   background-size: cover;
   position: relative;
   background-color: #83C8E4;
+  overflow: hidden;
 }
 .vacation-item .placeholder-img .star-rating {
   color: #F7CE45;
@@ -355,6 +356,17 @@ Index page
 .vacation-item .placeholder-img .star-rating .fa {
   margin-right: 5px;
   text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.3);
+}
+.vacation-item .placeholder-img .new-item {
+  position: absolute;
+  top: -15px;
+  right: -30px;
+  background: #9dd915;
+  color: white;
+  transform: rotate(45deg);
+  padding: 30px 25px 10px 25px;
+  font-weight: bold;
+  font-size: 10px;
 }
 .vacation-item .placeholder-img .pricing {
   background: #568DE8;
@@ -1079,12 +1091,23 @@ Labels, buttons, etc.
 ========================================================================== */
 .skewed-label {
   color: white;
-  background: #5B9DF4;
-  font-size: 30px;
-  padding: 15px 30px;
+  line-height: 0;
   transform: skewY(-3deg) translateY(-50%) translateX(-50%);
   top: 40%;
   text-align: center;
+}
+.skewed-label h1 {
+  padding: 15px 30px;
+  font-size: 30px;
+  margin: 0;
+  background: #5B9DF4;
+}
+.skewed-label h2 {
+  padding: 8px 20px;
+  font-size: 16px;
+  background: #9dd915;
+  margin: 0;
+  display: inline-block;
 }
 .agency-header .skewed-label {
   top: 45%;

@@ -89,7 +89,9 @@
     <?php print render($title_suffix); ?>
 
     <div class="agency-header">
-        <h1 class="absolute-center skewed-label"><?php print $title; ?></h1>
+        <div class="absolute-center skewed-label">
+            <h1><?php print $title; ?></h1>
+        </div>
     </div>
     <div class="container">
         <div class="content overlap"<?php print $content_attributes; ?>>
