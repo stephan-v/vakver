@@ -76,7 +76,7 @@ function _elastic_prepare_node($node) {
   // Add the board type field if exists
   $board_type_field = isset($node->field_board_type) ? field_get_items('node', $node, 'field_board_type') : false;
   if ($board_type_field) {
-    $params['body']['board_type'] = $board_type_field;
+    $params['body']['board'] = $board_type_field;
   }
 
   // Add the duration field if exists
