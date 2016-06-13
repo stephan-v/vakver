@@ -78,7 +78,7 @@
 					<div class="placeholder-img" v-if="travel._source.field_image" v-bind:style="{ 'background-image': 'url(' + travel._source.field_image[0].url.replace('files', 'files/styles/medium/public') + ')' }">
 
 						<!-- if more than 2 weeks old - 1209600 seconds -->
-						<div class="new-item" v-if="(Math.round((new Date()).getTime() / 1000) - travel._source.created) > 172800">NIEUW</div>
+						<div class="new-item" v-if="(Math.round((new Date()).getTime() / 1000) - travel._source.created) < 1209600">NIEUW</div>
 
 						<div class="star-rating" v-if="travel._source.stars">
 							<i class="fa fa-star fa-lg" aria-hidden="true" v-for="star in travel._source.stars[0].value"></i>
@@ -104,7 +104,7 @@
 						<div class="placeholder-img" v-if="travel._source.field_image" v-bind:style="{ 'background-image': 'url(' + travel._source.field_image[0].url.replace('files', 'files/styles/medium/public') + ')' }">
 
 							<!-- if more than 2 weeks old - 1209600 seconds -->
-							<div class="new-item" v-if="(Math.round((new Date()).getTime() / 1000) - travel._source.created) > 172800">NIEUW</div>
+							<div class="new-item" v-if="(Math.round((new Date()).getTime() / 1000) - travel._source.created) < 1209600">NIEUW</div>
 
 							<div class="star-rating" v-if="travel._source.stars">
 								<i class="fa fa-star fa-lg" aria-hidden="true" v-for="star in travel._source.stars[0].value"></i>

@@ -10,7 +10,7 @@
             <h1><?php print $title; ?></h1>
 
             <!-- if older than 2 weeks in seconds than show the nieuw label -->
-            <?php if((time() - $node->created) > 1209600): ?>
+            <?php if((time() - $node->created) < 1209600): ?>
                 <h2>NIEUW</h2>
             <?php endif; ?>
         </div>
