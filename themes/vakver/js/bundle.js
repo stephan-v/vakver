@@ -107,7 +107,7 @@ exports.default = {
 
 			// sortorder for filters
 			sortPopularityDesc: false
-		}, (0, _defineProperty3.default)(_ref, "sortRatingDesc", false), (0, _defineProperty3.default)(_ref, "sortPriceDesc", false), (0, _defineProperty3.default)(_ref, "hits", ''), _ref;
+		}, (0, _defineProperty3.default)(_ref, "sortRatingDesc", false), (0, _defineProperty3.default)(_ref, "sortPriceDesc", false), (0, _defineProperty3.default)(_ref, "hits", ''), (0, _defineProperty3.default)(_ref, "totalHits", 0), _ref;
 	},
 	events: {
 		// general filter functionality
@@ -300,6 +300,11 @@ exports.default = {
 
 				// total hits for the search
 				this.hits = resp.hits.total;
+
+				// set the totalHits only once(no binding)
+				if (this.totalHits === 0) {
+					this.totalHits = resp.hits.total;
+				}
 			}.bind(this), function (err) {
 				console.trace(err.message);
 			});

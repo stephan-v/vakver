@@ -1,7 +1,7 @@
 <div id="node-<?php print $node->nid; ?>" class="<?php print $classes; ?> clearfix"<?php print $attributes; ?>>
     <div class="header index-header" style="background-image: url(<?php print file_create_url($node->field_image['und'][0]['uri']); ?>)">
         <div class="absolute-center skewed-label">
-            <h1>Meer dan {{ Math.floor(this.$children[0].$data.hits / 100) * 100 }} vakanties</h1>
+            <h1>Meer dan {{ Math.floor(this.$children[0].$data.totalHits / 100) * 100 }} vakanties</h1>
         </div><!-- /.skewed-label -->
     </div><!-- /.header -->
 

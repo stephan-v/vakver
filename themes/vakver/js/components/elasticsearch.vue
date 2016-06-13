@@ -262,7 +262,9 @@
 				sortPriceDesc: false,
 
 				// total number of search hits
-				hits: ''
+				hits: '',
+
+				totalHits: 0
 			};
 		},
 		events: {
@@ -461,6 +463,11 @@
 
 					// total hits for the search
 					this.hits = resp.hits.total;
+
+					// set the totalHits only once(no binding)
+					if(this.totalHits === 0) {
+						this.totalHits = resp.hits.total;
+					}
 				}.bind(this), function (err) {
 					console.trace(err.message);
 				});
