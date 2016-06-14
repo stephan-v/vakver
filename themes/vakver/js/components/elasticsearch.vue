@@ -75,7 +75,8 @@
 		<div class="col-xs-6 col-lg-3" v-for="travel in row">
 			<div class="vacation-item">
 				<a href="/node/{{ travel._source.nid }}">
-					<div class="placeholder-img" v-if="travel._source.field_image" v-bind:style="{ 'background-image': 'url(' + travel._source.field_image[0].url.replace('files', 'files/styles/medium/public') + ')' }">
+					<div class="placeholder-img" v-if="travel._source.field_image_medium" 
+					v-bind:style="{ 'background-image': 'url(' + travel._source.field_image_medium[0].url + ')' }">
 
 						<!-- if more than 2 weeks old - 1209600 seconds -->
 						<div class="new-item" v-if="(Math.round((new Date()).getTime() / 1000) - travel._source.created) < 1209600">NIEUW</div>
@@ -101,7 +102,8 @@
 			<div class="vacation-item">
 				<a href="/node/{{ travel._source.nid }}">
 					<div class="col-md-3">
-						<div class="placeholder-img" v-if="travel._source.field_image" v-bind:style="{ 'background-image': 'url(' + travel._source.field_image[0].url.replace('files', 'files/styles/medium/public') + ')' }">
+						<div class="placeholder-img" v-if="travel._source.field_image_medium" 
+						v-bind:style="{ 'background-image': 'url(' + travel._source.field_image_medium[0].url + ')' }">
 
 							<!-- if more than 2 weeks old - 1209600 seconds -->
 							<div class="new-item" v-if="(Math.round((new Date()).getTime() / 1000) - travel._source.created) < 1209600">NIEUW</div>

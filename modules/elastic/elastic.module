@@ -119,6 +119,12 @@ function _elastic_prepare_node($node) {
       $img->url = file_create_url($img->uri);
       return $img;
     }, $image_field);
+
+    $params['body']['field_image_medium'] = array_map(function($img) {
+      $img = file_load($img['fid']);
+      $img->url = image_style_url('medium', $img->uri);
+      return $img;
+    }, $image_field);
   }
 
   return $params;
