@@ -904,7 +904,7 @@ Reisaanbieder overzichtspagina
 /* ==========================================================================
 Filter overzichtspagina
 ========================================================================== */
-.filter-overzicht .heading {
+.overview-heading {
   font-family: Oxygen;
   margin: 60px 0 30px 0;
   text-align: center;
@@ -1112,6 +1112,9 @@ Labels, buttons, etc.
   background: #9dd915;
   margin: 0;
   display: inline-block;
+}
+.index-header .skewed-label {
+  top: 50%;
 }
 .agency-header .skewed-label {
   top: 45%;

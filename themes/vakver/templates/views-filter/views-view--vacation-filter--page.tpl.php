@@ -55,7 +55,7 @@
     <div class="view-content">
       <div class="container filter-overzicht">
         <div class="col-md-12 text-center">
-          <h2 class="heading">Reizen - <?php print arg(1); ?></h2>
+          <h1 class="overview-heading">Reizen - <?php print arg(1); ?></h1>
         </div><!-- /.col-md-12 -->
         <?php print $rows; ?>
       </div><!-- /.container -->

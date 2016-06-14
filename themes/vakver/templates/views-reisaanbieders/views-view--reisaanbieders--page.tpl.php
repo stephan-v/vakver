@@ -55,7 +55,7 @@
     <div class="view-content">
       <div class="container reisaanbieders-overzicht">
         <div class="col-md-12 text-center">
-          <h2>Reisaanbieders</h2>
+          <h1 class="overview-heading">Reisaanbieders</h1>
         </div><!-- /.col-md-12 -->
         <?php print $rows; ?>
       </div><!-- /.container -->
