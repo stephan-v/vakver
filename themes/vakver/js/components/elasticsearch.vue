@@ -34,14 +34,14 @@
                 <ul class="list-inline">
                     <li class="bold">SORTEER OP</li>
 
-                    <li>
+         <!--            <li>
                         <i class="fa fa-times-circle fa-lg" aria-hidden="true" v-if="sortPopularity" v-on:click="removeSort('popularity')"></i>
 
                         <div class="toggle-sort" v-on:click.prevent="sort('popularity')" v-bind:class="{'active' : sortPopularity }">
                             <span>POPULARITEIT</span>
                             <i class="fa fa-sort-desc fa-lg" aria-hidden="true" v-if="sortPopularity"></i>
-                        </div><!-- /.toggle-sort -->
-                    </li>
+                        </div>
+                    </li> -->
 
                     <li>
                         <i class="fa fa-times-circle fa-lg" aria-hidden="true" v-if="sortPrice" v-on:click="removeSort('price')"></i>
