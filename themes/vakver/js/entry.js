@@ -87,13 +87,23 @@ $(document).ready(function() {
 				}
 			},
 			'unique-countries': function(countries) {
+				// find and replace lange landnamen
 				this.countries = countries;
+
+				// only launch readmore functionality after data has finished loading
+				this.finishRender();
 			},
 			'unique-accommodations': function(accommodations) {
 				this.accommodations = accommodations;
+
+				// only launch readmore functionality after data has finished loading
+				this.finishRender();
 			},
 			'unique-transportations': function(transportations) {
 				this.transportations = transportations;
+
+				// only launch readmore functionality after data has finished loading
+				this.finishRender();
 			},
 			'unique-boards': function(boards) {
 				// remove these elements from the array and filter sidebar - needs to be extremely specific with caps
@@ -113,9 +123,15 @@ $(document).ready(function() {
 				}
 
 				this.boards = boards;
+
+				// only launch readmore functionality after data has finished loading
+				this.finishRender();
 			},
 			'unique-durations': function(durations) {
 				this.durations = durations;
+
+				// only launch readmore functionality after data has finished loading
+				this.finishRender();
 			}
 		},
 		methods: {
@@ -145,7 +161,6 @@ $(document).ready(function() {
 				// broadcast the event to the child component listener
 				this.$broadcast('filterListener', this[whatToFilter], plural);
 			},
-
 			search: function(event) {
 				// redirect if we get a query on this method call while we are not on the homepage
 				if(this.query && window.location.pathname != "/" ) {
@@ -161,6 +176,27 @@ $(document).ready(function() {
 					// focus on the main search input
 					$(".elasticsearch-input").focus();
 				}
+			},
+
+			/*
+			|--------------------------------------------------------------------------
+			| Waits for data to finish loading before executing whatever is in here
+			|--------------------------------------------------------------------------
+			|
+			| This is required so the height for a sidebar filter is set first
+			| Otherwise the readmore functionality won't work properly.
+			|
+			*/
+
+			finishRender: function() {
+				Vue.nextTick(function(){
+				    $('.filter .readmore').readmore({
+						moreLink: '<a href="#" class="show-more">Toon alles</a>',
+						lessLink: '<a href="#" class="show-more">Toon minder</a>',
+						collapsedHeight: 90,
+						speed: 1000
+					});
+				});
 			}
 		}
 	})

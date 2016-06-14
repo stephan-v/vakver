@@ -1,7 +1,7 @@
 <template>
 	<div class="weather" v-if="currentTemp">
 		<div class="current-weather">
-			<h1>{{ currentTemp }}&deg;</h1>
+			<div class="main-temp">{{ currentTemp }}&deg;</div>
 		</div><!-- /.current-weather -->
 		<ul class="forecast">
 			<li v-for="forecast in dailyForecast">

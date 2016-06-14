@@ -739,6 +739,10 @@ Vakantie pagina(single)
   margin-top: 30px;
   font-family: Oxygen;
 }
+.node-type-vakantie .weather .main-temp {
+  font-size: 48px;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
 .node-type-vakantie .weather .current-weather {
   border-radius: 5px 5px 0 0;
   background: #FFCA5C;

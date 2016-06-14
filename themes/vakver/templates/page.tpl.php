@@ -90,10 +90,10 @@
 					<div class="col-md-4 contact">
 						<h3>Contact</h3>
 						<p>Heeft u vragen of opmerkingen? U kunt contact met ons opnemen <a href="/contact">via dit contactformulier.</a></p>
-						<a href="#" class="social-link">
+						<a href="https://twitter.com/vak_ver" target="_blank" class="social-link">
 							<i class="fa fa-twitter-square fa-2x" aria-hidden="true"></i>
 						</a>
-						<a href="#" class="social-link">
+						<a href="https://www.facebook.com/vakver/" target="_blank" class="social-link">
 							<i class="fa fa-facebook-square fa-2x" aria-hidden="true"></i>
 						</a>
 					</div><!-- /.col-md-4 -->

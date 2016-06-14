@@ -30,16 +30,6 @@
 		Readmore functionality
 		========================================================================== */
 
-		// sloppy hotfix
-		setTimeout(function() {
-			$('.filter .readmore').readmore({
-				moreLink: '<a href="#" class="show-more">Toon alles</a>',
-				lessLink: '<a href="#" class="show-more">Toon minder</a>',
-				collapsedHeight: 90,
-				speed: 1000
-			});
-		}, 500);
-
 		// without timeout
 		$('.agency-content .readmore').readmore({
 			moreLink: '<a href="#" class="show-more">a</a>',

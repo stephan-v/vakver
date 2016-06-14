@@ -83,7 +83,7 @@
 
                 <div class="readmore">
                     <ul>
-                        <div class="filter-item" v-for="duration in durations.slice().reverse()">
+                        <div class="filter-item" v-for="duration in durations">
                             <li v-on:click="filter(duration.key, 'duration', 'durations')" v-bind:class="{ 'active': durationsToFilter.indexOf(duration.key) > -1 }">{{ duration.key | capitalize }} dagen</li>
                             <span class="filter-count">{{ duration.doc_count }}</span>
                         </div><!-- /.filter-item -->
