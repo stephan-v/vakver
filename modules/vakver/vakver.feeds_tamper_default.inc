@@ -167,6 +167,37 @@ function vakver_feeds_tamper_default() {
   $feeds_tamper = new stdClass();
   $feeds_tamper->disabled = FALSE; /* Edit this to true to make a default feeds_tamper disabled initially */
   $feeds_tamper->api_version = 2;
+  $feeds_tamper->id = 'd_reizen-minimum_price-feeds_tamper_conditional';
+  $feeds_tamper->importer = 'd_reizen';
+  $feeds_tamper->source = 'minimum_price';
+  $feeds_tamper->plugin_id = 'feeds_tamper_conditional';
+  $feeds_tamper->settings = array(
+    'conditional_field' => 'minimum_price',
+    'operator' => 'less_equal',
+    'value' => '2500',
+  );
+  $feeds_tamper->weight = 0;
+  $feeds_tamper->description = 'Conditional';
+  $export['d_reizen-minimum_price-feeds_tamper_conditional'] = $feeds_tamper;
+
+  $feeds_tamper = new stdClass();
+  $feeds_tamper->disabled = FALSE; /* Edit this to true to make a default feeds_tamper disabled initially */
+  $feeds_tamper->api_version = 2;
+  $feeds_tamper->id = 'd_reizen-minimum_price-required';
+  $feeds_tamper->importer = 'd_reizen';
+  $feeds_tamper->source = 'minimum_price';
+  $feeds_tamper->plugin_id = 'required';
+  $feeds_tamper->settings = array(
+    'invert' => 0,
+    'log' => 0,
+  );
+  $feeds_tamper->weight = 1;
+  $feeds_tamper->description = 'Verplicht veld';
+  $export['d_reizen-minimum_price-required'] = $feeds_tamper;
+
+  $feeds_tamper = new stdClass();
+  $feeds_tamper->disabled = FALSE; /* Edit this to true to make a default feeds_tamper disabled initially */
+  $feeds_tamper->api_version = 2;
   $feeds_tamper->id = 'd_reizen-transportation_type-find_replace';
   $feeds_tamper->importer = 'd_reizen';
   $feeds_tamper->source = 'transportation_type';
@@ -361,6 +392,37 @@ function vakver_feeds_tamper_default() {
   $feeds_tamper = new stdClass();
   $feeds_tamper->disabled = FALSE; /* Edit this to true to make a default feeds_tamper disabled initially */
   $feeds_tamper->api_version = 2;
+  $feeds_tamper->id = 'd_reizen2-minimum_price-feeds_tamper_conditional';
+  $feeds_tamper->importer = 'd_reizen2';
+  $feeds_tamper->source = 'minimum_price';
+  $feeds_tamper->plugin_id = 'feeds_tamper_conditional';
+  $feeds_tamper->settings = array(
+    'conditional_field' => 'minimum_price',
+    'operator' => 'less_equal',
+    'value' => '2500',
+  );
+  $feeds_tamper->weight = 0;
+  $feeds_tamper->description = 'Conditional';
+  $export['d_reizen2-minimum_price-feeds_tamper_conditional'] = $feeds_tamper;
+
+  $feeds_tamper = new stdClass();
+  $feeds_tamper->disabled = FALSE; /* Edit this to true to make a default feeds_tamper disabled initially */
+  $feeds_tamper->api_version = 2;
+  $feeds_tamper->id = 'd_reizen2-minimum_price-required';
+  $feeds_tamper->importer = 'd_reizen2';
+  $feeds_tamper->source = 'minimum_price';
+  $feeds_tamper->plugin_id = 'required';
+  $feeds_tamper->settings = array(
+    'invert' => 0,
+    'log' => 0,
+  );
+  $feeds_tamper->weight = 1;
+  $feeds_tamper->description = 'Verplicht veld';
+  $export['d_reizen2-minimum_price-required'] = $feeds_tamper;
+
+  $feeds_tamper = new stdClass();
+  $feeds_tamper->disabled = FALSE; /* Edit this to true to make a default feeds_tamper disabled initially */
+  $feeds_tamper->api_version = 2;
   $feeds_tamper->id = 'd_reizen2-transportation_type-find_replace';
   $feeds_tamper->importer = 'd_reizen2';
   $feeds_tamper->source = 'transportation_type';
@@ -473,6 +535,37 @@ function vakver_feeds_tamper_default() {
   $feeds_tamper->weight = 0;
   $feeds_tamper->description = 'Convert case';
   $export['elizawashere-lodgement-convert_case'] = $feeds_tamper;
+
+  $feeds_tamper = new stdClass();
+  $feeds_tamper->disabled = FALSE; /* Edit this to true to make a default feeds_tamper disabled initially */
+  $feeds_tamper->api_version = 2;
+  $feeds_tamper->id = 'elizawashere-price-feeds_tamper_conditional';
+  $feeds_tamper->importer = 'elizawashere';
+  $feeds_tamper->source = 'price';
+  $feeds_tamper->plugin_id = 'feeds_tamper_conditional';
+  $feeds_tamper->settings = array(
+    'conditional_field' => 'price',
+    'operator' => 'less_equal',
+    'value' => '2500',
+  );
+  $feeds_tamper->weight = 0;
+  $feeds_tamper->description = 'Conditional';
+  $export['elizawashere-price-feeds_tamper_conditional'] = $feeds_tamper;
+
+  $feeds_tamper = new stdClass();
+  $feeds_tamper->disabled = FALSE; /* Edit this to true to make a default feeds_tamper disabled initially */
+  $feeds_tamper->api_version = 2;
+  $feeds_tamper->id = 'elizawashere-price-required';
+  $feeds_tamper->importer = 'elizawashere';
+  $feeds_tamper->source = 'price';
+  $feeds_tamper->plugin_id = 'required';
+  $feeds_tamper->settings = array(
+    'invert' => 0,
+    'log' => 0,
+  );
+  $feeds_tamper->weight = 1;
+  $feeds_tamper->description = 'Verplicht veld';
+  $export['elizawashere-price-required'] = $feeds_tamper;
 
   $feeds_tamper = new stdClass();
   $feeds_tamper->disabled = FALSE; /* Edit this to true to make a default feeds_tamper disabled initially */
@@ -685,6 +778,37 @@ function vakver_feeds_tamper_default() {
   $feeds_tamper->weight = 2;
   $feeds_tamper->description = 'Verplicht veld';
   $export['tjingo-img_medium-required'] = $feeds_tamper;
+
+  $feeds_tamper = new stdClass();
+  $feeds_tamper->disabled = FALSE; /* Edit this to true to make a default feeds_tamper disabled initially */
+  $feeds_tamper->api_version = 2;
+  $feeds_tamper->id = 'tjingo-minimum_price-feeds_tamper_conditional';
+  $feeds_tamper->importer = 'tjingo';
+  $feeds_tamper->source = 'minimum_price';
+  $feeds_tamper->plugin_id = 'feeds_tamper_conditional';
+  $feeds_tamper->settings = array(
+    'conditional_field' => 'minimum_price',
+    'operator' => 'less_equal',
+    'value' => '2500',
+  );
+  $feeds_tamper->weight = 0;
+  $feeds_tamper->description = 'Conditional';
+  $export['tjingo-minimum_price-feeds_tamper_conditional'] = $feeds_tamper;
+
+  $feeds_tamper = new stdClass();
+  $feeds_tamper->disabled = FALSE; /* Edit this to true to make a default feeds_tamper disabled initially */
+  $feeds_tamper->api_version = 2;
+  $feeds_tamper->id = 'tjingo-minimum_price-required';
+  $feeds_tamper->importer = 'tjingo';
+  $feeds_tamper->source = 'minimum_price';
+  $feeds_tamper->plugin_id = 'required';
+  $feeds_tamper->settings = array(
+    'invert' => 0,
+    'log' => 0,
+  );
+  $feeds_tamper->weight = 1;
+  $feeds_tamper->description = 'Verplicht veld';
+  $export['tjingo-minimum_price-required'] = $feeds_tamper;
 
   return $export;
 }

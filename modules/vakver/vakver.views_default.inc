@@ -45,7 +45,7 @@ function vakver_views_default_views() {
   $handler->display->display_options['fields']['title']['label'] = '';
   $handler->display->display_options['fields']['title']['alter']['word_boundary'] = FALSE;
   $handler->display->display_options['fields']['title']['alter']['ellipsis'] = FALSE;
-  /* Veld: Inhoud: Image */
+  /* Veld: Inhoud: Afbeelding */
   $handler->display->display_options['fields']['field_image']['id'] = 'field_image';
   $handler->display->display_options['fields']['field_image']['table'] = 'field_data_field_image';
   $handler->display->display_options['fields']['field_image']['field'] = 'field_image';
@@ -102,7 +102,7 @@ function vakver_views_default_views() {
   $handler->display->display_options['filters']['type']['value'] = array(
     'vakantie' => 'vakantie',
   );
-  /* Filtercriterium: Inhoud: Image (field_image:fid) */
+  /* Filtercriterium: Inhoud: Afbeelding (field_image:fid) */
   $handler->display->display_options['filters']['field_image_fid']['id'] = 'field_image_fid';
   $handler->display->display_options['filters']['field_image_fid']['table'] = 'field_data_field_image';
   $handler->display->display_options['filters']['field_image_fid']['field'] = 'field_image_fid';
