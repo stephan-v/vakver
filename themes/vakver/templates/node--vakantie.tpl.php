@@ -118,7 +118,7 @@
                             </ul>
                         </div><!-- /.extra-info -->
 
-                        <a href="<?php print $field_url[0]['url']; ?>" class="call-to-action book-now" target="_blank">Boek nu</a><!-- /.call-to-action -->
+                        <a href="<?php print $field_url[0]['url']; ?>" class="call-to-action book-now" target="_blank">Vakantie bekijken</a><!-- /.call-to-action -->
                     </div><!-- /.vacation -->
                 </div><!-- /.col-md-9 -->
 
@@ -133,7 +133,7 @@
 
                         <div class="col-sm-6 col-md-12">
                             <a href="<?php print $field_url[0]['url']; ?>" class="call-to-action" target="_blank">
-                                <div class="inner">Reis boeken<i class="fa fa-plane fa-lg" aria-hidden="true"></i></div><!-- /.inner -->
+                                <div class="inner">Vakantie bekijken<i class="fa fa-plane fa-lg" aria-hidden="true"></i></div><!-- /.inner -->
                                 <div class="circle"><i class="fa fa-arrow-right fa-lg" aria-hidden="true"></i></div><!-- /.circle -->
                             </a><!-- /.call-to-action -->
                         </div><!-- /.col-xs-6 -->

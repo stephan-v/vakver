@@ -46,8 +46,7 @@ function vakver_feeds_importer_default() {
           0 => array(
             'source' => 'title',
             'target' => 'title',
-            'unique' => FALSE,
-            'language' => 'und',
+            'unique' => 1,
           ),
           1 => array(
             'source' => 'description',
@@ -131,6 +130,7 @@ function vakver_feeds_importer_default() {
             'source' => 'transportation_type',
             'target' => 'field_transportation',
             'unique' => FALSE,
+            'language' => 'und',
           ),
         ),
         'insert_new' => '1',
@@ -187,8 +187,7 @@ function vakver_feeds_importer_default() {
           0 => array(
             'source' => 'title',
             'target' => 'title',
-            'unique' => FALSE,
-            'language' => 'und',
+            'unique' => 1,
           ),
           1 => array(
             'source' => 'description',
@@ -272,6 +271,7 @@ function vakver_feeds_importer_default() {
             'source' => 'transportation_type',
             'target' => 'field_transportation',
             'unique' => FALSE,
+            'language' => 'und',
           ),
         ),
         'insert_new' => '1',
@@ -328,8 +328,7 @@ function vakver_feeds_importer_default() {
           0 => array(
             'source' => 'name',
             'target' => 'title',
-            'unique' => FALSE,
-            'language' => 'und',
+            'unique' => 1,
           ),
           1 => array(
             'source' => 'price',
@@ -401,6 +400,7 @@ function vakver_feeds_importer_default() {
             'source' => 'transportation_type',
             'target' => 'field_transportation',
             'unique' => FALSE,
+            'language' => 'und',
           ),
         ),
         'insert_new' => '1',
@@ -457,8 +457,7 @@ function vakver_feeds_importer_default() {
           0 => array(
             'source' => 'title',
             'target' => 'title',
-            'unique' => FALSE,
-            'language' => 'und',
+            'unique' => 1,
           ),
           1 => array(
             'source' => 'link',
@@ -536,6 +535,7 @@ function vakver_feeds_importer_default() {
             'source' => 'accommodation_type',
             'target' => 'field_accommodation',
             'unique' => FALSE,
+            'language' => 'und',
           ),
         ),
         'insert_new' => '1',
