@@ -621,6 +621,12 @@ $(document).ready(function() {
 				}
 			},
 			'unique-countries': function(countries) {
+				for(var i = 0, len = countries.length; i < len; i++) {
+					if(countries[i].key === 'Verenigde Arabische Emiraten') {
+						countries[i].key = 'Ver. Arabische Emiraten';
+					}
+				}
+
 				// find and replace lange landnamen
 				this.countries = countries;
 
@@ -642,7 +648,7 @@ $(document).ready(function() {
 			'unique-boards': function(boards) {
 				// remove these elements from the array and filter sidebar - needs to be extremely specific with caps
 				for (var i = 0, len = boards.length; i < len; i++) {
-					if(boards[i].key == "volgens beschrijving") {
+					if(boards[i].key === "volgens beschrijving") {
 				        boards.splice(i, 1);
 				        break;
 				    }
@@ -650,7 +656,7 @@ $(document).ready(function() {
 
 				// remove these elements from the array and filter sidebar - needs to be extremely specific with caps
 				for (var i = 0, len = boards.length; i < len; i++) {
-					if(boards[i].key == "Lookup_VERZORGING_T_1") {
+					if(boards[i].key === "Lookup_VERZORGING_T_1") {
 				        boards.splice(i, 1);
 				        break;
 				    }
