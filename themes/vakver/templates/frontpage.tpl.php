@@ -30,8 +30,15 @@
 
                 <div class="readmore">
                     <ul>
-                        <!-- custom block voor vakanties die bovenaan moeten komen te staan - landnaam moet met hoofdletter -->
-                        <li v-on:click="filter('Spanje', 'country', 'countries')" v-bind:class="{ 'active': countriesToFilter.indexOf('Spanje') > -1 }">Spanje</li>
+                        <!-- custom block voor vakanties die bovenaan moeten komen te staan -->
+                        <div class="filter-item" v-for="country in customCountries">
+                            <li v-on:click="filter(country.key, 'country', 'countries')" v-bind:class="{ 'active': countriesToFilter.indexOf(country.key) > -1 }">
+                                {{ country.key | capitalize }}
+                            </li>
+                            <span class="filter-count">{{ country.doc_count }}</span>
+                        </div><!-- /.filter-item -->
+
+                        <hr>
 
                         <div class="filter-item" v-for="country in countries | orderBy 'key'">
                             <li v-on:click="filter(country.key, 'country', 'countries')" v-bind:class="{ 'active': countriesToFilter.indexOf(country.key) > -1 }">

@@ -570,6 +570,9 @@ $(document).ready(function() {
 			// array of unique countries to build a sidebar list
 			countries: [],
 
+			// set of countries display first
+			customCountries: [],
+
 			// array of countries to filter(sent to the child component)
 			countriesToFilter: [],
 
@@ -627,6 +630,11 @@ $(document).ready(function() {
 						countries[i].key = 'Ver. Arabische Emiraten';
 					}
 				}
+
+				// custom countries that sit at the top of the filter
+				this.customCountries = countries.filter(function(country) {
+				    return ["Spanje","Griekenland", "Italië", "Turkije", "Frankrijk"].indexOf(country.key) != -1
+				});
 
 				// find and replace lange landnamen
 				this.countries = countries;
