@@ -621,6 +621,7 @@ $(document).ready(function() {
 				}
 			},
 			'unique-countries': function(countries) {
+				// shorten this name since it's too long for the sidebar
 				for(var i = 0, len = countries.length; i < len; i++) {
 					if(countries[i].key === 'Verenigde Arabische Emiraten') {
 						countries[i].key = 'Ver. Arabische Emiraten';
