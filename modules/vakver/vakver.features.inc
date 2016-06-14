@@ -43,7 +43,6 @@ function vakver_image_default_styles() {
         'name' => 'canvasactions_blur',
         'data' => array(
           'intensity' => 10,
-          '#imageinfo_cache_effect_callback' => 'canvasactions_blur_effect',
         ),
         'weight' => 1,
       ),
