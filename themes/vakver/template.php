@@ -27,3 +27,7 @@ function vakver_preprocess_node(&$vars) {
     $vars['theme_hook_suggestions'][] = 'node__' . $vars['node']->nid . '__teaser';
   }
 }
+
+function vakver_preprocess_page(&$variables) {
+  drupal_add_js('jQuery.extend(Drupal.settings, { "pathToTheme": "' . file_create_url(path_to_theme()) . '" });', 'inline');
+}

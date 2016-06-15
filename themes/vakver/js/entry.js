@@ -1,5 +1,6 @@
 var Vue 			= require('vue');
 var Vuex 			= require('vuex');
+var lazyload 		= require('vue-lazyload');
 var Elasticsearch 	= require('./components/elasticsearch.vue')
 var WeatherAPI 		= require('./components/weatherapi.vue')
 
@@ -12,6 +13,11 @@ global.moment 		= moment;
 Vue.use(require('vue-resource'));
 Vue.use(require('vue-chunk'));
 Vue.use(Vuex);
+Vue.use(lazyload, {
+  error: 'dist/error.png',
+  loading: Drupal.settings.pathToTheme + '/img/ripple.gif',
+  try: 3 // default 1 
+});
 
 Vue.config.debug = true;
 

@@ -1,5 +1,5 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-var __vueify_style__ = require("vueify-insert-css").insert("\n.highlight {\n\tcolor: #74AF2A;\n\tfont-weight: bold;\n}\n")
+var __vueify_style__ = require("vueify-insert-css").insert("\n.highlight {\n\tcolor: #74AF2A;\n\tfont-weight: bold;\n}\n.placeholder-img[lazy=loading] {\n\tbackground-size: 50px;\n\tbackground-position: 50%;\n\tbackground-repeat: no-repeat;    \n}\n")
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -457,14 +457,14 @@ exports.default = {
 	}
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n\t<div class=\"row main-search-wrapper\">\n        <div class=\"col-md-6 col-md-offset-3\">\n            <i class=\"fa fa-search fa-2x\" aria-hidden=\"true\"></i>\n            <!-- add: debounce=\"500\" for a 500ms delay -->\n            <input type=\"text\" placeholder=\"Zoek op naam, land, stad of regio\" v-on:keyup=\"search\" v-model=\"query\" class=\"elasticsearch-input\">\n        </div><!-- /.col-md-6 -->\n\n        <div class=\"col-md-3 view-options\">\n            <i class=\"fa fa-bars fa-2x\" aria-hidden=\"true\" v-bind:class=\"{ 'active': !toggleView}\" v-on:click=\"toggleView = false\"></i>\n            <i class=\"fa fa-th-large fa-2x\" aria-hidden=\"true\" v-bind:class=\"{ 'active': toggleView}\" v-on:click=\"toggleView = true\"></i>\n        </div><!-- /.col-md-3 -->\n    </div><!-- /.row -->\n\n     <div class=\"sort-bar\" id=\"main-search\">\n        <div class=\"row\">\n        \t<div class=\"col-sm-4\">\n                <ul class=\"list-inline\">\n                    <li v-if=\"hits > 1 || hits == 0\">{{ hits }} vakanties gevonden</li>\n                    <li v-else=\"\">{{ hits }} vakantie gevonden</li>\n                    <i class=\"fa fa-filter\" aria-hidden=\"true\"></i>\n                </ul>\n            </div><!-- /.col-sm-4 -->\n\n            <div class=\"col-sm-8 text-right\">\n                <ul class=\"list-inline\">\n                    <li class=\"bold\">SORTEER OP</li>\n\n         <!--            <li>\n                        <i class=\"fa fa-times-circle fa-lg\" aria-hidden=\"true\" v-if=\"sortPopularity\" v-on:click=\"removeSort('popularity')\"></i>\n\n                        <div class=\"toggle-sort\" v-on:click.prevent=\"sort('popularity')\" v-bind:class=\"{'active' : sortPopularity }\">\n                            <span>POPULARITEIT</span>\n                            <i class=\"fa fa-sort-desc fa-lg\" aria-hidden=\"true\" v-if=\"sortPopularity\"></i>\n                        </div>\n                    </li> -->\n\n                    <li>\n                        <i class=\"fa fa-times-circle fa-lg\" aria-hidden=\"true\" v-if=\"sortPrice\" v-on:click=\"removeSort('price')\"></i>\n\n                        <div class=\"toggle-sort\" v-on:click.prevent=\"sort('price')\" v-bind:class=\"{'active' : sortPrice }\">\n                            <span>PRIJS</span>\n                            <span v-if=\"sortPrice\">\n                                <i class=\"fa fa-sort-desc fa-lg\" aria-hidden=\"true\" v-if=\"sortPriceDesc\"></i>\n                                <i class=\"fa fa-sort-asc fa-lg\" aria-hidden=\"true\" v-else=\"\"></i>\n                            </span>\n                        </div><!-- /.toggle-sort -->\n                    </li>\n\n                    <li>\n                        <i class=\"fa fa-times-circle fa-lg\" aria-hidden=\"true\" v-if=\"sortRating\" v-on:click=\"removeSort('rating')\"></i>\n\n                        <div class=\"toggle-sort\" v-on:click.prevent=\"sort('rating')\" v-bind:class=\"{'active' : sortRating }\">\n                            <span>STERREN</span>\n                            <span v-if=\"sortRating\">\n                                <i class=\"fa fa-sort-desc fa-lg\" aria-hidden=\"true\" v-if=\"sortRatingDesc\"></i>\n                                <i class=\"fa fa-sort-asc fa-lg\" aria-hidden=\"true\" v-else=\"\"></i>\n                            </span>\n                        </div><!-- /.toggle-sort -->\n                    </li>\n                </ul><!-- /.list-inline -->\n            </div><!-- /.col-sm-8 -->\n        </div><!-- /.row -->\n    </div><!-- /.sort-bar -->\n\n\t<div v-if=\"toggleView\" class=\"row\" v-for=\"row in travels | chunk 4\">\n\t\t<div class=\"col-xs-6 col-lg-3\" v-for=\"travel in row\">\n\t\t\t<div class=\"vacation-item\">\n\t\t\t\t<a href=\"/node/{{ travel._source.nid }}\">\n\t\t\t\t\t<div class=\"placeholder-img\" v-if=\"travel._source.field_image_medium\" v-bind:style=\"{ 'background-image': 'url(' + travel._source.field_image_medium[0].url + ')' }\">\n\n\t\t\t\t\t\t<!-- if more than 2 weeks old - 1209600 seconds -->\n\t\t\t\t\t\t<div class=\"new-item\" v-if=\"(Math.round((new Date()).getTime() / 1000) - travel._source.created) < 1209600\">NIEUW</div>\n\n\t\t\t\t\t\t<div class=\"star-rating\" v-if=\"travel._source.stars\">\n\t\t\t\t\t\t\t<i class=\"fa fa-star fa-lg\" aria-hidden=\"true\" v-for=\"star in travel._source.stars[0].value\"></i>\n\t\t\t\t\t\t</div><!-- /.star-rating -->\n\t\t\t\t\t\t<div class=\"pricing\">€ {{ Math.floor(travel._source.price[0].value) }}</div><!-- /.pricing -->\n\t\t\t\t\t</div><!-- /.placeholder-img -->\n\n\t\t\t\t\t<div class=\"content\">\n\t\t\t\t\t\t<h2 v-if=\"travel.highlight\">{{{ travel.highlight.title }}}</h2>\n\t\t\t\t\t\t<h2 v-else=\"\">{{{ travel._source.title }}}</h2>\n\t\t\t\t\t\t<p>{{ travel._source.body[0].value.substring(0, 85) }}...</p>\n\t\t\t\t\t</div><!-- /.content -->\n\t\t\t\t</a>\n\t\t\t</div><!-- /.vacation-item -->\n\t\t</div><!-- /.col-md-3 -->\n\t</div><!-- /.row -->\n\n\t<div v-if=\"!toggleView\" class=\"row list-view\" v-for=\"travel in travels\">\n\t\t<div class=\"col-md-10 col-md-offset-1\">\n\t\t\t<div class=\"vacation-item\">\n\t\t\t\t<a href=\"/node/{{ travel._source.nid }}\">\n\t\t\t\t\t<div class=\"col-md-3\">\n\t\t\t\t\t\t<div class=\"placeholder-img\" v-if=\"travel._source.field_image_medium\" v-bind:style=\"{ 'background-image': 'url(' + travel._source.field_image_medium[0].url + ')' }\">\n\n\t\t\t\t\t\t\t<!-- if more than 2 weeks old - 1209600 seconds -->\n\t\t\t\t\t\t\t<div class=\"new-item\" v-if=\"(Math.round((new Date()).getTime() / 1000) - travel._source.created) < 1209600\">NIEUW</div>\n\n\t\t\t\t\t\t\t<div class=\"star-rating\" v-if=\"travel._source.stars\">\n\t\t\t\t\t\t\t\t<i class=\"fa fa-star fa-lg\" aria-hidden=\"true\" v-for=\"star in travel._source.stars[0].value\"></i>\n\t\t\t\t\t\t\t</div><!-- /.star-rating -->\n\t\t\t\t\t\t\t<div class=\"pricing\">€ {{ Math.floor(travel._source.price[0].value) }}</div><!-- /.pricing -->\n\t\t\t\t\t\t</div><!-- /.placeholder-img -->\n\t\t\t\t\t</div><!-- /.col-md-3 -->\n\n\t\t\t\t\t<div class=\"col-md-9\">\n\t\t\t\t\t\t<div class=\"content\">\n\t\t\t\t\t\t\t<h2 v-if=\"travel.highlight\">{{{ travel.highlight.title }}}</h2>\n\t\t\t\t\t\t\t<h2 v-else=\"\">{{{ travel._source.title }}}</h2>\n\t\t\t\t\t\t\t<p>{{ travel._source.body[0].value.substring(0, 85) }}...</p>\n\t\t\t\t\t\t</div><!-- /.content -->\n\t\t\t\t\t</div><!-- /.col-md-9 -->\n\t\t\t\t</a></div><!-- /.vacation-item --><a href=\"/node/{{ travel._source.nid }}\">\n\t\t\t</a>\n\t\t</div><!-- /.col-md-3 -->\n\t</div><!-- /.row -->\n\n\t<div class=\"row\" v-if=\"this.travels == 0\">\n\t\t<div class=\"col-md-6 col-md-offset-3 text-center no-results\">\n\t\t\t<h2>We hebben helaas geen resultaten kunnen vinden binnen deze zoekcriteria. Probeer het nog eens.</h2>\n\t\t</div><!-- /.col-md-6 -->\n\t</div><!-- /.row -->\n\n\t<div class=\"row\">\n\t\t<nav class=\"text-center\">\n\t\t\t<ul class=\"pagination\">\n\t\t\t\t<li>\n\t\t\t\t\t<a href=\"#\" aria-label=\"Previous\" v-on:click.prevent=\"prevPage()\">\n\t\t\t\t\t\t<span aria-hidden=\"true\">«</span>\n\t\t\t\t\t</a>\n\t\t\t\t</li>\n\n\t\t\t\t<!-- crucial v-if logic to render the pagination -->\n\t\t\t\t<li v-for=\"pageNumber in totalPages\" v-bind:class=\"{'active' : pageNumber == this.currentPage }\" v-if=\"Math.abs(pageNumber - currentPage) < 4 || pageNumber == totalPages - 1 || pageNumber == 0\">\n\t\t\t\t\t<a href=\"#\" v-on:click.prevent=\"paginate(pageNumber)\">{{ pageNumber+1 }}</a>\n\t\t\t\t</li>\n\n\t\t\t\t<li>\n\t\t\t\t\t<a href=\"#\" aria-label=\"Next\" v-on:click.prevent=\"nextPage()\">\n\t\t\t\t\t\t<span aria-hidden=\"true\">»</span>\n\t\t\t\t\t</a>\n\t\t\t\t</li>\n\t\t\t</ul><!-- /.pagination -->\n\t\t</nav>\n\t</div><!-- /.row -->\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n\t<div class=\"row main-search-wrapper\">\n        <div class=\"col-md-6 col-md-offset-3\">\n            <i class=\"fa fa-search fa-2x\" aria-hidden=\"true\"></i>\n            <!-- add: debounce=\"500\" for a 500ms delay -->\n            <input type=\"text\" placeholder=\"Zoek op naam, land, stad of regio\" v-on:keyup=\"search\" v-model=\"query\" class=\"elasticsearch-input\">\n        </div><!-- /.col-md-6 -->\n\n        <div class=\"col-md-3 view-options\">\n            <i class=\"fa fa-bars fa-2x\" aria-hidden=\"true\" v-bind:class=\"{ 'active': !toggleView}\" v-on:click=\"toggleView = false\"></i>\n            <i class=\"fa fa-th-large fa-2x\" aria-hidden=\"true\" v-bind:class=\"{ 'active': toggleView}\" v-on:click=\"toggleView = true\"></i>\n        </div><!-- /.col-md-3 -->\n    </div><!-- /.row -->\n\n     <div class=\"sort-bar\" id=\"main-search\">\n        <div class=\"row\">\n        \t<div class=\"col-sm-4\">\n                <ul class=\"list-inline\">\n                    <li v-if=\"hits > 1 || hits == 0\">{{ hits }} vakanties gevonden</li>\n                    <li v-else=\"\">{{ hits }} vakantie gevonden</li>\n                    <i class=\"fa fa-filter\" aria-hidden=\"true\"></i>\n                </ul>\n            </div><!-- /.col-sm-4 -->\n\n            <div class=\"col-sm-8 text-right\">\n                <ul class=\"list-inline\">\n                    <li class=\"bold\">SORTEER OP</li>\n\n         <!--            <li>\n                        <i class=\"fa fa-times-circle fa-lg\" aria-hidden=\"true\" v-if=\"sortPopularity\" v-on:click=\"removeSort('popularity')\"></i>\n\n                        <div class=\"toggle-sort\" v-on:click.prevent=\"sort('popularity')\" v-bind:class=\"{'active' : sortPopularity }\">\n                            <span>POPULARITEIT</span>\n                            <i class=\"fa fa-sort-desc fa-lg\" aria-hidden=\"true\" v-if=\"sortPopularity\"></i>\n                        </div>\n                    </li> -->\n\n                    <li>\n                        <i class=\"fa fa-times-circle fa-lg\" aria-hidden=\"true\" v-if=\"sortPrice\" v-on:click=\"removeSort('price')\"></i>\n\n                        <div class=\"toggle-sort\" v-on:click.prevent=\"sort('price')\" v-bind:class=\"{'active' : sortPrice }\">\n                            <span>PRIJS</span>\n                            <span v-if=\"sortPrice\">\n                                <i class=\"fa fa-sort-desc fa-lg\" aria-hidden=\"true\" v-if=\"sortPriceDesc\"></i>\n                                <i class=\"fa fa-sort-asc fa-lg\" aria-hidden=\"true\" v-else=\"\"></i>\n                            </span>\n                        </div><!-- /.toggle-sort -->\n                    </li>\n\n                    <li>\n                        <i class=\"fa fa-times-circle fa-lg\" aria-hidden=\"true\" v-if=\"sortRating\" v-on:click=\"removeSort('rating')\"></i>\n\n                        <div class=\"toggle-sort\" v-on:click.prevent=\"sort('rating')\" v-bind:class=\"{'active' : sortRating }\">\n                            <span>STERREN</span>\n                            <span v-if=\"sortRating\">\n                                <i class=\"fa fa-sort-desc fa-lg\" aria-hidden=\"true\" v-if=\"sortRatingDesc\"></i>\n                                <i class=\"fa fa-sort-asc fa-lg\" aria-hidden=\"true\" v-else=\"\"></i>\n                            </span>\n                        </div><!-- /.toggle-sort -->\n                    </li>\n                </ul><!-- /.list-inline -->\n            </div><!-- /.col-sm-8 -->\n        </div><!-- /.row -->\n    </div><!-- /.sort-bar -->\n\n\t<div v-if=\"toggleView\" class=\"row\" v-for=\"row in travels | chunk 4\">\n\t\t<div class=\"col-xs-6 col-lg-3\" v-for=\"travel in row\">\n\t\t\t<div class=\"vacation-item\">\n\t\t\t\t<a href=\"/node/{{ travel._source.nid }}\">\n\t\t\t\t\t<div class=\"placeholder-img\" v-if=\"travel._source.field_image_medium\" v-lazy:background-image=\"travel._source.field_image_medium[0].url\">\n\n\t\t\t\t\t\t<!-- if more than 2 weeks old - 1209600 seconds -->\n\t\t\t\t\t\t<div class=\"new-item\" v-if=\"(Math.round((new Date()).getTime() / 1000) - travel._source.created) < 1209600\">NIEUW</div>\n\n\t\t\t\t\t\t<div class=\"star-rating\" v-if=\"travel._source.stars\">\n\t\t\t\t\t\t\t<i class=\"fa fa-star fa-lg\" aria-hidden=\"true\" v-for=\"star in travel._source.stars[0].value\"></i>\n\t\t\t\t\t\t</div><!-- /.star-rating -->\n\t\t\t\t\t\t<div class=\"pricing\">€ {{ Math.floor(travel._source.price[0].value) }}</div><!-- /.pricing -->\n\t\t\t\t\t</div><!-- /.placeholder-img -->\n\n\t\t\t\t\t<div class=\"content\">\n\t\t\t\t\t\t<h2 v-if=\"travel.highlight\">{{{ travel.highlight.title }}}</h2>\n\t\t\t\t\t\t<h2 v-else=\"\">{{{ travel._source.title }}}</h2>\n\t\t\t\t\t\t<p>{{ travel._source.body[0].value.substring(0, 85) }}...</p>\n\t\t\t\t\t</div><!-- /.content -->\n\t\t\t\t</a>\n\t\t\t</div><!-- /.vacation-item -->\n\t\t</div><!-- /.col-md-3 -->\n\t</div><!-- /.row -->\n\n\t<div v-if=\"!toggleView\" class=\"row list-view\" v-for=\"travel in travels\">\n\t\t<div class=\"col-md-10 col-md-offset-1\">\n\t\t\t<div class=\"vacation-item\">\n\t\t\t\t<a href=\"/node/{{ travel._source.nid }}\">\n\t\t\t\t\t<div class=\"col-md-3\">\n\t\t\t\t\t\t<div class=\"placeholder-img\" v-if=\"travel._source.field_image_medium\" v-lazy:background-image=\"travel._source.field_image_medium[0].url\">\n\n\t\t\t\t\t\t\t<!-- if more than 2 weeks old - 1209600 seconds -->\n\t\t\t\t\t\t\t<div class=\"new-item\" v-if=\"(Math.round((new Date()).getTime() / 1000) - travel._source.created) < 1209600\">NIEUW</div>\n\n\t\t\t\t\t\t\t<div class=\"star-rating\" v-if=\"travel._source.stars\">\n\t\t\t\t\t\t\t\t<i class=\"fa fa-star fa-lg\" aria-hidden=\"true\" v-for=\"star in travel._source.stars[0].value\"></i>\n\t\t\t\t\t\t\t</div><!-- /.star-rating -->\n\t\t\t\t\t\t\t<div class=\"pricing\">€ {{ Math.floor(travel._source.price[0].value) }}</div><!-- /.pricing -->\n\t\t\t\t\t\t</div><!-- /.placeholder-img -->\n\t\t\t\t\t</div><!-- /.col-md-3 -->\n\n\t\t\t\t\t<div class=\"col-md-9\">\n\t\t\t\t\t\t<div class=\"content\">\n\t\t\t\t\t\t\t<h2 v-if=\"travel.highlight\">{{{ travel.highlight.title }}}</h2>\n\t\t\t\t\t\t\t<h2 v-else=\"\">{{{ travel._source.title }}}</h2>\n\t\t\t\t\t\t\t<p>{{ travel._source.body[0].value.substring(0, 85) }}...</p>\n\t\t\t\t\t\t</div><!-- /.content -->\n\t\t\t\t\t</div><!-- /.col-md-9 -->\n\t\t\t\t</a></div><!-- /.vacation-item --><a href=\"/node/{{ travel._source.nid }}\">\n\t\t\t</a>\n\t\t</div><!-- /.col-md-3 -->\n\t</div><!-- /.row -->\n\n\t<div class=\"row\" v-if=\"this.travels == 0\">\n\t\t<div class=\"col-md-6 col-md-offset-3 text-center no-results\">\n\t\t\t<h2>We hebben helaas geen resultaten kunnen vinden binnen deze zoekcriteria. Probeer het nog eens.</h2>\n\t\t</div><!-- /.col-md-6 -->\n\t</div><!-- /.row -->\n\n\t<div class=\"row\">\n\t\t<nav class=\"text-center\">\n\t\t\t<ul class=\"pagination\">\n\t\t\t\t<li>\n\t\t\t\t\t<a href=\"#\" aria-label=\"Previous\" v-on:click.prevent=\"prevPage()\">\n\t\t\t\t\t\t<span aria-hidden=\"true\">«</span>\n\t\t\t\t\t</a>\n\t\t\t\t</li>\n\n\t\t\t\t<!-- crucial v-if logic to render the pagination -->\n\t\t\t\t<li v-for=\"pageNumber in totalPages\" v-bind:class=\"{'active' : pageNumber == this.currentPage }\" v-if=\"Math.abs(pageNumber - currentPage) < 4 || pageNumber == totalPages - 1 || pageNumber == 0\">\n\t\t\t\t\t<a href=\"#\" v-on:click.prevent=\"paginate(pageNumber)\">{{ pageNumber+1 }}</a>\n\t\t\t\t</li>\n\n\t\t\t\t<li>\n\t\t\t\t\t<a href=\"#\" aria-label=\"Next\" v-on:click.prevent=\"nextPage()\">\n\t\t\t\t\t\t<span aria-hidden=\"true\">»</span>\n\t\t\t\t\t</a>\n\t\t\t\t</li>\n\t\t\t</ul><!-- /.pagination -->\n\t\t</nav>\n\t</div><!-- /.row -->\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
   var id = "/Users/stephan/Code/wemachine/sites/vakver.local/themes/vakver/js/components/elasticsearch.vue"
   module.hot.dispose(function () {
-    require("vueify-insert-css").cache["\n.highlight {\n\tcolor: #74AF2A;\n\tfont-weight: bold;\n}\n"] = false
+    require("vueify-insert-css").cache["\n.highlight {\n\tcolor: #74AF2A;\n\tfont-weight: bold;\n}\n.placeholder-img[lazy=loading] {\n\tbackground-size: 50px;\n\tbackground-position: 50%;\n\tbackground-repeat: no-repeat;    \n}\n"] = false
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {
@@ -473,7 +473,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update(id, module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"babel-runtime/helpers/defineProperty":6,"elasticsearch":12,"vue":92,"vue-hot-reload-api":67,"vueify-insert-css":93}],2:[function(require,module,exports){
+},{"babel-runtime/helpers/defineProperty":6,"elasticsearch":12,"vue":93,"vue-hot-reload-api":67,"vueify-insert-css":94}],2:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -530,10 +530,11 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update(id, module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":92,"vue-hot-reload-api":67}],3:[function(require,module,exports){
+},{"vue":93,"vue-hot-reload-api":67}],3:[function(require,module,exports){
 (function (global){
 var Vue 			= require('vue');
 var Vuex 			= require('vuex');
+var lazyload 		= require('vue-lazyload');
 var Elasticsearch 	= require('./components/elasticsearch.vue')
 var WeatherAPI 		= require('./components/weatherapi.vue')
 
@@ -546,6 +547,11 @@ global.moment 		= moment;
 Vue.use(require('vue-resource'));
 Vue.use(require('vue-chunk'));
 Vue.use(Vuex);
+Vue.use(lazyload, {
+  error: 'dist/error.png',
+  loading: Drupal.settings.pathToTheme + '/img/ripple.gif',
+  try: 3 // default 1 
+});
 
 Vue.config.debug = true;
 
@@ -752,7 +758,7 @@ $(document).ready(function() {
 });
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./components/elasticsearch.vue":1,"./components/weatherapi.vue":2,"jquery":50,"moment":53,"moment/locale/nl":52,"vue":92,"vue-chunk":66,"vue-resource":81,"vuex":94}],4:[function(require,module,exports){
+},{"./components/elasticsearch.vue":1,"./components/weatherapi.vue":2,"jquery":50,"moment":53,"moment/locale/nl":52,"vue":93,"vue-chunk":66,"vue-lazyload":68,"vue-resource":82,"vuex":95}],4:[function(require,module,exports){
 (function (global){
 "use strict";
 
@@ -74064,6 +74070,197 @@ function format (id) {
 }
 
 },{}],68:[function(require,module,exports){
+'use strict';
+
+exports.install = function (Vue, options) {
+    var DEFAULT_URL = 'data:img/jpg;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABAQMAAAAl21bKAAAAA1BMVEXs7Oxc9QatAAAACklEQVQI12NgAAAAAgAB4iG8MwAAAABJRU5ErkJggg==';
+    if (!options) {
+        options = {
+            error: DEFAULT_URL,
+            loading: DEFAULT_URL,
+            try: 3
+        };
+    }
+    var init = {
+        error: options.error ? options.error : DEFAULT_URL,
+        loading: options.loading ? options.loading : DEFAULT_URL,
+        hasbind: false,
+        isInChild: false,
+        childEl: null,
+        try: options.try ? options.try : 1
+    };
+
+    var listeners = [];
+
+    var debounce = function debounce(action, idle) {
+        var last = undefined;
+        return function () {
+            var _this = this;
+
+            var args = arguments;
+            clearTimeout(last);
+            last = setTimeout(function () {
+                action.apply(_this, args);
+            }, idle);
+        };
+    };
+
+    var lazyLoadHandler = debounce(function () {
+        for (var i = 0; i < listeners.length; ++i) {
+            var listener = listeners[i];
+            checkCanShow(listener);
+        }
+    }, 300);
+
+    var checkCanShow = function checkCanShow(listener) {
+        var winH = undefined;
+        var top = undefined;
+        if (listener.parentEl) {
+            winH = listener.parentEl.offsetHeight;
+            top = listener.parentEl.scrollTop;
+        } else {
+            winH = window.screen.availHeight;
+            top = document.documentElement.scrollTop || document.body.scrollTop;
+        }
+
+        var height = (top + winH) * window.devicePixelRatio * 1.3;
+        if (listener.y < height) {
+            render(listener);
+        }
+    };
+
+    var render = function render(item) {
+        if (item.try >= init.try) {
+            return false;
+        }
+        item.try++;
+
+        loadImageAsync(item).then(function (url) {
+            var index = listeners.indexOf(item);
+            if (index !== -1) {
+                listeners.splice(index, 1);
+            }
+            if (!item.bindType) {
+                item.el.setAttribute('src', item.src);
+            } else {
+                item.el.setAttribute('style', item.bindType + ': url(' + item.src + ')');
+            }
+            item.el.setAttribute('lazy', 'loaded');
+        }).catch(function (error) {
+            if (!item.bindType) {
+                item.el.setAttribute('src', init.error);
+            } else {
+                item.el.setAttribute('style', item.bindType + ': url(' + init.error + ')');
+            }
+            item.el.setAttribute('lazy', 'error');
+        });
+    };
+
+    var loadImageAsync = function loadImageAsync(item) {
+        if (!item.bindType) {
+            item.el.setAttribute('src', init.loading);
+        } else {
+            item.el.setAttribute('style', item.bindType + ': url(' + init.loading + ')');
+        }
+
+        return new Promise(function (resolve, reject) {
+            var image = new Image();
+            image.src = item.src;
+
+            image.onload = function () {
+                resolve(item.src);
+            };
+
+            image.onerror = function () {
+                reject();
+            };
+        });
+    };
+
+    var componentWillUnmount = function componentWillUnmount(src) {
+        var i = undefined;
+        var len = listeners.length;
+        src = src || DEFAULT_URL;
+        for (i = 0; i < len; i++) {
+            if (listeners[i].src == src) {
+                listeners.splice(i, 1);
+            }
+        }
+
+        if (listeners.length == 0) {
+            window.removeEventListener('scroll', lazyLoadHandler);
+            window.removeEventListener('wheel', lazyLoadHandler);
+            window.removeEventListener('mousewheel', lazyLoadHandler);
+            window.removeEventListener('resize', lazyLoadHandler);
+        }
+    };
+
+    var getPosition = function getPosition(el) {
+        var t = el.offsetTop;
+        var elHeight = el.offsetHeight;
+        for (t; el = el.offsetParent;) {
+            t += el.offsetTop;
+        }
+        return {
+            y: (t + elHeight) * window.devicePixelRatio
+        };
+    };
+
+    Vue.directive('lazy', {
+        bind: function bind() {
+            var _this2 = this;
+
+            if (!init.hasbind) {
+                Vue.nextTick(function () {
+                    if (document.getElementById(Object.keys(_this2.modifiers)[0])) {
+                        init.isInChild = true;
+                        init.childEl = document.getElementById(Object.keys(_this2.modifiers)[0]);
+                    }
+                    init.hasbind = true;
+                    if (init.isInChild) {
+                        init.childEl.addEventListener('scroll', lazyLoadHandler);
+                    }
+                    window.addEventListener('scroll', lazyLoadHandler);
+                    window.addEventListener('wheel', lazyLoadHandler);
+                    window.addEventListener('mousewheel', lazyLoadHandler);
+                    window.addEventListener('resize', lazyLoadHandler);
+                    lazyLoadHandler();
+                });
+            }
+        },
+        update: function update(newValue, oldValue) {
+            var _this3 = this;
+
+            this.el.setAttribute('lazy', 'loading');
+            if (!this.arg) {
+                this.el.setAttribute('src', init.loading);
+            } else {
+                this.el.setAttribute('style', this.arg + ': url(' + init.loading + ')');
+            }
+            var parentEl = null;
+            this.vm.$nextTick(function () {
+                if (document.getElementById(Object.keys(_this3.modifiers)[0])) {
+                    parentEl = document.getElementById(Object.keys(_this3.modifiers)[0]);
+                }
+                var pos = getPosition(_this3.el);
+                listeners.push({
+                    bindType: _this3.arg,
+                    try: 0,
+                    parentEl: parentEl,
+                    el: _this3.el,
+                    src: newValue,
+                    y: pos.y
+                });
+                lazyLoadHandler();
+            });
+        },
+        unbind: function unbind(src) {
+            componentWillUnmount(src);
+        }
+    });
+};
+
+},{}],69:[function(require,module,exports){
 /**
  * Before Interceptor.
  */
@@ -74083,7 +74280,7 @@ module.exports = {
 
 };
 
-},{"../util":91}],69:[function(require,module,exports){
+},{"../util":92}],70:[function(require,module,exports){
 /**
  * Base client.
  */
@@ -74150,7 +74347,7 @@ function parseHeaders(str) {
     return headers;
 }
 
-},{"../../promise":84,"../../util":91,"./xhr":72}],70:[function(require,module,exports){
+},{"../../promise":85,"../../util":92,"./xhr":73}],71:[function(require,module,exports){
 /**
  * JSONP client.
  */
@@ -74200,7 +74397,7 @@ module.exports = function (request) {
     });
 };
 
-},{"../../promise":84,"../../util":91}],71:[function(require,module,exports){
+},{"../../promise":85,"../../util":92}],72:[function(require,module,exports){
 /**
  * XDomain client (Internet Explorer).
  */
@@ -74239,7 +74436,7 @@ module.exports = function (request) {
     });
 };
 
-},{"../../promise":84,"../../util":91}],72:[function(require,module,exports){
+},{"../../promise":85,"../../util":92}],73:[function(require,module,exports){
 /**
  * XMLHttp client.
  */
@@ -74291,7 +74488,7 @@ module.exports = function (request) {
     });
 };
 
-},{"../../promise":84,"../../util":91}],73:[function(require,module,exports){
+},{"../../promise":85,"../../util":92}],74:[function(require,module,exports){
 /**
  * CORS Interceptor.
  */
@@ -74330,7 +74527,7 @@ function crossOrigin(request) {
     return (requestUrl.protocol !== originUrl.protocol || requestUrl.host !== originUrl.host);
 }
 
-},{"../util":91,"./client/xdr":71}],74:[function(require,module,exports){
+},{"../util":92,"./client/xdr":72}],75:[function(require,module,exports){
 /**
  * Header Interceptor.
  */
@@ -74358,7 +74555,7 @@ module.exports = {
 
 };
 
-},{"../util":91}],75:[function(require,module,exports){
+},{"../util":92}],76:[function(require,module,exports){
 /**
  * Service for sending network requests.
  */
@@ -74458,7 +74655,7 @@ Http.headers = {
 
 module.exports = _.http = Http;
 
-},{"../promise":84,"../util":91,"./before":68,"./client":69,"./cors":73,"./header":74,"./interceptor":76,"./jsonp":77,"./method":78,"./mime":79,"./timeout":80}],76:[function(require,module,exports){
+},{"../promise":85,"../util":92,"./before":69,"./client":70,"./cors":74,"./header":75,"./interceptor":77,"./jsonp":78,"./method":79,"./mime":80,"./timeout":81}],77:[function(require,module,exports){
 /**
  * Interceptor factory.
  */
@@ -74505,7 +74702,7 @@ function when(value, fulfilled, rejected) {
     return promise.then(fulfilled, rejected);
 }
 
-},{"../promise":84,"../util":91}],77:[function(require,module,exports){
+},{"../promise":85,"../util":92}],78:[function(require,module,exports){
 /**
  * JSONP Interceptor.
  */
@@ -74525,7 +74722,7 @@ module.exports = {
 
 };
 
-},{"./client/jsonp":70}],78:[function(require,module,exports){
+},{"./client/jsonp":71}],79:[function(require,module,exports){
 /**
  * HTTP method override Interceptor.
  */
@@ -74544,7 +74741,7 @@ module.exports = {
 
 };
 
-},{}],79:[function(require,module,exports){
+},{}],80:[function(require,module,exports){
 /**
  * Mime Interceptor.
  */
@@ -74582,7 +74779,7 @@ module.exports = {
 
 };
 
-},{"../util":91}],80:[function(require,module,exports){
+},{"../util":92}],81:[function(require,module,exports){
 /**
  * Timeout Interceptor.
  */
@@ -74614,7 +74811,7 @@ module.exports = function () {
     };
 };
 
-},{}],81:[function(require,module,exports){
+},{}],82:[function(require,module,exports){
 /**
  * Install plugin.
  */
@@ -74669,7 +74866,7 @@ if (window.Vue) {
 
 module.exports = install;
 
-},{"./http":75,"./promise":84,"./resource":85,"./url":86,"./util":91}],82:[function(require,module,exports){
+},{"./http":76,"./promise":85,"./resource":86,"./url":87,"./util":92}],83:[function(require,module,exports){
 /**
  * Promises/A+ polyfill v1.1.4 (https://github.com/bramstein/promis)
  */
@@ -74850,7 +75047,7 @@ p.catch = function (onRejected) {
 
 module.exports = Promise;
 
-},{"../util":91}],83:[function(require,module,exports){
+},{"../util":92}],84:[function(require,module,exports){
 /**
  * URL Template v2.0.6 (https://github.com/bramstein/url-template)
  */
@@ -75002,7 +75199,7 @@ exports.encodeReserved = function (str) {
     }).join('');
 };
 
-},{}],84:[function(require,module,exports){
+},{}],85:[function(require,module,exports){
 /**
  * Promise adapter.
  */
@@ -75113,7 +75310,7 @@ p.always = function (callback) {
 
 module.exports = Promise;
 
-},{"./lib/promise":82,"./util":91}],85:[function(require,module,exports){
+},{"./lib/promise":83,"./util":92}],86:[function(require,module,exports){
 /**
  * Service for interacting with RESTful services.
  */
@@ -75225,7 +75422,7 @@ Resource.actions = {
 
 module.exports = _.resource = Resource;
 
-},{"./util":91}],86:[function(require,module,exports){
+},{"./util":92}],87:[function(require,module,exports){
 /**
  * Service for URL templating.
  */
@@ -75357,7 +75554,7 @@ function serialize(params, obj, scope) {
 
 module.exports = _.url = Url;
 
-},{"../util":91,"./legacy":87,"./query":88,"./root":89,"./template":90}],87:[function(require,module,exports){
+},{"../util":92,"./legacy":88,"./query":89,"./root":90,"./template":91}],88:[function(require,module,exports){
 /**
  * Legacy Transform.
  */
@@ -75405,7 +75602,7 @@ function encodeUriQuery(value, spaces) {
         replace(/%20/g, (spaces ? '%20' : '+'));
 }
 
-},{"../util":91}],88:[function(require,module,exports){
+},{"../util":92}],89:[function(require,module,exports){
 /**
  * Query Parameter Transform.
  */
@@ -75431,7 +75628,7 @@ module.exports = function (options, next) {
     return url;
 };
 
-},{"../util":91}],89:[function(require,module,exports){
+},{"../util":92}],90:[function(require,module,exports){
 /**
  * Root Prefix Transform.
  */
@@ -75449,7 +75646,7 @@ module.exports = function (options, next) {
     return url;
 };
 
-},{"../util":91}],90:[function(require,module,exports){
+},{"../util":92}],91:[function(require,module,exports){
 /**
  * URL Template (RFC 6570) Transform.
  */
@@ -75467,7 +75664,7 @@ module.exports = function (options) {
     return url;
 };
 
-},{"../lib/url-template":83}],91:[function(require,module,exports){
+},{"../lib/url-template":84}],92:[function(require,module,exports){
 /**
  * Utility functions.
  */
@@ -75591,7 +75788,7 @@ function merge(target, source, deep) {
     }
 }
 
-},{}],92:[function(require,module,exports){
+},{}],93:[function(require,module,exports){
 (function (process,global){
 /*!
  * Vue.js v1.0.21
@@ -85517,7 +85714,7 @@ setTimeout(function () {
 
 module.exports = Vue;
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"_process":55}],93:[function(require,module,exports){
+},{"_process":55}],94:[function(require,module,exports){
 var inserted = exports.cache = {}
 
 exports.insert = function (css) {
@@ -85537,7 +85734,7 @@ exports.insert = function (css) {
   return elem
 }
 
-},{}],94:[function(require,module,exports){
+},{}],95:[function(require,module,exports){
 /*!
  * Vuex v0.6.3
  * (c) 2016 Evan You

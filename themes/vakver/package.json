@@ -8,6 +8,7 @@
     "moment": "^2.13.0",
     "readmore-js": "^2.1.0",
     "vue-chunk": "^1.0.0",
+    "vue-lazyload": "^0.4.3",
     "vuex": "^0.6.3"
   },
   "devDependencies": {
