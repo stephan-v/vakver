@@ -198,7 +198,7 @@ class FeedsElement {
    *   Value of this FeedsElement represented as a scalar.
    */
   public function getValue() {
-    return $this->value;
+    return trim($this->value);
   }
 
   /**
@@ -256,7 +256,7 @@ class FeedsTermElement extends FeedsElement {
    * Use $name as $value.
    */
   public function getValue() {
-    return $this->name;
+    return trim($this->name);
   }
 }
 
