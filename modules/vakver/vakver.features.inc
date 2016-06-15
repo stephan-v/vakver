@@ -66,6 +66,14 @@ function vakver_image_default_styles() {
  */
 function vakver_node_info() {
   $items = array(
+    'blog' => array(
+      'name' => t('Blog'),
+      'base' => 'node_content',
+      'description' => t('Een blogpost'),
+      'has_title' => '1',
+      'title_label' => t('Titel'),
+      'help' => '',
+    ),
     'homepage' => array(
       'name' => t('Homepage'),
       'base' => 'node_content',
