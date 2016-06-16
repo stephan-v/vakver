@@ -272,7 +272,7 @@ exports.default = {
 			}
 
 			if (this.boards.length > 0) {
-				this.searchFilter(this.boards, "board_type.value.raw");
+				this.searchFilter(this.boards, "board.value.raw");
 			}
 
 			if (this.accommodations.length > 0) {
