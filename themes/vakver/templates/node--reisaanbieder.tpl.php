@@ -126,7 +126,7 @@
                 <div class="col-md-12 related-vacations-header">
                     <h3>vakanties aangeboden door <?php print $node->title; ?></h3>
                 </div><!-- /.col-md-12 -->
-                <?php print views_embed_view('reisaanbieders', $display_id = 'block_1', $field_travel_agency[0]['value']); ?>
+                <?php print views_embed_view('reisaanbieders', $display_id = 'block_1', $node->title); ?>
             </div>
         <?php endif; ?>
     </div><!-- /.container -->

@@ -22,19 +22,21 @@
                 <div class="col-md-9">
                     <div class="travel-information row text-center">
                         <div class="col-md-3 col-xs-6">
-                            <i class="fa fa-globe fa-2x" aria-hidden="true"></i>
-                            <span class="travel-metadata">
-                                <div class="title">Land</div>
-                                <div class="attribute">
-                                    <?php 
-                                        if(isset($field_country[0]['value'])) {
-                                            print $field_country[0]['value']; 
-                                        } else {
-                                            print "Niet bekend";
-                                        }
-                                    ?>
-                                </div>
-                            </span>
+                            <a href="/vakanties/<?php echo $field_country[0]['value']; ?>" class="country-link">
+                                <i class="fa fa-globe fa-2x" aria-hidden="true"></i>
+                                <span class="travel-metadata">
+                                    <div class="title">Land</div>
+                                    <div class="attribute">
+                                        <?php 
+                                            if(isset($field_country[0]['value'])) {
+                                                print $field_country[0]['value']; 
+                                            } else {
+                                                print "Niet bekend";
+                                            }
+                                        ?>
+                                    </div>
+                                </span>
+                            </a>
                         </div><!-- /.col-md-3 -->
 
                         <div class="col-md-3 col-xs-6">
