@@ -95,6 +95,46 @@ function vakver_feeds_tamper_default() {
   $feeds_tamper = new stdClass();
   $feeds_tamper->disabled = FALSE; /* Edit this to true to make a default feeds_tamper disabled initially */
   $feeds_tamper->api_version = 2;
+  $feeds_tamper->id = 'd_reizen-category-find_replace_cb';
+  $feeds_tamper->importer = 'd_reizen';
+  $feeds_tamper->source = 'category';
+  $feeds_tamper->plugin_id = 'find_replace';
+  $feeds_tamper->settings = array(
+    'find' => 'continental breakfast',
+    'replace' => 'logies en onbijt',
+    'case_sensitive' => 0,
+    'word_boundaries' => 0,
+    'whole' => 0,
+    'regex' => FALSE,
+    'func' => 'str_ireplace',
+  );
+  $feeds_tamper->weight = 1;
+  $feeds_tamper->description = 'Find replace';
+  $export['d_reizen-category-find_replace_cb'] = $feeds_tamper;
+
+  $feeds_tamper = new stdClass();
+  $feeds_tamper->disabled = FALSE; /* Edit this to true to make a default feeds_tamper disabled initially */
+  $feeds_tamper->api_version = 2;
+  $feeds_tamper->id = 'd_reizen-category-find_replace_eo';
+  $feeds_tamper->importer = 'd_reizen';
+  $feeds_tamper->source = 'category';
+  $feeds_tamper->plugin_id = 'find_replace';
+  $feeds_tamper->settings = array(
+    'find' => 'engels ontbijt',
+    'replace' => 'logies en onbijt',
+    'case_sensitive' => 0,
+    'word_boundaries' => 0,
+    'whole' => 0,
+    'regex' => FALSE,
+    'func' => 'str_ireplace',
+  );
+  $feeds_tamper->weight = 2;
+  $feeds_tamper->description = 'Find replace';
+  $export['d_reizen-category-find_replace_eo'] = $feeds_tamper;
+
+  $feeds_tamper = new stdClass();
+  $feeds_tamper->disabled = FALSE; /* Edit this to true to make a default feeds_tamper disabled initially */
+  $feeds_tamper->api_version = 2;
   $feeds_tamper->id = 'd_reizen-description-find_replace';
   $feeds_tamper->importer = 'd_reizen';
   $feeds_tamper->source = 'description';
@@ -316,6 +356,46 @@ function vakver_feeds_tamper_default() {
   $feeds_tamper->weight = 0;
   $feeds_tamper->description = 'Find replace';
   $export['d_reizen2-category-find_replace'] = $feeds_tamper;
+
+  $feeds_tamper = new stdClass();
+  $feeds_tamper->disabled = FALSE; /* Edit this to true to make a default feeds_tamper disabled initially */
+  $feeds_tamper->api_version = 2;
+  $feeds_tamper->id = 'd_reizen2-category-find_replace_cb';
+  $feeds_tamper->importer = 'd_reizen2';
+  $feeds_tamper->source = 'category';
+  $feeds_tamper->plugin_id = 'find_replace';
+  $feeds_tamper->settings = array(
+    'find' => 'continental breakfast',
+    'replace' => 'logies en onbijt',
+    'case_sensitive' => 0,
+    'word_boundaries' => 0,
+    'whole' => 0,
+    'regex' => FALSE,
+    'func' => 'str_ireplace',
+  );
+  $feeds_tamper->weight = 1;
+  $feeds_tamper->description = 'Find replace';
+  $export['d_reizen2-category-find_replace_cb'] = $feeds_tamper;
+
+  $feeds_tamper = new stdClass();
+  $feeds_tamper->disabled = FALSE; /* Edit this to true to make a default feeds_tamper disabled initially */
+  $feeds_tamper->api_version = 2;
+  $feeds_tamper->id = 'd_reizen2-category-find_replace_eo';
+  $feeds_tamper->importer = 'd_reizen2';
+  $feeds_tamper->source = 'category';
+  $feeds_tamper->plugin_id = 'find_replace';
+  $feeds_tamper->settings = array(
+    'find' => 'engels ontbijt',
+    'replace' => 'logies en ontbijt',
+    'case_sensitive' => 0,
+    'word_boundaries' => 0,
+    'whole' => 0,
+    'regex' => FALSE,
+    'func' => 'str_ireplace',
+  );
+  $feeds_tamper->weight = 2;
+  $feeds_tamper->description = 'Find replace';
+  $export['d_reizen2-category-find_replace_eo'] = $feeds_tamper;
 
   $feeds_tamper = new stdClass();
   $feeds_tamper->disabled = FALSE; /* Edit this to true to make a default feeds_tamper disabled initially */

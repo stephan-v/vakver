@@ -205,11 +205,13 @@ function vakver_views_default_views() {
   $handler->display->display_options['defaults']['row_plugin'] = FALSE;
   $handler->display->display_options['row_plugin'] = 'node';
   $handler->display->display_options['defaults']['row_options'] = FALSE;
+  $handler->display->display_options['defaults']['empty'] = FALSE;
   $handler->display->display_options['defaults']['arguments'] = FALSE;
   /* Contextueel filter: Inhoud: Travel agency (field_travel_agency) */
   $handler->display->display_options['arguments']['field_travel_agency_value']['id'] = 'field_travel_agency_value';
   $handler->display->display_options['arguments']['field_travel_agency_value']['table'] = 'field_data_field_travel_agency';
   $handler->display->display_options['arguments']['field_travel_agency_value']['field'] = 'field_travel_agency_value';
+  $handler->display->display_options['arguments']['field_travel_agency_value']['default_action'] = 'empty';
   $handler->display->display_options['arguments']['field_travel_agency_value']['exception']['title'] = 'Alle';
   $handler->display->display_options['arguments']['field_travel_agency_value']['default_argument_type'] = 'fixed';
   $handler->display->display_options['arguments']['field_travel_agency_value']['summary']['number_of_records'] = '0';
