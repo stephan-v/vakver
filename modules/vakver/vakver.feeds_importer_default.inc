@@ -328,7 +328,7 @@ function vakver_feeds_importer_default() {
           0 => array(
             'source' => 'name',
             'target' => 'title',
-            'unique' => 1,
+            'unique' => 0,
           ),
           1 => array(
             'source' => 'price',

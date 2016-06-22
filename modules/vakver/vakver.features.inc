@@ -35,6 +35,21 @@ function vakver_views_api($module = NULL, $api = NULL) {
 function vakver_image_default_styles() {
   $styles = array();
 
+  // Exported image style: blogpost.
+  $styles['blogpost'] = array(
+    'label' => 'Blogpost',
+    'effects' => array(
+      4 => array(
+        'name' => 'image_scale_and_crop',
+        'data' => array(
+          'width' => 750,
+          'height' => 450,
+        ),
+        'weight' => 1,
+      ),
+    ),
+  );
+
   // Exported image style: blur.
   $styles['blur'] = array(
     'label' => 'Blur',
@@ -56,6 +71,12 @@ function vakver_image_default_styles() {
         'weight' => 2,
       ),
     ),
+  );
+
+  // Exported image style: fullsize.
+  $styles['fullsize'] = array(
+    'label' => 'fullsize',
+    'effects' => array(),
   );
 
   return $styles;
