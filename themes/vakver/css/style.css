@@ -1206,6 +1206,31 @@ Contact form
   }
 }
 /* ==========================================================================
+404 page
+========================================================================== */
+.not-found {
+  position: relative;
+}
+.not-found .absolute-center,
+.not-found p {
+  text-align: center;
+  color: white;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.35);
+}
+.not-found .absolute-center h1,
+.not-found p h1 {
+  font-size: 72px;
+}
+.not-found .absolute-center p,
+.not-found p p {
+  background: #64adfc;
+  padding: 1em;
+  display: inline-block;
+}
+.not-found .img-wrapper img {
+  margin-bottom: -50px;
+}
+/* ==========================================================================
 Homepage
 ========================================================================== */
 /* Section name */
