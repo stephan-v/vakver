@@ -62,6 +62,7 @@
   <meta name="copyright" content="&copy; Wemagine" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="a73d78ab4224117" content="b15b47d8877caa0add88f2c1cd537b06" />
   <link rel="apple-touch-icon" sizes="57x57" href="/<?php print path_to_theme(); ?>/img/favicons/apple-touch-icon-57x57.png">
   <link rel="apple-touch-icon" sizes="60x60" href="/<?php print path_to_theme(); ?>/img/favicons/apple-touch-icon-60x60.png">
   <link rel="apple-touch-icon" sizes="72x72" href="/<?php print path_to_theme(); ?>/img/favicons/apple-touch-icon-72x72.png">
