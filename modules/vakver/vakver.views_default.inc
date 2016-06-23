@@ -361,9 +361,90 @@ function vakver_views_default_views() {
   $handler->display->display_options['filters']['field_image_fid']['expose']['operator'] = 'field_image_fid_op';
   $handler->display->display_options['filters']['field_image_fid']['expose']['identifier'] = 'field_image_fid';
 
-  /* Display: Pagina */
-  $handler = $view->new_display('page', 'Pagina', 'page_1');
+  /* Display: vakanties/% */
+  $handler = $view->new_display('page', 'vakanties/%', 'page_1');
+  $handler->display->display_options['defaults']['arguments'] = FALSE;
+  /* Contextueel filter: Inhoud: Country (field_country) */
+  $handler->display->display_options['arguments']['field_country_value']['id'] = 'field_country_value';
+  $handler->display->display_options['arguments']['field_country_value']['table'] = 'field_data_field_country';
+  $handler->display->display_options['arguments']['field_country_value']['field'] = 'field_country_value';
+  $handler->display->display_options['arguments']['field_country_value']['exception']['title'] = 'Alle';
+  $handler->display->display_options['arguments']['field_country_value']['default_argument_type'] = 'fixed';
+  $handler->display->display_options['arguments']['field_country_value']['summary']['number_of_records'] = '0';
+  $handler->display->display_options['arguments']['field_country_value']['summary']['format'] = 'default_summary';
+  $handler->display->display_options['arguments']['field_country_value']['summary_options']['items_per_page'] = '25';
+  $handler->display->display_options['arguments']['field_country_value']['limit'] = '0';
+  /* Contextueel filter: Inhoud: Region (field_region) */
+  $handler->display->display_options['arguments']['field_region_value']['id'] = 'field_region_value';
+  $handler->display->display_options['arguments']['field_region_value']['table'] = 'field_data_field_region';
+  $handler->display->display_options['arguments']['field_region_value']['field'] = 'field_region_value';
+  $handler->display->display_options['arguments']['field_region_value']['exception']['title'] = 'Alle';
+  $handler->display->display_options['arguments']['field_region_value']['default_argument_type'] = 'fixed';
+  $handler->display->display_options['arguments']['field_region_value']['summary']['number_of_records'] = '0';
+  $handler->display->display_options['arguments']['field_region_value']['summary']['format'] = 'default_summary';
+  $handler->display->display_options['arguments']['field_region_value']['summary_options']['items_per_page'] = '25';
+  $handler->display->display_options['arguments']['field_region_value']['limit'] = '0';
   $handler->display->display_options['path'] = 'vakanties/%';
+
+  /* Display: vakanties/%/% */
+  $handler = $view->new_display('page', 'vakanties/%/%', 'page_2');
+  $handler->display->display_options['defaults']['arguments'] = FALSE;
+  /* Contextueel filter: Inhoud: Country (field_country) */
+  $handler->display->display_options['arguments']['field_country_value']['id'] = 'field_country_value';
+  $handler->display->display_options['arguments']['field_country_value']['table'] = 'field_data_field_country';
+  $handler->display->display_options['arguments']['field_country_value']['field'] = 'field_country_value';
+  $handler->display->display_options['arguments']['field_country_value']['exception']['title'] = 'Alle';
+  $handler->display->display_options['arguments']['field_country_value']['default_argument_type'] = 'fixed';
+  $handler->display->display_options['arguments']['field_country_value']['summary']['number_of_records'] = '0';
+  $handler->display->display_options['arguments']['field_country_value']['summary']['format'] = 'default_summary';
+  $handler->display->display_options['arguments']['field_country_value']['summary_options']['items_per_page'] = '25';
+  $handler->display->display_options['arguments']['field_country_value']['limit'] = '0';
+  /* Contextueel filter: Inhoud: Region (field_region) */
+  $handler->display->display_options['arguments']['field_region_value']['id'] = 'field_region_value';
+  $handler->display->display_options['arguments']['field_region_value']['table'] = 'field_data_field_region';
+  $handler->display->display_options['arguments']['field_region_value']['field'] = 'field_region_value';
+  $handler->display->display_options['arguments']['field_region_value']['exception']['title'] = 'Alle';
+  $handler->display->display_options['arguments']['field_region_value']['default_argument_type'] = 'fixed';
+  $handler->display->display_options['arguments']['field_region_value']['summary']['number_of_records'] = '0';
+  $handler->display->display_options['arguments']['field_region_value']['summary']['format'] = 'default_summary';
+  $handler->display->display_options['arguments']['field_region_value']['summary_options']['items_per_page'] = '25';
+  $handler->display->display_options['arguments']['field_region_value']['limit'] = '0';
+  $handler->display->display_options['path'] = 'vakanties/%/%';
+
+  /* Display: vakanties/%/%/% */
+  $handler = $view->new_display('page', 'vakanties/%/%/%', 'page_3');
+  $handler->display->display_options['defaults']['arguments'] = FALSE;
+  /* Contextueel filter: Inhoud: Country (field_country) */
+  $handler->display->display_options['arguments']['field_country_value']['id'] = 'field_country_value';
+  $handler->display->display_options['arguments']['field_country_value']['table'] = 'field_data_field_country';
+  $handler->display->display_options['arguments']['field_country_value']['field'] = 'field_country_value';
+  $handler->display->display_options['arguments']['field_country_value']['exception']['title'] = 'Alle';
+  $handler->display->display_options['arguments']['field_country_value']['default_argument_type'] = 'fixed';
+  $handler->display->display_options['arguments']['field_country_value']['summary']['number_of_records'] = '0';
+  $handler->display->display_options['arguments']['field_country_value']['summary']['format'] = 'default_summary';
+  $handler->display->display_options['arguments']['field_country_value']['summary_options']['items_per_page'] = '25';
+  $handler->display->display_options['arguments']['field_country_value']['limit'] = '0';
+  /* Contextueel filter: Inhoud: Region (field_region) */
+  $handler->display->display_options['arguments']['field_region_value']['id'] = 'field_region_value';
+  $handler->display->display_options['arguments']['field_region_value']['table'] = 'field_data_field_region';
+  $handler->display->display_options['arguments']['field_region_value']['field'] = 'field_region_value';
+  $handler->display->display_options['arguments']['field_region_value']['exception']['title'] = 'Alle';
+  $handler->display->display_options['arguments']['field_region_value']['default_argument_type'] = 'fixed';
+  $handler->display->display_options['arguments']['field_region_value']['summary']['number_of_records'] = '0';
+  $handler->display->display_options['arguments']['field_region_value']['summary']['format'] = 'default_summary';
+  $handler->display->display_options['arguments']['field_region_value']['summary_options']['items_per_page'] = '25';
+  $handler->display->display_options['arguments']['field_region_value']['limit'] = '0';
+  /* Contextueel filter: Inhoud: City (field_city) */
+  $handler->display->display_options['arguments']['field_city_value']['id'] = 'field_city_value';
+  $handler->display->display_options['arguments']['field_city_value']['table'] = 'field_data_field_city';
+  $handler->display->display_options['arguments']['field_city_value']['field'] = 'field_city_value';
+  $handler->display->display_options['arguments']['field_city_value']['exception']['title'] = 'Alle';
+  $handler->display->display_options['arguments']['field_city_value']['default_argument_type'] = 'fixed';
+  $handler->display->display_options['arguments']['field_city_value']['summary']['number_of_records'] = '0';
+  $handler->display->display_options['arguments']['field_city_value']['summary']['format'] = 'default_summary';
+  $handler->display->display_options['arguments']['field_city_value']['summary_options']['items_per_page'] = '25';
+  $handler->display->display_options['arguments']['field_city_value']['limit'] = '0';
+  $handler->display->display_options['path'] = 'vakanties/%/%/%';
   $translatables['vacation_filter'] = array(
     t('Master'),
     t('meer'),
@@ -381,7 +462,9 @@ function vakver_views_default_views() {
     t('laatste »'),
     t('Alle'),
     t('Image (field_image:fid)'),
-    t('Pagina'),
+    t('vakanties/%'),
+    t('vakanties/%/%'),
+    t('vakanties/%/%/%'),
   );
   $export['vacation_filter'] = $view;
 

@@ -87,14 +87,6 @@ function vakver_image_default_styles() {
  */
 function vakver_node_info() {
   $items = array(
-    '404' => array(
-      'name' => t('404'),
-      'base' => 'node_content',
-      'description' => t('404 pagina'),
-      'has_title' => '1',
-      'title_label' => t('Titel'),
-      'help' => '',
-    ),
     'blog' => array(
       'name' => t('Blog'),
       'base' => 'node_content',
