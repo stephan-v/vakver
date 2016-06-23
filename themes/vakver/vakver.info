@@ -27,6 +27,7 @@ stylesheets[all][] = 'css/nouislider.css'
 ; ;;;;;;;;;;;;;;;;;;;;;
 ; ;; Scripts
 ; ;;;;;;;;;;;;;;;;;;;;;
+scripts[] = 'js/polyfill.js'
 scripts[] = 'js/bundle.js'
 scripts[] = 'js/scripts.js'
 scripts[] = 'js/readmore.js'

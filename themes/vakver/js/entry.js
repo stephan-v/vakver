@@ -1,6 +1,3 @@
-// IE polyfill
-require("babel-polyfill");
-
 var Vue 			= require('vue');
 var Vuex 			= require('vuex');
 var lazyload 		= require('vue-lazyload');
