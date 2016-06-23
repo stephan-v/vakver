@@ -69,6 +69,7 @@
     	browserify('./js/entry.js')
 	  	.transform(vueify)
 	  	// optionally add babelify if vuex is implemented
+	  	.transform(babelify)
 	  	.bundle()
 	  	.pipe(fs.createWriteStream('./js/bundle.js'))
     });
