@@ -77,29 +77,34 @@
     </div><!-- /.sort-bar -->
 
 	<div v-if="toggleView" class="row" v-for="row in travels | chunk 4">
-		<div class="col-xs-6 col-lg-3" v-for="travel in row">
-			<div class="vacation-item">
-				<a href="/node/{{ travel._source.nid }}">
-					<div class="placeholder-img" v-if="travel._source.field_image_medium" 
-					v-lazy:background-image="travel._source.field_image_medium[0].url">
+		<div v-for="travel in row">
+			<div class="col-xs-6 col-lg-3">
+				<div class="vacation-item">
+					<a href="/node/{{ travel._source.nid }}">
+						<div class="placeholder-img" v-if="travel._source.field_image_medium" 
+						v-lazy:background-image="travel._source.field_image_medium[0].url">
 
-						<!-- if more than 2 weeks old - 1209600 seconds -->
-						<div class="new-item" v-if="(Math.round((new Date()).getTime() / 1000) - travel._source.created) < 1209600">NIEUW</div>
+							<!-- if more than 2 weeks old - 1209600 seconds -->
+							<div class="new-item" v-if="(Math.round((new Date()).getTime() / 1000) - travel._source.created) < 1209600">NIEUW</div>
 
-						<div class="star-rating" v-if="travel._source.stars">
-							<i class="fa fa-star fa-lg" aria-hidden="true" v-for="star in travel._source.stars[0].value"></i>
-						</div><!-- /.star-rating -->
-						<div class="pricing">&euro; {{ Math.floor(travel._source.price[0].value) }}</div><!-- /.pricing -->
-					</div><!-- /.placeholder-img -->
+							<div class="star-rating" v-if="travel._source.stars">
+								<i class="fa fa-star fa-lg" aria-hidden="true" v-for="star in travel._source.stars[0].value"></i>
+							</div>
 
-					<div class="content">
-						<h2 v-if="travel.highlight">{{{ travel.highlight.title }}}</h2>
-						<h2 v-else>{{{ travel._source.title }}}</h2>
-						<p>{{ travel._source.body[0].value.substring(0, 85) }}...</p>
-					</div><!-- /.content -->
-				</a>
-			</div><!-- /.vacation-item -->
-		</div><!-- /.col-md-3 -->
+							<div class="pricing">&euro; {{ Math.floor(travel._source.price[0].value) }}</div>
+						</div><!-- /.placeholder-img -->
+
+						<div class="content">
+							<h2 v-if="travel.highlight">{{{ travel.highlight.title }}}</h2>
+							<h2 v-else>{{{ travel._source.title }}}</h2>
+							<p>{{ travel._source.body[0].value.substring(0, 85) }}...</p>
+						</div><!-- /.content -->
+					</a>
+				</div><!-- /.vacation-item -->
+			</div><!-- /.col-md-3 -->
+
+			<div v-if="$index === 1 || $index === 3" class="clearfix visible-xs-block"></div>
+		</div><!-- v-for -->
 	</div><!-- /.row -->
 
 	<div v-if="!toggleView" class="row list-view" v-for="travel in travels">
@@ -115,8 +120,9 @@
 
 							<div class="star-rating" v-if="travel._source.stars">
 								<i class="fa fa-star fa-lg" aria-hidden="true" v-for="star in travel._source.stars[0].value"></i>
-							</div><!-- /.star-rating -->
-							<div class="pricing">&euro; {{ Math.floor(travel._source.price[0].value) }}</div><!-- /.pricing -->
+							</div>
+
+							<div class="pricing">&euro; {{ Math.floor(travel._source.price[0].value) }}</div>
 						</div><!-- /.placeholder-img -->
 					</div><!-- /.col-md-3 -->
 
@@ -136,7 +142,7 @@
 		<div class="col-md-6 col-md-offset-3 text-center no-results">
 			<h2>We hebben helaas geen resultaten kunnen vinden binnen deze zoekcriteria. Probeer het nog eens.</h2>
 		</div><!-- /.col-md-6 -->
-	</div><!-- /.row -->
+	</div>
 
 	<div class="row">
 		<nav class="text-center">
