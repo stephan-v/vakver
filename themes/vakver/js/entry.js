@@ -32,12 +32,6 @@ var $ = window.jQuery = require('jquery');
 window.Vue = Vue;
 window.Vuex = Vue;
 
-
-// remove .wemagine from the image path
-Vue.filter('rewritepath', function (value) {
-  return value.replace(/\.wemagine/g, '');
-})
-
 $(document).ready(function() {
 	// create a root instance
 	global.Vue = new Vue({

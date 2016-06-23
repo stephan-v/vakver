@@ -21,8 +21,9 @@
             <div class="row">
                 <div class="col-md-9">
                     <div class="travel-information row text-center">
+
                         <div class="col-md-3 col-xs-6">
-                            <a href="/vakanties/<?php echo $field_country[0]['value']; ?>" class="country-link">
+                            <a href="/vakanties/<?php print $field_country[0]['value']; ?>" class="country-link">
                                 <i class="fa fa-globe fa-2x" aria-hidden="true"></i>
                                 <span class="travel-metadata">
                                     <div class="title">Land</div>
@@ -40,35 +41,39 @@
                         </div><!-- /.col-md-3 -->
 
                         <div class="col-md-3 col-xs-6">
-                            <i class="fa fa-map-marker fa-2x" aria-hidden="true"></i>
-                            <span class="travel-metadata">
-                                <div class="title">Regio</div>
-                                <div class="attribute">
-                                    <?php 
-                                        if(isset($field_region[0]['value'])) {
-                                            print $field_region[0]['value']; 
-                                        } else {
-                                            print "Niet bekend";
-                                        }
-                                    ?>
-                                </div>
-                            </span>
+                            <a href="/vakanties/<?php print $field_country[0]['value']; ?>/<?php print $field_region[0]['value']; ?>" class="country-link">
+                                <i class="fa fa-map-marker fa-2x" aria-hidden="true"></i>
+                                <span class="travel-metadata">
+                                    <div class="title">Regio</div>
+                                    <div class="attribute">
+                                        <?php 
+                                            if(isset($field_region[0]['value'])) {
+                                                print $field_region[0]['value']; 
+                                            } else {
+                                                print "Niet bekend";
+                                            }
+                                        ?>
+                                    </div>
+                                </span>
+                            </a>
                         </div><!-- /.col-md-3 -->
 
                         <div class="col-md-3 col-xs-6">
-                            <i class="fa fa-map-signs fa-2x" aria-hidden="true"></i>
-                            <span class="travel-metadata">
-                                <div class="title">Stad</div>
-                                <div class="attribute">
-                                    <?php 
-                                        if(isset($field_city[0]['value'])) {
-                                            print $field_city[0]['value'];
-                                        } else {
-                                            print "Niet bekend";
-                                        }
-                                    ?>
-                                </div>
-                            </span>
+                            <a href="/vakanties/<?php print $field_country[0]['value']; ?>/<?php print $field_region[0]['value']; ?>/<?php print $field_city[0]['value']; ?>" class="country-link">
+                                <i class="fa fa-map-signs fa-2x" aria-hidden="true"></i>
+                                <span class="travel-metadata">
+                                    <div class="title">Stad</div>
+                                    <div class="attribute">
+                                        <?php 
+                                            if(isset($field_city[0]['value'])) {
+                                                print $field_city[0]['value'];
+                                            } else {
+                                                print "Niet bekend";
+                                            }
+                                        ?>
+                                    </div>
+                                </span>
+                            </a>
                         </div><!-- /.col-md-3 -->
 
                         <div class="col-md-3 col-xs-6">
@@ -90,6 +95,7 @@
                                 </div>
                             </span>
                         </div><!-- /.col-md-3 -->
+
                     </div><!-- travel-information -->
 
                     <div class="vacation">

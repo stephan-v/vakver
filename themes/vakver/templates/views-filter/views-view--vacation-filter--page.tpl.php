@@ -55,7 +55,11 @@
     <div class="view-content">
       <div class="container filter-overzicht">
         <div class="col-md-12 text-center">
-          <h1 class="overview-heading">Reizen - <?php print arg(1); ?></h1>
+          <h1 class="overview-heading">Reizen - 
+            <?php print !empty(arg(1)) ? arg(1) : ''; ?>
+            <?php print !empty(arg(2)) ? '-' . arg(2) : ''; ?>
+            <?php print !empty(arg(3)) ? '-' . arg(3) : ''; ?>
+          </h1>
         </div><!-- /.col-md-12 -->
         <?php print $rows; ?>
       </div><!-- /.container -->
