@@ -122,11 +122,11 @@ function checkDownloadable($url) {
 // Cron hook to download or create csv files from given url's
 function csv_downloader_cron() {
     $csv = array(
-        'd-reizen1.csv' => 'http://xml.ds1.nl/update/?wi=254480&xid[]=7087&si[]=9806&xid[]=7117&si[]=9806&xid[]=7093&si[]=9806&xid[]=7091&si[]=9806&xid[]=6933&si[]=9806&f=title;link;description;minimum_price;daisycon_unique_id;category;img_medium;internal_id;priority;accommodation_name;accommodation_type;city_of_destination;country_of_destination;departure_date;duration;min_nr_people;port_of_departure;region_of_destination;stars;transportation_type&type=csv&encoding=UTF-8&general=false&nospecialchars=true',
+        'd-reizen1.csv' => 'http://xml.ds1.nl/update/?wi=258874&xid[]=7087&si[]=9806&xid[]=7117&si[]=9806&xid[]=7093&si[]=9806&xid[]=7091&si[]=9806&xid[]=6933&si[]=9806&f=title;link;description;minimum_price;daisycon_unique_id;category;img_medium;internal_id;priority;accommodation_name;accommodation_type;city_of_destination;country_of_destination;departure_date;duration;min_nr_people;port_of_departure;region_of_destination;stars;transportation_type&type=csv&encoding=UTF-8&general=false&nospecialchars=true',
 
-        'd-reizen2.csv' => 'http://xml.ds1.nl/update/?wi=254480&xid[]=7079&si[]=9806&xid[]=7083&si[]=9806&xid[]=7089&si[]=9806&xid[]=7095&si[]=9806&xid[]=7175&si[]=9806&f=title;link;description;minimum_price;daisycon_unique_id;category;img_medium;img_small;internal_id;maximum_price;priority;sub_category;accommodation_name;accommodation_type;board_type;city;city_of_destination;country;country_of_destination;departure_date;discount_percentage;duration;min_nr_people;old_price;port_of_departure;region_of_destination;stars;transportation_type&type=csv&encoding=UTF-8&general=false&nospecialchars=true',
+        'd-reizen2.csv' => 'http://xml.ds1.nl/update/?wi=258874&xid[]=7079&si[]=9806&xid[]=7083&si[]=9806&xid[]=7089&si[]=9806&xid[]=7095&si[]=9806&xid[]=7175&si[]=9806&f=title;link;description;minimum_price;daisycon_unique_id;category;img_medium;internal_id;maximum_price;priority;sub_category;accommodation_name;accommodation_type;board_type;city;city_of_destination;country;country_of_destination;departure_date;discount_percentage;duration;min_nr_people;old_price;port_of_departure;region_of_destination;stars;transportation_type&type=csv&encoding=UTF-8&general=false&nospecialchars=true',
 
-        'eliza.csv' => 'http://pf.tradetracker.net/?aid=243215&encoding=utf-8&type=csv&fid=481317&categoryType=2&additionalType=2&csvDelimiter=%3B&csvEnclosure=%22&filter_extended=1',
+        'eliza.csv' => 'http://pf.tradetracker.net/?aid=251310&encoding=utf-8&type=csv&fid=481317&categoryType=2&additionalType=2&csvDelimiter=%3B&csvEnclosure=%22&filter_extended=1',
 
         'tjingo.csv' => 'http://xml.ds1.nl/update/?wi=254480&xid=1903&si=2554&type=csv&encoding=UTF-8&general=false&nospecialchars=true'
     );

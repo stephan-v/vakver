@@ -12,7 +12,7 @@
 </style>
 
 <template>
-	<div class="row main-search-wrapper">
+	<div class="row main-search-wrapper" id="wrapper">
         <div class="col-md-6 col-md-offset-3">
             <i class="fa fa-search fa-2x" aria-hidden="true"></i>
             <!-- add: debounce="500" for a 500ms delay -->
@@ -26,18 +26,19 @@
     </div><!-- /.row -->
 
      <div class="sort-bar" id="main-search">
+     	<i class="fa fa-filter" aria-hidden="true"></i>
+     	
         <div class="row">
-        	<div class="col-sm-4">
-                <ul class="list-inline">
+        	<div class="col-sm-6">
+                <ul class="list-inline" id="vacations-found">
                     <li v-if="hits > 1 || hits == 0">{{ hits }} vakanties gevonden</li>
                     <li v-else="">{{ hits }} vakantie gevonden</li>
-                    <i class="fa fa-filter" aria-hidden="true"></i>
                 </ul>
-            </div><!-- /.col-sm-4 -->
+            </div><!-- /.col-sm-6 -->
 
-            <div class="col-sm-8 text-right">
+            <div class="col-sm-6 text-right">
                 <ul class="list-inline">
-                    <li class="bold">SORTEER OP</li>
+                    <li class="bold">SORTEER:</li>
 
          <!--            <li>
                         <i class="fa fa-times-circle fa-lg" aria-hidden="true" v-if="sortPopularity" v-on:click="removeSort('popularity')"></i>
@@ -48,7 +49,7 @@
                         </div>
                     </li> -->
 
-                    <li>
+                    <li class="sort-item">
                         <i class="fa fa-times-circle fa-lg" aria-hidden="true" v-if="sortPrice" v-on:click="removeSort('price')"></i>
 
                         <div class="toggle-sort" v-on:click.prevent="sort('price')" v-bind:class="{'active' : sortPrice }">
@@ -60,7 +61,7 @@
                         </div><!-- /.toggle-sort -->
                     </li>
 
-                    <li>
+                    <li class="sort-item">
                         <i class="fa fa-times-circle fa-lg" aria-hidden="true" v-if="sortRating" v-on:click="removeSort('rating')"></i>
 
                         <div class="toggle-sort" v-on:click.prevent="sort('rating')" v-bind:class="{'active' : sortRating }">
@@ -72,7 +73,7 @@
                         </div><!-- /.toggle-sort -->
                     </li>
                 </ul><!-- /.list-inline -->
-            </div><!-- /.col-sm-8 -->
+            </div><!-- /.col-sm-6 -->
         </div><!-- /.row -->
     </div><!-- /.sort-bar -->
 
@@ -537,6 +538,8 @@
 						// append the suffix from others filters if there are any
 						body: this.queryDSL.body
 				}).then(function (resp) {
+					window.scroll(0,this.findPos(document.getElementById("wrapper")));
+
 					this.travels = resp.hits.hits;
 					
 					this.currentPage = index;
@@ -546,15 +549,29 @@
 			},
 			prevPage: function() {
 				if(this.currentPage > 0) {
+					window.scroll(0,this.findPos(document.getElementById("wrapper")));
+
 					this.currentPage--;
 					this.paginate(this.currentPage);
 				}
 			},
 			nextPage: function() {
 				if(this.currentPage < (this.totalPages -1)) {
+					window.scroll(0,this.findPos(document.getElementById("wrapper")));
+					
 					this.currentPage++;
 					this.paginate(this.currentPage);
 				}
+			},
+
+			findPos: function(obj) {
+			    var curtop = 0;
+			    if (obj.offsetParent) {
+			        do {
+			            curtop += obj.offsetTop;
+			        } while (obj = obj.offsetParent);
+			    return [curtop];
+			    }
 			},
 
 			/*

@@ -34,7 +34,6 @@ features[ctools][] = views:views_default:3.0
 features[elasticsearch_connector_cluster][] = elasticsearch
 features[features_api][] = api:2
 features[feeds_importer][] = d_reizen
-features[feeds_importer][] = d_reizen2
 features[feeds_importer][] = elizawashere
 features[feeds_importer][] = tjingo
 features[feeds_tamper][] = d_reizen-accommodation_type-find_replace

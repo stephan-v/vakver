@@ -96,7 +96,7 @@ function vakver_node_info() {
       'help' => '',
     ),
     'homepage' => array(
-      'name' => t('Homepage'),
+      'name' => t('Voorpagina'),
       'base' => 'node_content',
       'description' => t('Van deze inhoudstype bestaat nogmaals gesproken maar 1 pagina. Aanmaken of verwijderen kan in de meeste gevallen alleen door een developer gedaan worden.'),
       'has_title' => '1',
@@ -136,11 +136,11 @@ function vakver_node_info() {
       'help' => '',
     ),
     'webform' => array(
-      'name' => t('Webform'),
+      'name' => t('Webformulier'),
       'base' => 'node_content',
-      'description' => t('Create a new form or questionnaire accessible to users. Submission results and statistics are recorded and accessible to privileged users.'),
+      'description' => t('Een nieuw formulier of vragenlijst aanmaken. Resultaten en statistieken worden opgeslagen en zijn toegankelijk voor gebruikers met de juiste rechten.'),
       'has_title' => '1',
-      'title_label' => t('Title'),
+      'title_label' => t('Titel'),
       'help' => '',
     ),
   );

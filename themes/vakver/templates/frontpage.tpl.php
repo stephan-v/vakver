@@ -133,7 +133,7 @@
 
         <div class="wrapper">
             <div class="container">
-                <div class="col-md-12 always-float">
+                <div class="col-md-12">
                     <!-- elasticsearch results(tag is located at: js/components/elasticsearch.vue) -->
                     <elasticsearch></elasticsearch>
                 </div>

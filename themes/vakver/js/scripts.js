@@ -73,43 +73,45 @@
 		========================================================================== */
 
 		setTimeout(function() {
-			// round down and up to the nearest 100 for the slider range to look a little more neat
-			var min_price = Math.floor(Vue.$children[0].priceMinMax.min_price.value/100)*100;
-			var max_price = Math.ceil(Vue.$children[0].priceMinMax.max_price.value/100)*100;
+			if(location.pathname === "/") {
+				// round down and up to the nearest 100 for the slider range to look a little more neat
+				var min_price = Math.floor(Vue.$children[0].priceMinMax.min_price.value/100)*100;
+				var max_price = Math.ceil(Vue.$children[0].priceMinMax.max_price.value/100)*100;
 
-			var slider = document.getElementById('slider-handles');
+				var slider = document.getElementById('slider-handles');
 
-			noUiSlider.create(slider, {
-				start: [min_price, max_price],
-				step: 50,
-				range: {
-					'min': [min_price],
-					'max': [max_price]
-				}
-			});
+				noUiSlider.create(slider, {
+					start: [min_price, max_price],
+					step: 50,
+					range: {
+						'min': [min_price],
+						'max': [max_price]
+					}
+				});
 
-			var marginMin = document.getElementById('slider-margin-value-min'),
-				marginMax = document.getElementById('slider-margin-value-max');
+				var marginMin = document.getElementById('slider-margin-value-min'),
+					marginMax = document.getElementById('slider-margin-value-max');
 
-			slider.noUiSlider.on('update', function ( values, handle ) {
-				if ( handle ) {
-					var values = values.map(function (x) { 
-					    return parseInt(x, 10); 
-					});
+				slider.noUiSlider.on('update', function ( values, handle ) {
+					if ( handle ) {
+						var values = values.map(function (x) { 
+						    return parseInt(x, 10); 
+						});
 
-					Vue.$broadcast('priceListener', values);
+						Vue.$broadcast('priceListener', values);
 
-					marginMax.innerHTML = values[handle];
-				} else {
-					var values = values.map(function (x) { 
-					    return parseInt(x, 10); 
-					});
-					
-					Vue.$broadcast('priceListener', values);
+						marginMax.innerHTML = values[handle];
+					} else {
+						var values = values.map(function (x) { 
+						    return parseInt(x, 10); 
+						});
+						
+						Vue.$broadcast('priceListener', values);
 
-					marginMin.innerHTML = values[handle];
-				}
-			});
+						marginMin.innerHTML = values[handle];
+					}
+				});
+			}
 		}, 500);
 	});
 }(jQuery));
