@@ -90,7 +90,7 @@
 
                 <div class="readmore">
                     <ul>
-                        <div class="filter-item" v-for="duration in durations.slice().reverse()">
+                        <div class="filter-item" v-for="duration in durations | orderBy 'key'">
                             <li v-on:click="filter(duration.key, 'duration', 'durations')" v-bind:class="{ 'active': durationsToFilter.indexOf(duration.key) > -1 }">{{ duration.key | capitalize }} dagen</li>
                             <span class="filter-count">{{ duration.doc_count }}</span>
                         </div><!-- /.filter-item -->
@@ -106,7 +106,7 @@
 
                 <div class="readmore">
                     <ul>
-                        <div class="filter-item" v-for="transportation in transportations.slice().reverse()">
+                        <div class="filter-item" v-for="transportation in transportations">
                             <li v-on:click="filter(transportation.key, 'transportation', 'transportations')" v-bind:class="{ 'active': transportationsToFilter.indexOf(transportation.key) > -1 }">{{ transportation.key | capitalize }}</li>
                             <span class="filter-count">{{ transportation.doc_count }}</span>
                         </div><!-- /.filter-item -->

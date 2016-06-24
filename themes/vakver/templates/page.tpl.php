@@ -33,7 +33,7 @@
 	<?php endif; ?>
 	
 	<div class="container">
-		<?php //print $messages; ?>
+		<?php print $messages; ?>
 	</div><!-- /.container -->
 
 	<?php if(drupal_is_front_page()): ?>

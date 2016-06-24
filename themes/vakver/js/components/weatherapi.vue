@@ -27,7 +27,7 @@
 
 		ready: function() {
 			// 7 days weather forecast
-			Vue.http.get('http://api.openweathermap.org/data/2.5/forecast/daily?q=' + this.city + ',' + this.iso + '&units=metric&lang=nl&mode=json&APPID=317947b4843d1f4de1eb935a78fe6554')
+			Vue.http.get('http://api.openweathermap.org/data/2.5/forecast/daily?q=' + this.city + ',' + this.iso + '&units=metric&lang=nl&mode=json&APPID=c7fae58af3c2e33c498da7daf503ec77')
 			.then(
 				function(resp) {
 					this.dailyForecast = resp.data.list;
@@ -36,7 +36,7 @@
 			});
 
 			// current weather
-			Vue.http.get('http://api.openweathermap.org/data/2.5/weather?q=' + this.city + ',' + this.iso + '&units=metric&lang=nl&mode=json&APPID=317947b4843d1f4de1eb935a78fe6554')
+			Vue.http.get('http://api.openweathermap.org/data/2.5/weather?q=' + this.city + ',' + this.iso + '&units=metric&lang=nl&mode=json&APPID=c7fae58af3c2e33c498da7daf503ec77')
 			.then(
 				function(resp) {
 					this.currentTemp = Math.floor(resp.data.main.temp);

@@ -40,15 +40,6 @@
                 <ul class="list-inline">
                     <li class="bold">SORTEER:</li>
 
-         <!--            <li>
-                        <i class="fa fa-times-circle fa-lg" aria-hidden="true" v-if="sortPopularity" v-on:click="removeSort('popularity')"></i>
-
-                        <div class="toggle-sort" v-on:click.prevent="sort('popularity')" v-bind:class="{'active' : sortPopularity }">
-                            <span>POPULARITEIT</span>
-                            <i class="fa fa-sort-desc fa-lg" aria-hidden="true" v-if="sortPopularity"></i>
-                        </div>
-                    </li> -->
-
                     <li class="sort-item">
                         <i class="fa fa-times-circle fa-lg" aria-hidden="true" v-if="sortPrice" v-on:click="removeSort('price')"></i>
 
@@ -77,6 +68,7 @@
         </div><!-- /.row -->
     </div><!-- /.sort-bar -->
 
+	<!-- gridview of vacation -->
 	<div v-if="toggleView" class="row" v-for="row in travels | chunk 4">
 		<div v-for="travel in row">
 			<div class="col-xs-6 col-lg-3">
@@ -108,6 +100,7 @@
 		</div><!-- v-for -->
 	</div><!-- /.row -->
 
+	<!-- listview of vacation -->
 	<div v-if="!toggleView" class="row list-view" v-for="travel in travels">
 		<div class="col-md-10 col-md-offset-1">
 			<div class="vacation-item">
@@ -184,7 +177,7 @@
 			} else {
 				this.client = new elasticsearch.Client({
 					/* production */
-					host: 'vakver.wemagine.nl:9200'
+					host: 'vakver.nl:9200'
 				});
 			}
 
@@ -558,7 +551,7 @@
 			nextPage: function() {
 				if(this.currentPage < (this.totalPages -1)) {
 					window.scroll(0,this.findPos(document.getElementById("wrapper")));
-					
+
 					this.currentPage++;
 					this.paginate(this.currentPage);
 				}
